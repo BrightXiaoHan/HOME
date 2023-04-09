@@ -9,19 +9,17 @@ ENV TZ=Asia/Shanghai \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
-    && apt install -y tzdata python3 python3-pip curl \
+    && apt install -y tzdata python3 python3-pip curl fuse \
     && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \
     && rm -rf /var/lib/apt/lists/*
 
-# Prepare python environment
-RUN pip install --no-cache-dir -i https://pypi.douban.com/simple poetry black isort mypy
-
 WORKDIR /root/.HOME
 ADD . .
 RUN bash ./scripts/install.sh
 
-RUN homecli
+ENV PATH="/root/.cache/homecli/miniconda/bin:${PATH}"
 
-ENTRYPOINT ["/bin/bash"]
+WORKDIR /root
+CMD ["fish"]

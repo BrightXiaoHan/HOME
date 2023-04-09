@@ -1,4 +1,4 @@
-if type -q exa
-  alias ll "exa -l -g --icons"
-  alias lla "ll -a"
+if test -f /.dockerenv
+  alias nvim='nvim --appimage-extract-and-run'
+  alias tmux='tmux --appimage-extract-and-run'
 end

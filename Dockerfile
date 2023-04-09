@@ -20,8 +20,7 @@ RUN pip install --no-cache-dir -i https://pypi.douban.com/simple poetry black is
 
 WORKDIR /root/.HOME
 ADD . .
-RUN poetry build \
-    && pip install -i https://pypi.douban.com/simple  dist/*.whl
+RUN bash ./scripts/install.sh
 
 RUN homecli
 

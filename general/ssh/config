@@ -1,0 +1,86 @@
+Host zeng
+    HostName 81.71.18.250
+    Port 20023
+    User zengdj
+    ServerAliveInterval 10
+
+Host wangzhengtong
+    HostName 60.205.207.43
+    User root
+    ServerAliveInterval 10
+
+Host aliyun
+    HostName 39.105.167.2
+    User root
+    ServerAliveInterval 10
+
+Host movecar
+    HostName 39.105.167.2
+    User movecar
+    Port 9022
+    ServerAliveInterval 10
+
+Host 56Server
+    HostName 39.105.167.2
+    Port 60913
+    User hanbing
+    ServerAliveInterval 10
+
+Host A100-external
+    HostName 39.105.167.2
+    Port 60918
+    User hanbing
+    ServerAliveInterval 10
+
+Host A100-external-chenqiulin
+    HostName 39.105.167.2
+    Port 60918
+    User chenqiulin
+    ServerAliveInterval 10
+
+Host LanMT-new
+    HostName 192.168.2.226
+    User hanbing
+    Port 2864
+    ProxyCommand ssh -W %h:%p A100-external
+    ServerAliveInterval 10
+
+Host LanMT-7180
+    HostName 192.168.71.80
+    User hanbing
+    ProxyCommand ssh -W %h:%p A100-external
+    ServerAliveInterval 10
+
+Host LanMT-7181
+    HostName 192.168.71.81
+    User hanbing
+    ProxyCommand ssh -W %h:%p A100-external
+    ServerAliveInterval 10
+
+Host aliyun_movecar
+    HostName 8.134.104.9
+    User root
+    ServerAliveInterval 10
+
+Host aliyun_inner_movecar
+    HostName 172.27.18.42
+    User root
+    ProxyCommand ssh -W %h:%p aliyun_movecar
+
+Host zeng_school
+    HostName 81.71.18.250
+    Port 20023
+    User zengdj
+    ServerAliveInterval 10
+
+Host ShengTeng
+    HostName 101.204.146.85
+    Port 10023
+    User root
+    ServerAliveInterval 10
+
+Host YuyiHuaweiAliyun
+    HostName 124.71.205.166
+    Port 22
+    User root
+    ServerAliveInterval 10

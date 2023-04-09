@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "homecli"
+version = "0.1.0"
+description = "Personal Home Directory Manager CLI"
+
+license = "MIT"
+
+authors = [
+    "Bing Han"
+]
+
+repository = "https://github.com/BrightXiaoHan/HOME"
+homepage = "https://github.com/BrightXiaoHan/HOME"
+
+# README file(s) are used as the package description
+readme = ["README.md", "LICENSE"]
+
+# Keywords (translated to tags on the package index)
+keywords = ["packaging", "poetry"]
+
+[tool.poetry.dependencies]
+# Compatible Python versions
+python = ">=3.7"
+typer = ">=0.7.0"
+
+# Dependency groups are supported for organizing your dependencies
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.1.2"
+
+# Python-style entrypoints and scripts are easily expressed
+[tool.poetry.scripts]
+homecli = "homecli:main"

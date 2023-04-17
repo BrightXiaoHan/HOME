@@ -1,5 +1,4 @@
-# Get MODE default is online-install
-MODE=${1:-online-install}
+MODE=$1
 
 if [ "$MODE" = "local-install" ]; then
   DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"

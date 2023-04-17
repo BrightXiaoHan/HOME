@@ -11,7 +11,8 @@ elif [ "$MODE" = "unpack" ]; then
     exit 1
   fi
   mkdir -p ~/.cache/homecli
-  tar -xvf "$TARFILE" -C ~/.cache/homecli
+  tar -xvf "$TARFILE" -C ~/.cache/
+  tar -xvf $HOME/.cache/homecli/miniconda.tar.gz -C $HOME/.cache/homecli/miniconda
 elif [ "$MODE" = "online-install" ]; then
   mkdir -p ~/.cache/homecli
   git clone https://github.com/BrightXiaoHan/HOME ~/.cache/homecli/HOME
@@ -80,4 +81,10 @@ fi
 # add fish path to .bashrc
 if ! grep -q "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" ~/.bashrc; then
   echo "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" >> ~/.bashrc
+fi
+
+if [ "MODE" = "unpack" ]; then
+  if ! grep -q "source $HOME/.cache/homecli/miniconda/bin/activate" ~/.bashrc; then
+    echo "source $HOME/.cache/homecli/miniconda/bin/activate" >> ~/.bashrc
+  fi
 fi

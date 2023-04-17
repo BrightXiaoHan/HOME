@@ -1,4 +1,4 @@
-DIR="~/.cache/homecli"
+DIR=~/.cache/homecli
 
 conda-pack -o $DIR/miniconda.tar.gz
 

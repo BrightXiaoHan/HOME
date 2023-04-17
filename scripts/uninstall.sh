@@ -1,6 +1,6 @@
 rm -rf ~/.config/alacritty \
-  nvim \
-  tmux \
-  fish \
+  ~/.config/nvim \
+  ~/.config/tmux \
+  ~/.config/fish \
   ~/.gitconfig \
   ~/.ssh/config

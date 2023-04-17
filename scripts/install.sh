@@ -76,3 +76,6 @@ if [ "MODE" = "local-install" ]; then
   PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
 fi
+
+# change default shell to fish
+chsh -s $HOME/.cache/homecli/miniconda/bin/fish

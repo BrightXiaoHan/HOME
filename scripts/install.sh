@@ -1,4 +1,5 @@
 MODE=$1
+DIR="$HOME/.cache/homecli/HOME/general"
 
 if [ "$MODE" = "local-install" ]; then
   DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -11,11 +12,9 @@ elif [ "$MODE" = "unpack" ]; then
   fi
   mkdir -p ~/.cache/homecli
   tar -xvf "$TARFILE" -C ~/.cache/homecli
-  DIR="$HOME/.cache/homecli/HOME/general"
 elif [ "$MODE" = "online-install" ]; then
   mkdir -p ~/.cache/homecli
   git clone https://github.com/BrightXiaoHan/HOME ~/.cache/homecli/HOME
-  DIR="$HOME/.cache/homecli/HOME/general"
 fi
 
 # get current dir

@@ -77,5 +77,7 @@ if [ "MODE" = "local-install" ]; then
     python3 homecli/install.py
 fi
 
-# change default shell to fish
-chsh -s $HOME/.cache/homecli/miniconda/bin/fish
+# add fish path to .bashrc
+if ! grep -q "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" ~/.bashrc; then
+  echo "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" >> ~/.bashrc
+fi

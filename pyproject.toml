@@ -25,5 +25,4 @@ python = ">=3.7"
 # Python-style entrypoints and scripts are easily expressed
 [tool.poetry.scripts]
 homecli-install = "homecli:install"
-homecli-uninstall = "homecli:uninstall"
 homecli-pack = "homecli:pack"

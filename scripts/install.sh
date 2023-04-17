@@ -1,6 +1,25 @@
+# Get MODE default is online-install
+MODE=${1:-online-install}
+
+if [ "$MODE" = "local-install" ]; then
+  DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+  DIR="$DIR/../general"
+elif [ "$MODE" = "unpack" ]; then
+  TARFILE="$2"
+  if [ -z "$TARFILE" ]; then
+    echo "Usage: install.sh unpack <tarfile>"
+    exit 1
+  fi
+  mkdir -p ~/.cache/homecli
+  tar -xvf "$TARFILE" -C ~/.cache/homecli
+  DIR="$HOME/.cache/homecli/HOME/general"
+elif [ "$MODE" = "online-install" ]; then
+  mkdir -p ~/.cache/homecli
+  git clone https://github.com/BrightXiaoHan/HOME ~/.cache/homecli/HOME
+  DIR="$HOME/.cache/homecli/HOME/general"
+fi
+
 # get current dir
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-DIR="$DIR/../general"
 mkdir -p ~/.config
 
 # test if python3 is installed
@@ -54,6 +73,8 @@ fi
 ln -s $DIR/ssh/config ~/.ssh/config
 ln -s $DIR/gitconfig ~/.gitconfig
 
-PYTHONPATH="./:$PYTHONPATH" \
-PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
-  python3 homecli/install.py
+if [ "MODE" = "local-install" ]; then
+  PYTHONPATH="./:$PYTHONPATH" \
+  PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
+    python3 homecli/install.py
+fi

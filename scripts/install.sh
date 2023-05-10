@@ -72,7 +72,7 @@ fi
 ln -s $DIR/ssh/config ~/.ssh/config
 ln -s $DIR/gitconfig ~/.gitconfig
 
-if [ "MODE" = "local-install" ]; then
+if [ "$MODE" = "local-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
   PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
@@ -83,7 +83,7 @@ if ! grep -q "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" ~/.bashrc; t
   echo "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" >> ~/.bashrc
 fi
 
-if [ "MODE" = "unpack" ]; then
+if [ "$MODE" = "unpack" ]; then
   if ! grep -q "source $HOME/.cache/homecli/miniconda/bin/activate" ~/.bashrc; then
     echo "source $HOME/.cache/homecli/miniconda/bin/activate" >> ~/.bashrc
   fi

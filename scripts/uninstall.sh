@@ -3,4 +3,5 @@ rm -rf ~/.config/alacritty \
   ~/.config/tmux \
   ~/.config/fish \
   ~/.gitconfig \
-  ~/.ssh/config
+  ~/.ssh/config \
+  ~/.cache/HOME

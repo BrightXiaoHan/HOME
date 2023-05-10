@@ -21,5 +21,7 @@ RUN bash ./scripts/install.sh
 
 ENV PATH="/root/.cache/homecli/miniconda/bin:${PATH}"
 
-WORKDIR /root
+WORKDIR /workspace
+VOLUME ["/workplace"]
+
 CMD ["fish"]

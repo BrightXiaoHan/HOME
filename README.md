@@ -22,5 +22,5 @@ docker build -t DevEnv .
 ```
 Run Container
 ```
-docker run -itd DevEnv
+docker run -v /path/to/workspace:/workplsace -itd  DevEnv
 ```

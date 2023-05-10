@@ -1,4 +1,5 @@
-MODE=$1
+# MODE: local-install, online-install or unpack. Default: online-install
+MODE=${1:-online-install}
 DIR="$HOME/.cache/homecli/HOME/general"
 
 if [ "$MODE" = "local-install" ]; then

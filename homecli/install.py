@@ -1,10 +1,8 @@
 import json
 import logging
-import lzma
 import os
 import shutil
 import subprocess
-import tarfile
 import tempfile
 import urllib.request
 import zipfile
@@ -178,36 +176,6 @@ def install_oh_my_posh(overwrite=False):
     logging.info("Installing oh-my-posh done.")
 
 
-def install_nodejs():
-    logging.info("Installing nodejs...")
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://nodejs.org/dist/v18.15.0/node-v18.15.0-linux-x64.tar.xz"
-    else:
-        url = "https://nodejs.org/dist/v18.15.0/node-v18.15.0-linux-arm64.tar.xz"
-
-    if (
-        subprocess.run(
-            ["which", "node"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-        ).returncode
-        != 0
-    ):
-        cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
-        if not os.path.exists(cache_file):
-            with tempfile.NamedTemporaryFile() as tmp:
-                download_with_progress(url, tmp.name, "nodejs")
-                shutil.copy(tmp.name, cache_file)
-        with lzma.open(cache_file, "r") as f:
-            with tarfile.open(fileobj=f) as tar:
-                tar.extractall(CACHE_DIR)
-
-        node_dir = os.path.join(CACHE_DIR, os.path.basename(url).replace(".tar.xz", ""))
-        shutil.move(
-            node_dir, os.path.join(CACHE_DIR, "nodejs")
-        )  # rename the extracted folder
-
-    logging.info("Installing nodejs done.")
-
-
 def install_conda():
     logging.info("Installing conda...")
     if ARCHITECTURE in ("x86_64", "amd64"):
@@ -245,6 +213,7 @@ def install_conda():
             "cmake",
             "git",
             "conda-pack",
+            "nodejs",
         ],
         check=True,
         stdout=subprocess.DEVNULL,
@@ -255,7 +224,6 @@ def install_conda():
 def install_all():
     install_tmux()
     install_aliyunpan()
-    install_nodejs()
     install_oh_my_posh()
     install_conda()
     install_neovim()

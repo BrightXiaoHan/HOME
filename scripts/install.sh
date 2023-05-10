@@ -17,6 +17,7 @@ elif [ "$MODE" = "unpack" ]; then
 elif [ "$MODE" = "online-install" ]; then
   mkdir -p ~/.cache/homecli
   git clone https://github.com/BrightXiaoHan/HOME ~/.cache/homecli/HOME
+  cd ~/.cache/homecli/HOME
 fi
 
 # get current dir
@@ -73,7 +74,7 @@ fi
 ln -s $DIR/ssh/config ~/.ssh/config
 ln -s $DIR/gitconfig ~/.gitconfig
 
-if [ "$MODE" = "local-install" ]; then
+if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
   PATH="$HOME/.cache/homecli/miniconda/bin:$PATH" \
     python3 homecli/install.py

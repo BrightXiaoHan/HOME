@@ -71,4 +71,9 @@ nvim_tree.setup {
       "__pycache__",
     },
   },
+  git = {
+    enable = true,
+    ignore = false,
+    timeout = 500,
+  },
 }

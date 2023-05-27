@@ -29,6 +29,17 @@ local leaderkeymap = {
     f = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "Find" },
     q = { "<cmd>q<cr>", "Quit" },
     o = { "<cmd>AerialToggle<cr>", "Outline" },
+    -- set 1-9 as go to windows 0-9
+    ["1"] = { "<cmd>1wincmd w<cr>", "Go to window 1" },
+    ["2"] = { "<cmd>2wincmd w<cr>", "Go to window 2" },
+    ["3"] = { "<cmd>3wincmd w<cr>", "Go to window 3" },
+    ["4"] = { "<cmd>4wincmd w<cr>", "Go to window 4" },
+    ["5"] = { "<cmd>5wincmd w<cr>", "Go to window 5" },
+    ["6"] = { "<cmd>6wincmd w<cr>", "Go to window 6" },
+    ["7"] = { "<cmd>7wincmd w<cr>", "Go to window 7" },
+    ["8"] = { "<cmd>8wincmd w<cr>", "Go to window 8" },
+    ["9"] = { "<cmd>9wincmd w<cr>", "Go to window 9" },
+    ["0"] = { "<cmd>10wincmd w<cr>", "Go to window 10" },
 }
 
 local status, wk = pcall(require, "whichkey_setup")

@@ -28,7 +28,7 @@ Host 56Server
 
 Host A100-external
     HostName 39.105.167.2
-    Port 60918
+    Port 10088
     User hanbing
     ServerAliveInterval 10
 

@@ -32,12 +32,6 @@ Host A100-external
     User hanbing
     ServerAliveInterval 10
 
-Host A100-external-chenqiulin
-    HostName 39.105.167.2
-    Port 60918
-    User chenqiulin
-    ServerAliveInterval 10
-
 Host LanMT-new
     HostName 192.168.2.226
     User hanbing

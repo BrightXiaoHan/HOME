@@ -3,7 +3,11 @@ if not status_ok then
         return
 end
 
-local shell = "fish"
+if vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1 then
+    shell = 'pwsh'
+else
+    shell = 'fish'
+end
 
 toggleterm.setup({
         size = 20,

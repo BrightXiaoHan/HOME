@@ -78,3 +78,9 @@ Host YuyiHuaweiAliyun
     Port 22
     User root
     ServerAliveInterval 10
+
+Host ifun-translate
+    HostName 43.153.70.114
+    Port 22
+    User ubuntu
+    ServerAliveInterval 10

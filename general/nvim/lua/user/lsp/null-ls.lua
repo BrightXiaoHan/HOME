@@ -15,5 +15,7 @@ null_ls.setup({
     formatting.black.with({ extra_args = { "--fast" } }),
     formatting.stylua,
     formatting.isort,
+    formatting.autoflake.with({ extra_args = { "--remove-all-unused-imports", "--remove-unused-variables" } }),
+    -- formatting.pyflyby,
   },
 })

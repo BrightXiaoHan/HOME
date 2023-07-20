@@ -19,6 +19,7 @@ Set-PSReadLineOption -PredictionSource History
 
 # Env
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
+$env:POETRY_VIRTUALENVS_IN_PROJECT = "true"
 
 # Alias
 Set-Alias -Name vim -Value nvim

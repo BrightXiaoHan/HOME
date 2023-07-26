@@ -1,11 +1,8 @@
 # set PowerShell to UTF-8
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
-# Import-Module posh-git
 $omp_config = Join-Path $PSScriptRoot ".\takuya.omp.json"
-oh-my-posh init pwsh | Invoke-Expression
-
-# Import-Module -Name Terminal-Icons
+Invoke-Expression (&starship init powershell)
 
 # PSReadLine
 Set-PSReadLineOption -EditMode Emacs
@@ -13,9 +10,9 @@ Set-PSReadLineOption -BellStyle None
 Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineOption -PredictionSource History
 
-# # Fzf
-# Import-Module PSFzf
-# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
+# Fzf
+Import-Module PSFzf
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
 
 # Env
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
@@ -30,3 +27,5 @@ function which ($command) {
     Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
 
+# add scoop bin to Path
+$env:Path += ";$HOME\scoop\shims"

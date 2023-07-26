@@ -4,15 +4,25 @@ My Personal Home Directory.
 ## Quick Start
 linux
 ```
-bash scripts/install.sh
+/bin/bash -c "$curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh"
 ```
-macos
+### macos
+Install Homebrew
 ```
-bash scripts/install_macos.sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-windows
+Install Packages
 ```
-Powershell.exe -File scipts\install.ps1
+/bin/bash -c "$curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install_macos.sh"
+```
+### windows
+Upgrade Powershell
+```
+iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
+```
+Install Packages
+```
+iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install_macos.sh").Content
 ```
 
 ## Dev Container

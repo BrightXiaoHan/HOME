@@ -21,8 +21,33 @@ New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\nvim -For
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
 Invoke-RestMethod get.scoop.sh | Invoke-Expression
 
+scoop bucket add main
+scoop install main/winget
+scoop install main/git-lfs
+scoop install main/neovim
+scoop install main/openssh
+scoop install main/fzf
+scoop install main/nodejs-lts
+scoop install main/ripgrep
+scoop bucket add nerd-fonts
+scoop install nerd-fonts/JetBrains-Mono
+
+$ProgressPreference = "SilentlyContinue"
+Install-Module -Name PSFzf
+
 # Install packer
 git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
 
-# install treesitter requirements
-scoop install gcc
+# Install Visual Studio Build Tools
+winget install -e --id Microsoft.VisualStudio.2019.BuildTools 
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Anaconda.Anaconda3
+winget install -e --id Tencent.WeChat
+winget install -e --id Microsoft.WindowsTerminal
+winget install -e --id Kingsoft.WPSOffice.CN
+winget install -e --id Postman.Postman
+winget install -e --id Notion.Notion
+winget install -e --id Microsoft.PowerToys
+winget install -e --id Sogou.SogouInput
+winget install -e --id Alibaba.DingTalk
+winget install -e --id Valve.Steam

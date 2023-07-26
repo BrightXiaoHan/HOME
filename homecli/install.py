@@ -3,12 +3,13 @@ import logging
 import os
 import shutil
 import subprocess
+import tarfile
 import tempfile
 import urllib.request
 import zipfile
 
 from homecli import ARCHITECTURE, BIN_DIR, CACHE_DIR
-from homecli.utils import progress
+from homecli.utils import get_latest_stable_nodejs_version, progress
 
 
 def get_latest_release(owner, repo):
@@ -195,7 +196,7 @@ def install_conda():
         )
     logging.info("Installing conda done.")
     # conda install fish shell
-    logging.info("Installing fish shell...")
+    logging.info("Installing other packages...")
     subprocess.run(
         [
             os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
@@ -213,21 +214,40 @@ def install_conda():
             "cmake",
             "git",
             "conda-pack",
-            "nodejs",
         ],
         check=True,
         stdout=subprocess.DEVNULL,
     )
-    logging.info("Installing fish shell done.")
+    logging.info("Installing other packages done.")
 
 
-def install_all():
+def install_nodejs():
+    latest_version = get_latest_stable_nodejs_version()
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-x64.tar.xz"
+    else:
+        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-arm64.tar.xz"
+
+    logging.info("Installing nodejs...")
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_with_progress(url, tmp.name, "nodejs")
+        with tarfile.open(tmp.name) as tar:
+            tar.extractall(path=CACHE_DIR)
+
+    # rename nodejs directory
+    nodejs_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.xz", ""))
+    os.rename(nodejs_dir, os.path.join(CACHE_DIR, "nodejs"))
+
+    logging.info("Installing nodejs done.")
+
+
+def main():
     install_tmux()
     install_aliyunpan()
-    install_oh_my_posh()
     install_conda()
     install_neovim()
+    install_nodejs()
 
 
 if __name__ == "__main__":
-    install_all()
+    main()

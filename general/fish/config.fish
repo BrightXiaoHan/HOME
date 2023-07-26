@@ -12,7 +12,6 @@ set -g theme_hostname always
 set -gx EDITOR nvim
 
 set -gx PATH bin $PATH
-set -gx PATH ~/bin $PATH
 set -gx PATH ~/.local/bin $PATH
 set -gx PATH ~/.cache/homecli/bin $PATH
 set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
@@ -33,7 +32,6 @@ set LOCAL_CONFIG (dirname (status --current-filename))/config-local.fish
 if test -f $LOCAL_CONFIG
   source $LOCAL_CONFIG
 end
-
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

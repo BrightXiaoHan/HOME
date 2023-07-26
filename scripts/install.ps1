@@ -29,6 +29,7 @@ scoop install main/openssh
 scoop install main/fzf
 scoop install main/nodejs-lts
 scoop install main/ripgrep
+scoop install main/starship
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrains-Mono
 

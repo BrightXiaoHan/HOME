@@ -86,7 +86,7 @@ ln -s $DIR/gitconfig ~/.gitconfig
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
-  PATH="$HOME/.cache/homecli/miniconda/bin:$PATH" \
+    PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
 fi
 

@@ -32,6 +32,8 @@ scoop install main/ripgrep
 scoop install main/starship
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrains-Mono
+scoop bucket add extras
+scoop install extras/tssh
 
 $ProgressPreference = "SilentlyContinue"
 Install-Module -Name PSFzf

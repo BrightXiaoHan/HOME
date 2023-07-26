@@ -240,6 +240,23 @@ def install_nodejs():
 
     logging.info("Installing nodejs done.")
 
+def install_trzsz():
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        url = "https://github.com/trzsz/trzsz-go/releases/download/v1.1.4/trzsz_1.1.4_linux_x86_64.tar.gz"
+    else:
+        url = "https://github.com/trzsz/trzsz-go/releases/download/v1.1.4/trzsz_1.1.4_linux_aarch64.tar.gz"
+
+    logging.info("Installing trzsz...")
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_with_progress(url, tmp.name, "trzsz")
+        with tarfile.open(tmp.name) as tar:
+            tar.extractall(path=CACHE_DIR)
+
+    # move all files to CACHE_DIR/bin
+    trzsz_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
+    for f in os.listdir(trzsz_dir):
+        shutil.move(os.path.join(trzsz_dir, f), os.path.join(CACHE_DIR, "bin"))
+
 
 def main():
     install_tmux()
@@ -247,6 +264,7 @@ def main():
     install_conda()
     install_neovim()
     install_nodejs()
+    install_trzsz()
 
 
 if __name__ == "__main__":

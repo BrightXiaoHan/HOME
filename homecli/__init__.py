@@ -23,4 +23,4 @@ if PLATFORM not in avaliable_platforms:
     exit(1)
 
 
-from homecli.install import install_all as install
+from homecli.install import main as install

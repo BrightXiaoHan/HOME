@@ -72,6 +72,16 @@ if [ ! -d ~/.ssh ]; then
   mkdir ~/.ssh
 fi
 ln -s $DIR/ssh/config ~/.ssh/config
+
+# add authorized_keys into .ssh/authorized_keys
+if [ ! -f ~/.ssh/authorized_keys ]; then
+  touch ~/.ssh/authorized_keys
+fi
+# if id_rsa.pub not in authorized_keys, add it
+if ! grep -q "$(cat ~/.ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
+  cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+fi
+
 ln -s $DIR/gitconfig ~/.gitconfig
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then

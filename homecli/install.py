@@ -179,8 +179,31 @@ def install_oh_my_posh(overwrite=False):
 
 def install_conda():
     logging.info("Installing conda...")
+    command = [
+        os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
+        "install",
+        "-c",
+        "conda-forge",
+        "-y",
+        "fish",
+        "ncurses",
+        "fzf",
+        "ripgrep",
+        "gcc",
+        "gxx",
+        "make",
+        "cmake",
+        "git",
+        "conda-pack",
+    ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+        command.extend(
+            [
+                "starship",
+                "zoxide",
+            ]
+        )
     else:
         url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
@@ -198,25 +221,7 @@ def install_conda():
     # conda install fish shell
     logging.info("Installing other packages...")
     subprocess.run(
-        [
-            os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
-            "install",
-            "-c",
-            "conda-forge",
-            "-y",
-            "fish",
-            "ncurses",
-            "fzf",
-            "ripgrep",
-            "gcc",
-            "gxx",
-            "make",
-            "cmake",
-            "git",
-            "conda-pack",
-            "starship",
-            "zoxide",
-        ],
+        command,
         check=True,
         stdout=subprocess.DEVNULL,
     )

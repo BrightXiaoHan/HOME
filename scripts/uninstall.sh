@@ -6,7 +6,8 @@ rm -rf ~/.config/alacritty \
   ~/.config/tmux \
   ~/.config/fish \
   ~/.gitconfig \
-  ~/.ssh/config
+  ~/.ssh/config \
+  ~/.ssh/id_rsa.pub
 
 # remove packer
 rm -rf ~/.local/share/nvim/site/pack/packer

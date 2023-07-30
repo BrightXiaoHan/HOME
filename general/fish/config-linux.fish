@@ -5,7 +5,7 @@ if test -f ~/.cache/homecli/miniconda/bin/conda
 end
 # <<< conda initialize <<<
 
-if test -f /.dockerenv
-  alias nvim='nvim --appimage-extract-and-run'
-  alias tmux='tmux --appimage-extract-and-run'
+if not type -q fusermount
+    alias nvim='nvim --appimage-extract-and-run'
+    alias tmux='tmux --appimage-extract-and-run'
 end

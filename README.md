@@ -4,7 +4,7 @@ My Personal Home Directory.
 ## Quick Start
 linux
 ```
-/bin/bash -c "$curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh)"
 ```
 ### macos
 Install Homebrew
@@ -13,7 +13,7 @@ Install Homebrew
 ```
 Install Packages
 ```
-/bin/bash -c "$curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install_macos.sh"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install_macos.sh)"
 ```
 ### windows
 Upgrade Powershell

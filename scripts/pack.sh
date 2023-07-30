@@ -2,6 +2,11 @@ DIR=~/.cache/homecli
 
 conda-pack -o $DIR/miniconda.tar.gz
 
-tar -zcvf $DIR/homecli.tar.gz \
-    $DIR/HOME $DIR/bin $DIR/miniconda.tar.gz $DIR/nodejs \
-    ~/.local/share/nvim
+cd $DIR
+tar -cvf $DIR/homecli.tar \
+    HOME bin miniconda.tar.gz nodejs
+cd -
+
+cd ~/.local/share/
+tar -rvf $DIR/homecli.tar nvim/
+cd -

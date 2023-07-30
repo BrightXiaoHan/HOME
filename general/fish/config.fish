@@ -33,5 +33,10 @@ if test -f $LOCAL_CONFIG
   source $LOCAL_CONFIG
 end
 
-starship init fish | source
-zoxide init fish | source
+# if starship and zoxide installed, init them
+if type starship > /dev/null 2>&1
+  starship init fish | source
+end
+if type zoxide > /dev/null 2>&1
+  zoxide init fish | source
+end

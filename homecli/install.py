@@ -215,6 +215,7 @@ def install_conda():
             "git",
             "conda-pack",
             "starship",
+            "zoxide",
         ],
         check=True,
         stdout=subprocess.DEVNULL,

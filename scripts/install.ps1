@@ -30,6 +30,7 @@ scoop install main/fzf
 scoop install main/nodejs-lts
 scoop install main/ripgrep
 scoop install main/starship
+scoop install main/zoxide
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrains-Mono
 scoop bucket add extras

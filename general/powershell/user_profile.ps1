@@ -3,6 +3,7 @@
 
 $omp_config = Join-Path $PSScriptRoot ".\takuya.omp.json"
 Invoke-Expression (&starship init powershell)
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 # PSReadLine
 Set-PSReadLineOption -EditMode Emacs

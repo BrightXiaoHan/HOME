@@ -84,3 +84,10 @@ Host ifun-translate
     Port 22
     User ubuntu
     ServerAliveInterval 10
+
+Host ModelArt
+    HostName authoring-ssh.cncentral231.xckpjs.com
+    Port 30605
+    User ma-user
+    ServerAliveInterval 10
+    IdentityFile ~/.ssh/id_rsa_hunnu

@@ -2,9 +2,17 @@
 My Personal Home Directory.
 
 ## Quick Start
-linux
+### linux
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh)"
+```
+uninstall
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/uninstall.sh)
+```
+pack
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/pack.sh)"
 ```
 ### macos
 Install Homebrew

@@ -214,6 +214,7 @@ def install_conda():
             "cmake",
             "git",
             "conda-pack",
+            "starship",
         ],
         check=True,
         stdout=subprocess.DEVNULL,

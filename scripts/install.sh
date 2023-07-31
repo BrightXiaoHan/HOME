@@ -1,20 +1,23 @@
 # MODE: local-install, online-install or unpack. Default: online-install
 MODE=${1:-online-install}
-DIR="$HOME/.cache/homecli/HOME/general"
 
 if [ "$MODE" = "local-install" ]; then
   DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
   DIR="$DIR/../general"
 elif [ "$MODE" = "unpack" ]; then
   TARFILE="$2"
-  if [ -z "$TARFILE" ]; then
-    echo "Usage: install.sh unpack <tarfile>"
+  DESTINATION="$3"
+  if [ -z "$DESTINATION" || -z "$TARFILE" ]; then
+    echo "Usage: install.sh unpack <tarfile> <destination>"
     exit 1
   fi
-  mkdir -p ~/.cache/homecli
-  tar -xvf "$TARFILE" -C ~/.cache/
-  tar -xvf $HOME/.cache/homecli/miniconda.tar.gz -C $HOME/.cache/homecli/miniconda
+  mkdir -p $DESTINATION/homecli
+  tar -xvf "$TARFILE" -C "$DESTINATION/homecli"
+  mkdir -p $DESTINATION/homecli/miniconda
+  tar -xvf $DESTINATION/homecli/miniconda.tar.gz -C $DESTINATION/homecli/miniconda
+  DIR="$DESTINATION/homecli/HOME/general"
 elif [ "$MODE" = "online-install" ]; then
+  DIR="$HOME/.cache/homecli/HOME/general"
   mkdir -p ~/.cache/homecli
   git clone https://github.com/BrightXiaoHan/HOME ~/.cache/homecli/HOME
   cd ~/.cache/homecli/HOME
@@ -83,15 +86,13 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
     PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
-fi
-
-# add fish path to .bashrc
-if ! grep -q "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" ~/.bashrc; then
-  echo "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" >> ~/.bashrc
-fi
-
-if [ "$MODE" = "unpack" ]; then
-  if ! grep -q "source $HOME/.cache/homecli/miniconda/bin/activate" ~/.bashrc; then
-    echo "source $HOME/.cache/homecli/miniconda/bin/activate" >> ~/.bashrc
+  # add fish path to .bashrc
+  if ! grep -q "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" ~/.bashrc; then
+    echo "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" >> ~/.bashrc
   fi
+elif [ "$MODE" = "unpack" ]; then
+  if ! grep -q "source $DESTINATION/homecli/miniconda/bin/activate" ~/.bashrc; then
+    echo "source $DESTINATION/homecli/miniconda/bin/activate" >> ~/.bashrc
+  fi
+  mkdir -p ~/.local/share && ln -s $DESTINATION/homecli/nvim/ ~/.local/share/nvim
 fi

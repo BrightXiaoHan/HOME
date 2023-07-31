@@ -1,5 +1,3 @@
-MODE=${1:-config}
-
 # remove config files
 rm -rf ~/.config/alacritty \
   ~/.config/nvim \

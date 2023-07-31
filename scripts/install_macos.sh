@@ -11,12 +11,6 @@ if ! [ -x "$(command -v python3)" ]; then
   exit 1
 fi
 
-# test if pip3 is installed
-if ! [ -x "$(command -v pip3)" ]; then
-  echo 'Error: pip3 is not installed.' >&2
-  exit 1
-fi
-
 # link alacritty dir if .config/alacritty not exist
 if [ ! -d ~/.config/alacritty ]; then
   ln -s $DIR/alacritty/ ~/.config/

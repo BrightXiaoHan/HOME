@@ -16,6 +16,8 @@ set -gx PATH ~/.local/bin $PATH
 set -gx PATH ~/.cache/homecli/bin $PATH
 set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
 
+set -gx POETRY_VIRTUALENVS_IN_PROJECT true
+
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 

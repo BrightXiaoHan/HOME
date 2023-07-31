@@ -31,6 +31,8 @@ scoop install main/nodejs-lts
 scoop install main/ripgrep
 scoop install main/starship
 scoop install main/zoxide
+scoop install main/clangd
+scoop install main/wget
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrains-Mono
 scoop bucket add extras
@@ -55,3 +57,5 @@ winget install -e --id Microsoft.PowerToys
 winget install -e --id Sogou.SogouInput
 winget install -e --id Alibaba.DingTalk
 winget install -e --id Valve.Steam
+winget install -e --id Alibaba.aDrive
+winget install -e --id tickstep.aliyunpan --silent

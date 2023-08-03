@@ -64,4 +64,6 @@ packer.startup(function(use)
     requires = { 'liuchengxu/vim-which-key' },
   }
   use 'stevearc/aerial.nvim'
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use "mfussenegger/nvim-dap-python"
 end)

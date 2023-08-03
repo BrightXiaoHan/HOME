@@ -18,8 +18,9 @@ keymap.set('n', '<C-f>', ':Telescope live_grep<CR>')
 keymap.set('n', '<leader>/', ':CommentToggle<CR>')
 keymap.set('v', '<leader>/', ':\'<,\'>CommentToggle<CR>')
 
+keymap.set('n', '<leader><tab>', '<C-w>w')
+
 local leaderkeymap = {
-    ["<tab>"] = { "<C-w>w" },
     s = {
       name = '+split',
       s = { "<cmd>split<cr>", "Split" },
@@ -42,7 +43,7 @@ local leaderkeymap = {
     ["0"] = { "<cmd>10wincmd w<cr>", "Go to window 10" },
 }
 
-local status, wk = pcall(require, "whichkey_setup")
+local status, wk = pcall(require, "which-key")
 if status then
-  wk.register_keymap('leader', leaderkeymap)
+  wk.register(leaderkeymap, { prefix = "<leader>" })
 end

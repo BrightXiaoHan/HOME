@@ -8,7 +8,7 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  use { "catppuccin/nvim", as = "catppuccin" }
+  use "rafi/awesome-vim-colorschemes"
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
@@ -47,7 +47,7 @@ packer.startup(function(use)
     config = function()
       require('dashboard').setup {}
     end,
-    requires = {'nvim-tree/nvim-web-devicons'}
+    requires = { 'nvim-tree/nvim-web-devicons' }
   }
   use {
     'nvim-tree/nvim-tree.lua',
@@ -57,13 +57,19 @@ packer.startup(function(use)
   }
   use 'ggandor/lightspeed.nvim'
   use "terrortylor/nvim-comment"
-  use 'akinsho/toggleterm.nvim'
-  use 'liuchengxu/vim-which-key'
+  -- Lua
   use {
-    'AckslD/nvim-whichkey-setup.lua',
-    requires = { 'liuchengxu/vim-which-key' },
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
   }
+  use 'akinsho/toggleterm.nvim'
   use 'stevearc/aerial.nvim'
-  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
   use "mfussenegger/nvim-dap-python"
 end)

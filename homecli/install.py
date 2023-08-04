@@ -269,8 +269,8 @@ def main():
     install_tmux()
     install_aliyunpan()
     install_conda()
-    install_neovim()
     install_nodejs()
+    install_neovim()
     install_trzsz()
 
 

@@ -72,4 +72,14 @@ packer.startup(function(use)
   use 'stevearc/aerial.nvim'
   use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
   use "mfussenegger/nvim-dap-python"
+
+  use {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim"
+    }
+  }
+  use 'nvim-neotest/neotest-python'
 end)

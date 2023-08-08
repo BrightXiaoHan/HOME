@@ -73,9 +73,9 @@ Host ShengTeng
     User root
     ServerAliveInterval 10
 
-Host YuyiHuaweiAliyun
-    HostName 124.71.205.166
-    Port 22
+Host YuyiGPU
+    HostName 39.105.167.2
+    Port 5100
     User root
     ServerAliveInterval 10
 

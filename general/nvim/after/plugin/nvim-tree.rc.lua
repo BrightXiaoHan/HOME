@@ -74,7 +74,7 @@ nvim_tree.setup {
   },
   filters = {
     dotfiles = true,
-    exclude = { ".vscode", ".git*", ".env" },
+    exclude = { ".vscode", ".git*", ".env", ".dockerignore"},
     custom = {
       "__pycache__",
     },

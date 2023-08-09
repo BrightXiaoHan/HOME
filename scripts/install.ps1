@@ -33,6 +33,7 @@ scoop install main/starship
 scoop install main/zoxide
 scoop install main/clangd
 scoop install main/wget
+scoop install main/mosh-client
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrains-Mono
 scoop bucket add extras

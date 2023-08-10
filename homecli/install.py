@@ -180,7 +180,6 @@ def install_oh_my_posh(overwrite=False):
 def install_conda():
     logging.info("Installing conda...")
     command = [
-        os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
         "install",
         "-c",
         "conda-forge",
@@ -207,7 +206,8 @@ def install_conda():
     else:
         url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
-    if subprocess.run(["which", "conda"]).returncode != 0:
+    which_conda = subprocess.run(["which", "conda"], capture_output = True, text=True)
+    if which_conda.returncode != 0:
         cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
         if not os.path.exists(cache_file):
             with tempfile.NamedTemporaryFile() as tmp:
@@ -217,6 +217,9 @@ def install_conda():
         subprocess.run(
             [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")], check=True
         )
+        command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
+    else:
+        command = [which_conda.stdout.strip()] + command
     logging.info("Installing conda done.")
     # conda install fish shell
     logging.info("Installing other packages...")

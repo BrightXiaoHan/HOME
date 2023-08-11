@@ -182,8 +182,6 @@ def install_conda():
     command = [
         "install",
         "-c",
-        "defaults",
-        "-c",
         "conda-forge",
         "-y",
         "fish",

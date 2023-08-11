@@ -206,6 +206,18 @@ def install_conda():
         # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
+    # install clang from defaults channel
+    clang_command = [
+        os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
+        "install",
+        "-y",
+        "-c",
+        "defaults",
+        "clang",
+        "clangxx",
+    ]
+
+
     which_conda = subprocess.run(["which", "conda"], capture_output=True, text=True)
     if which_conda.returncode != 0:
         cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
@@ -228,26 +240,16 @@ def install_conda():
     # conda install fish shell
     logging.info("Installing other packages...")
     subprocess.run(
-        command,
+        clang_command,
         check=True,
         stdout=subprocess.DEVNULL,
     )
-
-    # install clang from defaults channel
-    command = [
-        os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
-        "install",
-        "-y",
-        "-c",
-        "defaults",
-        "clang",
-        "clangxx",
-    ]
     subprocess.run(
         command,
         check=True,
         stdout=subprocess.DEVNULL,
     )
+
     logging.info("Installing other packages done.")
 
 

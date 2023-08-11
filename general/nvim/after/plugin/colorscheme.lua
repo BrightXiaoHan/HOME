@@ -1,1 +1,3 @@
-vim.cmd.colorscheme "hybrid"
+-- silent! colorscheme hybrid
+
+vim.cmd('silent! colorscheme hybrid')

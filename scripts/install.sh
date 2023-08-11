@@ -87,8 +87,8 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
     PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
   # add fish path to .bashrc
-  if ! grep -q "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" ~/.bashrc; then
-    echo "export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH" >> ~/.bashrc
+  if ! grep -q 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' ~/.bashrc; then
+    echo 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' >> ~/.bashrc
   fi
 elif [ "$MODE" = "unpack" ]; then
   if ! grep -q "source $DESTINATION/homecli/miniconda/bin/activate" ~/.bashrc; then

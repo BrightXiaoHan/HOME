@@ -71,6 +71,7 @@ def install_neovim(overwrite=False):
         "yaml",
         "lua",
         "python",
+        "cpp",
     ]
 
     subprocess.run(
@@ -212,30 +213,25 @@ def install_conda():
         "install",
         "-y",
         "-c",
-        "defaults",
-        "clang",
-        "clangxx",
+        "pkgs/main",
+        "gcc_linux-64" if ARCHITECTURE in ("x86_64", "amd64") else "gcc_linux-aarch64"
     ]
 
-
-    which_conda = subprocess.run(["which", "conda"], capture_output=True, text=True)
-    if which_conda.returncode != 0:
-        cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
-        if not os.path.exists(cache_file):
-            with tempfile.NamedTemporaryFile() as tmp:
-                download_with_progress(url, tmp.name, "conda")
-                shutil.copy(tmp.name, cache_file)
-                os.chmod(cache_file, 0o755)
-        env = os.environ.copy()
-        env["PYTHONPATH"] = ""
-        subprocess.run(
-            [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")],
-            check=True,
-            env=env,
-        )
-        command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
-    else:
-        command = [which_conda.stdout.strip()] + command
+    cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
+    if not os.path.exists(cache_file):
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "conda")
+            shutil.copy(tmp.name, cache_file)
+            os.chmod(cache_file, 0o755)
+    env = os.environ.copy()
+    env["PYTHONPATH"] = ""
+    subprocess.run(
+        [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")],
+        check=True,
+        env=env,
+    )
+    command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
+    
     logging.info("Installing conda done.")
     # conda install fish shell
     logging.info("Installing other packages...")
@@ -256,9 +252,9 @@ def install_conda():
 def install_nodejs():
     latest_version = get_latest_stable_nodejs_version()
     if ARCHITECTURE in ("x86_64", "amd64"):
-        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-x64.tar.xz"
+        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-x64.tar.gz"
     else:
-        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-arm64.tar.xz"
+        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-arm64.tar.gz"
 
     logging.info("Installing nodejs...")
     with tempfile.NamedTemporaryFile() as tmp:
@@ -267,7 +263,7 @@ def install_nodejs():
             tar.extractall(path=CACHE_DIR)
 
     # rename nodejs directory
-    nodejs_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.xz", ""))
+    nodejs_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
     os.rename(nodejs_dir, os.path.join(CACHE_DIR, "nodejs"))
 
     logging.info("Installing nodejs done.")

@@ -12,3 +12,6 @@ rm -rf ~/.local/share/nvim
 
 # remove cache
 rm -rf ~/.cache/homecli
+
+# remove export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' from .bashrc
+sed -i '/export PATH=$HOME\/.cache\/homecli\/miniconda\/bin:$PATH/d' ~/.bashrc

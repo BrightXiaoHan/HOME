@@ -6,9 +6,9 @@ if [ "$MODE" = "local-install" ]; then
   DIR="$DIR/../general"
 elif [ "$MODE" = "unpack" ]; then
   TARFILE="$2"
-  DESTINATION=${3:-"$HOME/.cache"}
+  DESTINATION=$HOME/.cache
   if [ -z "$DESTINATION" || -z "$TARFILE" ]; then
-    echo "Usage: install.sh unpack <tarfile> <destination>"
+    echo "Usage: install.sh unpack <tarfile>"
     exit 1
   fi
   mkdir -p $DESTINATION/homecli
@@ -86,13 +86,13 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
     PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
-  # add fish path to .bashrc
-  if ! grep -q 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' ~/.bashrc; then
-    echo 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' >> ~/.bashrc
-  fi
 elif [ "$MODE" = "unpack" ]; then
-  if ! grep -q "source $DESTINATION/homecli/miniconda/bin/activate" ~/.bashrc; then
-    echo "source $DESTINATION/homecli/miniconda/bin/activate" >> ~/.bashrc
-  fi
   mkdir -p ~/.local/share && ln -s $DESTINATION/homecli/nvim/ ~/.local/share/nvim
+  source $DESTINATION/homecli/miniconda/bin/activate
+  conda unpack
+fi
+
+# add fish path to .bashrc
+if ! grep -q 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' ~/.bashrc; then
+  echo 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' >> ~/.bashrc
 fi

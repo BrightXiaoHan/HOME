@@ -13,10 +13,7 @@ ts.setup {
     disable = {},
   },
   ensure_installed = {
-    "toml",
     "fish",
-    "json",
-    "yaml",
     "lua",
     "python",
     "cpp",

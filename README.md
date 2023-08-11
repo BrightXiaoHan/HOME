@@ -8,7 +8,7 @@ My Personal Home Directory.
 ```
 uninstall
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/uninstall.sh)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/uninstall.sh)"
 ```
 pack
 ```

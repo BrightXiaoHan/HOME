@@ -16,7 +16,8 @@ ts.setup {
     "json",
     "yaml",
     "lua",
-    "python"
+    "python",
+    "cpp",
   },
   autotag = {
     enable = true,

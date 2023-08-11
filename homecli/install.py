@@ -181,7 +181,7 @@ def install_conda():
     logging.info("Installing conda...")
     command = [
         "install",
-        "-c", 
+        "-c",
         "defaults",
         "-c",
         "conda-forge",
@@ -210,7 +210,7 @@ def install_conda():
         # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
-    which_conda = subprocess.run(["which", "conda"], capture_output = True, text=True)
+    which_conda = subprocess.run(["which", "conda"], capture_output=True, text=True)
     if which_conda.returncode != 0:
         cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
         if not os.path.exists(cache_file):
@@ -218,12 +218,12 @@ def install_conda():
                 download_with_progress(url, tmp.name, "conda")
                 shutil.copy(tmp.name, cache_file)
                 os.chmod(cache_file, 0o755)
+        env = os.environ.copy()
+        env["PYTHONPATH"] = ""
         subprocess.run(
-            [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")], check=True,
-            env={
-                # reset PYTHONPATH to avoid warning when installing conda
-                "PYTHONPATH": "",
-            }
+            [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")],
+            check=True,
+            env=env,
         )
         command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
     else:
@@ -257,6 +257,7 @@ def install_nodejs():
     os.rename(nodejs_dir, os.path.join(CACHE_DIR, "nodejs"))
 
     logging.info("Installing nodejs done.")
+
 
 def install_trzsz():
     if ARCHITECTURE in ("x86_64", "amd64"):

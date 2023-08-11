@@ -217,7 +217,11 @@ def install_conda():
                 shutil.copy(tmp.name, cache_file)
                 os.chmod(cache_file, 0o755)
         subprocess.run(
-            [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")], check=True
+            [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")], check=True,
+            env={
+                # reset PYTHONPATH to avoid warning when installing conda
+                "PYTHONPATH": "",
+            }
         )
         command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
     else:

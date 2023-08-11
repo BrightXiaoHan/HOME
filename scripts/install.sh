@@ -90,6 +90,21 @@ elif [ "$MODE" = "unpack" ]; then
   mkdir -p ~/.local/share && ln -s $DESTINATION/homecli/nvim/ ~/.local/share/nvim
   source $DESTINATION/homecli/miniconda/bin/activate
   conda unpack
+
+  # Re-link broken symlinks
+  for file in $(find $HOME -type l ! -exec test -e {} \; -print); do
+    old=$(readlink $file)
+    # Re-link to the new location with $HOME prefix
+    # e.g.> /root/.cache/homecli/xxx -> $HOME/.cache/homecli/xxx
+    
+    # extract str after .cache/homecli
+    if [[ $old == *".cache/homecli"* ]]; then
+      new=$(echo $old | sed 's/.*\.cache\/homecli//')
+      rm $file
+      ln -s $HOME/.cache/homecli$new $file
+    fi
+  done
+
 fi
 
 # add fish path to .bashrc

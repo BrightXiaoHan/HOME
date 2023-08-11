@@ -181,6 +181,8 @@ def install_conda():
     logging.info("Installing conda...")
     command = [
         "install",
+        "-c", 
+        "defaults",
         "-c",
         "conda-forge",
         "-y",
@@ -188,8 +190,8 @@ def install_conda():
         "ncurses",
         "fzf",
         "ripgrep",
-        "gcc",
-        "gxx",
+        "clang",
+        "clangxx",
         "make",
         "cmake",
         "git",

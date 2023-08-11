@@ -6,7 +6,7 @@ if [ "$MODE" = "local-install" ]; then
   DIR="$DIR/../general"
 elif [ "$MODE" = "unpack" ]; then
   TARFILE="$2"
-  DESTINATION="$3"
+  DESTINATION=${3:-"$HOME/.cache"}
   if [ -z "$DESTINATION" || -z "$TARFILE" ]; then
     echo "Usage: install.sh unpack <tarfile> <destination>"
     exit 1

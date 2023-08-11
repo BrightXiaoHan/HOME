@@ -14,6 +14,12 @@ pack
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/pack.sh)"
 ```
+unpack
+- Download prepacked `homecli.tar` file and `install.sh`
+- Run `install.sh`
+```
+bash install.sh unpack homecli.tar
+```
 ### macos
 Install Homebrew
 ```

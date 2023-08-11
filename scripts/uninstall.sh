@@ -7,8 +7,8 @@ rm -rf ~/.config/alacritty \
   ~/.ssh/config \
   ~/.ssh/id_rsa.pub
 
-# remove packer
-rm -rf ~/.local/share/nvim/site/pack/packer
+# remove nvim plugins
+rm -rf ~/.local/share/nvim
 
 # remove cache
 rm -rf ~/.cache/homecli

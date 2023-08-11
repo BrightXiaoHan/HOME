@@ -188,8 +188,6 @@ def install_conda():
         "ncurses",
         "fzf",
         "ripgrep",
-        "clang",
-        "clangxx",
         "make",
         "cmake",
         "git",
@@ -229,6 +227,22 @@ def install_conda():
     logging.info("Installing conda done.")
     # conda install fish shell
     logging.info("Installing other packages...")
+    subprocess.run(
+        command,
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+
+    # install clang from defaults channel
+    command = [
+        os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
+        "install",
+        "-y",
+        "-c",
+        "defaults",
+        "clang",
+        "clangxx",
+    ]
     subprocess.run(
         command,
         check=True,

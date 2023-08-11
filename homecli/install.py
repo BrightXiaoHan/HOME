@@ -196,7 +196,8 @@ def install_conda():
         "conda-pack",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+        # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+        url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
         command.extend(
             [
                 "starship",
@@ -204,7 +205,8 @@ def install_conda():
             ]
         )
     else:
-        url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
+        # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
+        url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
     which_conda = subprocess.run(["which", "conda"], capture_output = True, text=True)
     if which_conda.returncode != 0:

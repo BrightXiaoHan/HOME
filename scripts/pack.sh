@@ -1,12 +1,17 @@
 DIR=~/.cache/homecli
 
-conda-pack -o $DIR/miniconda.tar.gz
+source $DIR/miniconda/bin/activate
+$DIR/miniconda/bin/conda-pack -o $DIR/miniconda.tar.gz > /dev/null
+
+PWD=$(pwd)
+echo $PWD
 
 cd $DIR
-tar -cvf $DIR/homecli.tar \
-    HOME bin miniconda.tar.gz nodejs
+tar -cvf $PWD/homecli.tar \
+    HOME bin miniconda.tar.gz nodejs > /dev/null
+rm miniconda.tar.gz
 cd -
 
 cd ~/.local/share/
-tar -rvf $DIR/homecli.tar nvim/
+tar -rvf $PWD/homecli.tar nvim/ > /dev/null
 cd -

@@ -2,8 +2,12 @@
 MODE=${1:-online-install}
 
 if [ "$MODE" = "local-install" ]; then
-  DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-  DIR="$DIR/../general"
+  CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+  DIR="$HOME/.cache/homecli/HOME/general"
+  mkdir -p ~/.cache/homecli/HOME
+  cp -r $CWD/.. ~/.cache/homecli/HOME
+  cd ~/.cache/homecli/HOME
+
 elif [ "$MODE" = "unpack" ]; then
   TARFILE="$2"
   DESTINATION=$HOME/.cache

@@ -98,13 +98,14 @@ elif [ "$MODE" = "unpack" ]; then
     # e.g.> /root/.cache/homecli/xxx -> $HOME/.cache/homecli/xxx
     
     # extract str after .cache/homecli
-    if [[ $old == *".cache/homecli"* ]]; then
-      new=$(echo $old | sed 's/.*\.cache\/homecli//')
+    if [[ $old == *".local/share/nvim"* ]]; then
+      prefix=$(echo $old | sed 's/\.local\/share\/nvim.*//')
+      # replace prefix with $HOME
+      new=$(echo $old | sed "s|^$prefix|$HOME/|")
       rm $file
-      ln -s $HOME/.cache/homecli$new $file
+      ln -s $new $file
     fi
   done
-
 fi
 
 # add fish path to .bashrc

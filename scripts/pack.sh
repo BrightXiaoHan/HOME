@@ -7,11 +7,11 @@ CURDIR=$(pwd)
 echo $CURDIR
 
 cd $DIR
-tar -cvf $CURDIR/homecli.tar \
+tar -cvf $CURDIR/home-cli.tar \
     HOME bin miniconda.tar.gz nodejs > /dev/null
 rm miniconda.tar.gz
 cd -
 
 cd ~/.local/share/
-tar -rvf $CURDIR/homecli.tar nvim/ > /dev/null
+tar -rvf $CURDIR/home-cli.tar nvim/ > /dev/null
 cd -

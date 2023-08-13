@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - release*
     tags:
       - v*
   pull_request:
     branches:
-      - main
+      - release*
 
 jobs:
   build-x86_64:
@@ -49,6 +49,7 @@ jobs:
         run: scripts/install.sh unpack home-cli.tar
 
       - name: Create Release
+        id: create_release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: actions/create-release@v1
         with:

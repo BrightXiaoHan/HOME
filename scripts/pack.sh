@@ -1,4 +1,4 @@
-OUTPUT={$1:-homecli.tar.gz}
+OUTPUT=${1:-homecli.tar.gz}
 DIR=~/.cache/homecli
 
 source $DIR/miniconda/bin/activate

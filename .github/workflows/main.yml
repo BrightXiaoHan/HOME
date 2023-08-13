@@ -113,6 +113,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-x86_64
+          path: ./home-cli-x86_64.tar
 
       - name: Upload Assets x86_64
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
@@ -128,6 +129,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-arm64
+          path: ./home-cli-arm64.tar
 
       - name: Upload Assets arm64
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')

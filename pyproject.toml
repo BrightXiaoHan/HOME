@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "homecli"
-version = "0.1.0"
+version = "0.1.1"
 description = "Personal Home Directory Manager CLI"
 
 license = "MIT"

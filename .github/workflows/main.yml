@@ -30,10 +30,10 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: home-cli-pack
-          path: home-cli.tar
+          name: home-cli-pack-x86_64
+          path: home-cli-x86_64.tar
 
-  release:
+  run-x86_64:
     runs-on: ubuntu-20.04
     needs: build-x86_64
 
@@ -42,12 +42,62 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: home-cli-pack
+          name: home-cli-pack-x86_64
 
       - name: Unpack
         shell: bash
-        run: scripts/install.sh unpack home-cli.tar
+        run: scripts/install.sh unpack home-cli-x86_64.tar
 
+  build-arm64:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Install
+        shell: bash
+        run: scripts/install.sh local-install
+
+      - name: Pack
+        shell: bash
+        run: scripts/pack.sh
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: home-cli-pack-arm64
+          path: home-cli-arm64.tar
+
+  run-arm64:
+    runs-on: ubuntu-20.04
+    needs: build-arm64
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: home-cli-pack-arm64
+
+      - name: Unpack
+        shell: bash
+        run: scripts/install.sh unpack home-cli-arm64.tar
+
+  release:
+    runs-on: ubuntu-20.04
+    needs:
+      - run-x86_64
+      - run-arm64
+
+    steps:
       - name: Create Release
         id: create_release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
@@ -60,13 +110,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Assets
+      - uses: actions/download-artifact@v3
+        with:
+          name: home-cli-pack-x86_64
+
+      - name: Upload Assets x86_64
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./home-cli.tar
-          asset_name: home-cli.tar
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./home-cli-x86_64.tar
+          asset_name: home-cli-x86_64.tar
+          asset_content_type: application/tar
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: home-cli-pack-arm64
+
+      - name: Upload Assets arm64
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./home-cli-arm64.tar
+          asset_name: home-cli-arm64.tar
           asset_content_type: application/tar

@@ -8,7 +8,7 @@ on:
       - v*
   pull_request:
     branches:
-      - release*
+      - main
 
 jobs:
   build-x86_64:
@@ -26,12 +26,12 @@ jobs:
 
       - name: Pack
         shell: bash
-        run: scripts/pack.sh
+        run: scripts/pack.sh home-cli-x86_64.tar
 
       - uses: actions/upload-artifact@v3
         with:
           name: home-cli-pack-x86_64
-          path: home-cli.tar
+          path: home-cli-x86_64.tar
 
   run-x86_64:
     runs-on: ubuntu-20.04
@@ -66,12 +66,12 @@ jobs:
 
       - name: Pack
         shell: bash
-        run: scripts/pack.sh
+        run: scripts/pack.sh home-cli-arm64.tar
 
       - uses: actions/upload-artifact@v3
         with:
           name: home-cli-pack-arm64
-          path: home-cli.tar
+          path: home-cli-arm64.tar
 
   run-arm64:
     runs-on: ubuntu-20.04
@@ -113,7 +113,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-x86_64
-          path: ./home-cli-x86_64.tar
 
       - name: Upload Assets x86_64
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
@@ -129,7 +128,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-arm64
-          path: ./home-cli-arm64.tar
 
       - name: Upload Assets arm64
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')

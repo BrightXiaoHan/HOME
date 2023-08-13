@@ -1,3 +1,4 @@
+OUTPUT={$1:-homecli.tar.gz}
 DIR=~/.cache/homecli
 
 source $DIR/miniconda/bin/activate
@@ -7,11 +8,11 @@ CURDIR=$(pwd)
 echo $CURDIR
 
 cd $DIR
-tar -cvf $CURDIR/home-cli.tar \
+tar -cvf $CURDIR/$OUTPUT \
     HOME bin miniconda.tar.gz nodejs > /dev/null
 rm miniconda.tar.gz
 cd -
 
 cd ~/.local/share/
-tar -rvf $CURDIR/home-cli.tar nvim/ > /dev/null
+tar -rvf $CURDIR/$OUTPUT nvim/ > /dev/null
 cd -

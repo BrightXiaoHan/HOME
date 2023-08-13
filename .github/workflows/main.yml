@@ -35,6 +35,7 @@ jobs:
 
   release:
     runs-on: ubuntu-20.04
+    needs: build-x86_64
 
     steps:
       - uses: actions/checkout@v3

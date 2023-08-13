@@ -22,18 +22,16 @@ jobs:
 
       - name: Install
         shell: bash
-        run: |
-          scripts/install.sh local-install
+        run: scripts/install.sh local-install
 
-  build-and-test-cpp-aarch64:
-    runs-on: ubuntu-20.04
+      - name: Pack
+        shell: bash
+        run: scripts/pack.sh
 
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install cross compiler and emulator
-        run: |
-          scripts/install.sh local-install
+      - uses: actions/upload-artifact@v3
+        with:
+          name: home-cli-pack
+          path: home-cli.tar
 
   release:
     runs-on: ubuntu-20.04
@@ -41,8 +39,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: actions/download-artifact@v3
+        with:
+          name: home-cli-pack
+
+      - name: Unpack
+        shell: bash
+        run: scripts/install.sh unpack home-cli.tar
+
       - name: Create Release
-        id: create_release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref }}
@@ -51,3 +57,14 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Assets
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./home-cli.tar
+          asset_name: home-cli.tar
+          asset_content_type: application/tar

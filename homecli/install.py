@@ -163,6 +163,7 @@ def install_conda():
         "cmake",
         "git",
         "conda-pack",
+        "poetry",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"

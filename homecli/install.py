@@ -164,6 +164,7 @@ def install_conda():
         "git",
         "conda-pack",
         "poetry",
+        "libfuse<3.0.0",  # APPImage TODO upgrade to >=3.0.0
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"

@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 import os
@@ -32,7 +33,7 @@ def download_with_progress(url, path, name=""):
                 progress(f.tell(), total_size, name)
 
 
-def install_neovim(overwrite=False):
+def install_neovim(overwrite=True):
     logging.info("Installing neovim...")
     # download the stable version of neovim
     if ARCHITECTURE in ("x86_64", "amd64"):
@@ -63,23 +64,9 @@ def install_neovim(overwrite=False):
         shell=True,
     )
 
-    # tree-sitter
-    tree_sitter_list = [
-        "toml",
-        "fish",
-        "json",
-        "yaml",
-        "lua",
-        "python",
-        "cpp",
-    ]
-
     subprocess.run(
         os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'TSInstall "
-        + " ".join(tree_sitter_list)
-        + "'"
-        + " -c 'q'",
+        + " --appimage-extract-and-run --headless -c 'TSUpdateSync' -c 'q'",
         shell=True,
     )
 
@@ -119,7 +106,7 @@ def install_neovim(overwrite=False):
     )
 
 
-def install_tmux(overwrite=False):
+def install_tmux(overwrite=True):
     logging.info("Installing tmux...")
     bin_file = os.path.join(BIN_DIR, "tmux")
     release_tag = get_latest_release("nelsonenzo", "tmux-appimage")
@@ -133,7 +120,7 @@ def install_tmux(overwrite=False):
     logging.info("Installing tmux done.")
 
 
-def install_aliyunpan(overwrite=False):
+def install_aliyunpan(overwrite=True):
     logging.info("Installing aliyunpan...")
     bin_file = os.path.join(BIN_DIR, "aliyunpan")
     release_tag = get_latest_release("tickstep", "aliyunpan")
@@ -159,23 +146,6 @@ def install_aliyunpan(overwrite=False):
                 )
                 os.chmod(bin_file, 0o755)
     logging.info("Installing aliyunpan done.")
-
-
-def install_oh_my_posh(overwrite=False):
-    logging.info("Installing oh-my-posh...")
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64"
-    else:
-        url = "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-arm64"
-
-    bin_file = os.path.join(BIN_DIR, "oh-my-posh")
-
-    if not os.path.exists(bin_file) or overwrite:
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "oh-my-posh")
-            shutil.copy(tmp.name, bin_file)
-            os.chmod(bin_file, 0o755)
-    logging.info("Installing oh-my-posh done.")
 
 
 def install_conda():
@@ -214,7 +184,7 @@ def install_conda():
         "-y",
         "-c",
         "pkgs/main",
-        "gcc_linux-64" if ARCHITECTURE in ("x86_64", "amd64") else "gcc_linux-aarch64"
+        "gcc_linux-64" if ARCHITECTURE in ("x86_64", "amd64") else "gcc_linux-aarch64",
     ]
 
     cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
@@ -231,7 +201,7 @@ def install_conda():
         env=env,
     )
     command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
-    
+
     logging.info("Installing conda done.")
     # conda install fish shell
     logging.info("Installing other packages...")
@@ -269,31 +239,67 @@ def install_nodejs():
     logging.info("Installing nodejs done.")
 
 
-def install_trzsz():
+def install_trzsz(overwrite=True):
     if ARCHITECTURE in ("x86_64", "amd64"):
         url = "https://github.com/trzsz/trzsz-go/releases/download/v1.1.4/trzsz_1.1.4_linux_x86_64.tar.gz"
     else:
         url = "https://github.com/trzsz/trzsz-go/releases/download/v1.1.4/trzsz_1.1.4_linux_aarch64.tar.gz"
 
     logging.info("Installing trzsz...")
-    with tempfile.NamedTemporaryFile() as tmp:
-        download_with_progress(url, tmp.name, "trzsz")
-        with tarfile.open(tmp.name) as tar:
-            tar.extractall(path=CACHE_DIR)
+    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "trzsz")) or overwrite:
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "trzsz")
+            with tarfile.open(tmp.name) as tar:
+                tar.extractall(path=CACHE_DIR)
 
-    # move all files to CACHE_DIR/bin
-    trzsz_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
-    for f in os.listdir(trzsz_dir):
-        shutil.move(os.path.join(trzsz_dir, f), os.path.join(CACHE_DIR, "bin"))
+        # move all files to CACHE_DIR/bin
+        trzsz_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
+        for f in os.listdir(trzsz_dir):
+            if os.path.isfile(os.path.join(CACHE_DIR, "bin", f)):
+                os.remove(os.path.join(CACHE_DIR, "bin", f))
+            shutil.move(os.path.join(trzsz_dir, f), os.path.join(CACHE_DIR, "bin"))
 
 
 def main():
-    install_tmux()
-    install_aliyunpan()
-    install_conda()
-    install_nodejs()
-    install_neovim()
-    install_trzsz()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-c",
+        "--component",
+        nargs="+",
+        choices=[
+            "all",
+            "update",
+            "tmux",
+            "trzsz",
+            "aliyunpan",
+            "neovim",
+        ],
+        default=["all"],
+        help="component to install. all by default",
+    )
+    args = parser.parse_args()
+    if "all" in args.component:
+        components = [
+            "tmux",
+            "aliyunpan",
+            "conda",
+            "nodejs",
+            "neovim",
+            "trzsz",
+        ]
+    elif "update" in args.component:
+        components = [
+            "tmux",
+            "aliyunpan",
+            "neovim",
+            "trzsz",
+        ]
+    else:
+        components = args.component
+
+    for component in components:
+        func_name = f"install_{component}"
+        globals()[func_name]()
 
 
 if __name__ == "__main__":

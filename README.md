@@ -6,9 +6,15 @@ My Personal Home Directory.
 
 ### linux
 
+install
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh)"
 ```
+update
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/update.sh)"
+```
+
 
 uninstall
 

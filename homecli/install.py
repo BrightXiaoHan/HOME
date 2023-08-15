@@ -164,19 +164,22 @@ def install_conda():
         "git",
         "conda-pack",
         "poetry",
-        "libfuse<3.0.0",  # APPImage TODO upgrade to >=3.0.0
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
-        # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
         command.extend(
             [
                 "starship",
                 "zoxide",
+                # "libfuse<3.0.0",  # APPImage TODO upgrade to >=3.0.0
             ]
         )
     else:
-        # url = "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-aarch64.sh"
+        command.extend(
+            [
+                # "libfuse",
+            ]
+        )
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
     # install clang from defaults channel

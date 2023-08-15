@@ -106,20 +106,6 @@ def install_neovim(overwrite=True):
     )
 
 
-def install_tmux(overwrite=True):
-    logging.info("Installing tmux...")
-    bin_file = os.path.join(BIN_DIR, "tmux")
-    release_tag = get_latest_release("nelsonenzo", "tmux-appimage")
-    url = f"https://github.com/nelsonenzo/tmux-appimage/releases/download/{release_tag}/tmux.appimage"
-
-    if not os.path.exists(bin_file) or overwrite:
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "tmux")
-            shutil.copy(tmp.name, bin_file)
-            os.chmod(bin_file, 0o755)
-    logging.info("Installing tmux done.")
-
-
 def install_aliyunpan(overwrite=True):
     logging.info("Installing aliyunpan...")
     bin_file = os.path.join(BIN_DIR, "aliyunpan")
@@ -164,6 +150,7 @@ def install_conda():
         "git",
         "conda-pack",
         "poetry",
+        "tmux",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
@@ -171,13 +158,11 @@ def install_conda():
             [
                 "starship",
                 "zoxide",
-                # "libfuse<3.0.0",  # APPImage TODO upgrade to >=3.0.0
             ]
         )
     else:
         command.extend(
             [
-                # "libfuse",
             ]
         )
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
@@ -272,7 +257,6 @@ def main():
         choices=[
             "all",
             "update",
-            "tmux",
             "trzsz",
             "aliyunpan",
             "neovim",
@@ -283,7 +267,6 @@ def main():
     args = parser.parse_args()
     if "all" in args.component:
         components = [
-            "tmux",
             "aliyunpan",
             "conda",
             "nodejs",
@@ -292,7 +275,6 @@ def main():
         ]
     elif "update" in args.component:
         components = [
-            "tmux",
             "aliyunpan",
             "neovim",
             "trzsz",

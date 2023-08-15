@@ -210,12 +210,10 @@ def install_conda():
     subprocess.run(
         clang_command,
         check=True,
-        stdout=subprocess.DEVNULL,
     )
     subprocess.run(
         command,
         check=True,
-        stdout=subprocess.DEVNULL,
     )
 
     logging.info("Installing other packages done.")

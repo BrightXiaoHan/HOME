@@ -76,7 +76,7 @@ Host ShengTeng
 Host YuyiGPU
     HostName 39.105.167.2
     Port 5100
-    User root
+    User parallel
     ServerAliveInterval 10
 
 Host ifun-translate

@@ -9,5 +9,4 @@ set -gx LD_LIBRARY_PATH ~/.cache/homecli/miniconda/lib $LD_LIBRARY_PATH
 
 if not nvim --headless -c quit 2>/dev/null
     alias nvim='nvim --appimage-extract-and-run'
-    alias tmux='tmux --appimage-extract-and-run'
 end

@@ -3,13 +3,6 @@ if not status_ok then
   return
 end
 
-local config_status_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
-if not config_status_ok then
-  return
-end
-
-local tree_cb = nvim_tree_config.nvim_tree_callback
-
 local function my_on_attach(bufnr)
   local api = require('nvim-tree.api')
 
@@ -74,7 +67,7 @@ nvim_tree.setup {
   },
   filters = {
     dotfiles = true,
-    exclude = { ".vscode", ".git*", ".env", ".dockerignore"},
+    exclude = { ".vscode", ".git*", ".env", ".dockerignore" },
     custom = {
       "__pycache__",
     },

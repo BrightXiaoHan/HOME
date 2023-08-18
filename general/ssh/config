@@ -79,6 +79,12 @@ Host YuyiGPU
     User parallel
     ServerAliveInterval 10
 
+Host YuyiGPURoot
+    HostName 39.105.167.2
+    Port 5100
+    User root
+    ServerAliveInterval 10
+
 Host ifun-translate
     HostName 43.153.70.114
     Port 22

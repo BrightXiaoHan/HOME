@@ -148,6 +148,7 @@ def install_conda():
         "make",
         "cmake",
         "git",
+        "git-lfs",
         "conda-pack",
         "poetry",
         "tmux",

@@ -60,3 +60,4 @@ winget install -e --id Alibaba.DingTalk
 winget install -e --id Valve.Steam
 winget install -e --id Alibaba.aDrive
 winget install -e --id tickstep.aliyunpan --silent
+winget install -e --id Youqu.ToDesk

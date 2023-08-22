@@ -13,10 +13,11 @@ set -gx EDITOR nvim
 
 set -gx PATH bin $PATH
 set -gx PATH ~/.local/bin $PATH
-set -gx PATH ~/.cache/homecli/bin $PATH
-set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
 
+# Poetry
 set -gx POETRY_VIRTUALENVS_IN_PROJECT true
+
+# Related to https://github.com/BrightXiaoHan/HOME/issues/2
 set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 
 # NodeJS

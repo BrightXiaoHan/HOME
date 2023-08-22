@@ -5,8 +5,18 @@ if test -f ~/.cache/homecli/miniconda/bin/conda
 end
 # <<< conda initialize <<<
 
+set -gx PATH ~/.cache/homecli/bin $PATH
+set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
+set -gx PATH ~/.cache/homecli/miniconda/bin $PATH
 set -gx LD_LIBRARY_PATH ~/.cache/homecli/miniconda/lib $LD_LIBRARY_PATH
 
 if not nvim --headless -c quit 2>/dev/null
     alias nvim='nvim --appimage-extract-and-run'
+end
+
+# x86_64 or aarch64
+if test (uname -m) = "x86_64"
+    set -gx CC ~/.cache/homecli/miniconda/bin/x86_64-conda-linux-gnu-gcc
+else if test (uname -m) = "aarch64"
+    set -gx CC ~/.cache/homecli/miniconda/bin/aarch64-conda-linux-gnu-gcc
 end

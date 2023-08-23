@@ -70,11 +70,11 @@ iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOM
 Build image
 
 ```bash
-docker build -t DevEnv .
+docker build -t home .
 ```
 
 Run Container
 
 ```bash
-docker run -v /path/to/workspace:/workspace -itd  DevEnv
+docker run -v /path/to/workspace:/workspace --name home -itd home
 ```

@@ -5,6 +5,7 @@ if (not status) then return end
 require("dap.ext.vscode").load_launchjs()
 
 local status, dapui = pcall(require, "dapui")
+if (not status) then return end
 
 dapui.setup()
 
@@ -18,7 +19,6 @@ end
 -- dap.listeners.before.event_exited["dapui_config"] = function()
 --   dapui.close()
 -- end
-
 
 local status, dappython = pcall(require, "dap-python")
 if (not status) then return end

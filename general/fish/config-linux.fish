@@ -10,7 +10,7 @@ set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
 set -gx PATH ~/.cache/homecli/miniconda/bin $PATH
 set -gx LD_LIBRARY_PATH ~/.cache/homecli/miniconda/lib $LD_LIBRARY_PATH
 
-if not nvim --headless -c quit 2>/dev/null
+if not nvim --headless -c quit > /dev/null 2>&1
     alias nvim='nvim --appimage-extract-and-run'
 end
 

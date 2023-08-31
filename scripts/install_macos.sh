@@ -69,7 +69,7 @@ ln -s $DIR/gitconfig ~/.gitconfig
 
 brew install --quiet \
   git-lfs tmux fish neovim ripgrep fzf pyenv node aliyunpan trzsz-ssh \
-  cmake poetry pipx starship zoxide openssh
+  cmake poetry pipx starship zoxide openssh rich-cli
 
 brew install --quiet --cask \
   iterm2 wechat wpsoffice-cn postman sogouinput \

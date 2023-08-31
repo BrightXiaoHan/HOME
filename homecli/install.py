@@ -164,10 +164,7 @@ def install_conda():
             ]
         )
     else:
-        command.extend(
-            [
-            ]
-        )
+        command.extend([])
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
 
     # install clang from defaults channel
@@ -207,7 +204,15 @@ def install_conda():
         command,
         check=True,
     )
-
+    subprocess.run(
+        [
+            os.path.join(CACHE_DIR, "miniconda", "bin", "pipx"),
+            "install",
+            "rich-cli",
+            "shadowsocksr-cli",
+        ],
+        check=True,
+    )
     logging.info("Installing other packages done.")
 
 

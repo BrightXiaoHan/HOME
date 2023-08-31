@@ -204,15 +204,15 @@ def install_conda():
         command,
         check=True,
     )
-    subprocess.run(
-        [
-            os.path.join(CACHE_DIR, "miniconda", "bin", "pipx"),
-            "install",
-            "rich-cli",
-            "shadowsocksr-cli",
-        ],
-        check=True,
-    )
+    for package in ["rich-cli", "shadowsocksr-cli"]:
+        subprocess.run(
+            [
+                os.path.join(CACHE_DIR, "miniconda", "bin", "pipx"),
+                "install",
+                package,
+            ],
+            check=True,
+        )
     logging.info("Installing other packages done.")
 
 

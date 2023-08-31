@@ -27,7 +27,9 @@ set -gx PATH node_modules/.bin $PATH
 set -gx PYENV_ROOT ~/.pyenv
 set -gx PATH $PYENV_ROOT/bin $PATH
 
-test pyenv > /dev/null; and pyenv init - | source
+if command -q pyenv 1>/dev/null 2>&1; and status --is-interactive
+  pyenv init - | source
+end
 
 switch (uname)
   case Darwin

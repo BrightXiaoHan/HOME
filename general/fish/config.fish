@@ -23,6 +23,12 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
+# pyenv
+set -gx PYENV_ROOT ~/.pyenv
+set -gx PATH $PYENV_ROOT/bin $PATH
+
+test pyenv > /dev/null; and pyenv init - | source
+
 switch (uname)
   case Darwin
     source (dirname (status --current-filename))/config-osx.fish

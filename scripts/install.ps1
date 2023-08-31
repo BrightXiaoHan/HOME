@@ -44,6 +44,10 @@ Install-Module -Name PSFzf
 
 # Install packer
 git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+nvim --headless -c 'TSUpdateSync' -c 'q'
+nvim --headless -c 'MasonInstall bash-language-server black isort json-lsp lua-language-server yaml-language-server' -c 'q'
+nvim --headless -c 'LspInstall lua_ls pyright bashls jsonls yamlls' -c 'q'
 
 # Install Visual Studio Build Tools
 winget install -e --id Microsoft.VisualStudio.2019.BuildTools 
@@ -53,7 +57,6 @@ winget install -e --id Tencent.WeChat
 winget install -e --id Microsoft.WindowsTerminal
 winget install -e --id Kingsoft.WPSOffice.CN
 winget install -e --id Postman.Postman
-winget install -e --id Notion.Notion
 winget install -e --id Microsoft.PowerToys
 winget install -e --id Sogou.SogouInput
 winget install -e --id Alibaba.DingTalk

@@ -1,3 +1,10 @@
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install xcode command line tools
+# git make clang will be installed by xcode-select --install
+brew install --quiet mas
+mas install 497799835
+xcode-select --install
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DIR="$DIR/../general"
@@ -60,5 +67,24 @@ fi
 
 ln -s $DIR/gitconfig ~/.gitconfig
 
+brew install --quiet \
+  git-lfs tmux fish neovim ripgrep fzf pyenv node aliyunpan trzsz-ssh \
+  cmake poetry pipx starship zoxide openssh
+
+brew install --quiet --cask \
+  iterm2 wechat wpsoffice-cn postman sogouinput \
+  dingtalk todesk microsoft-edge adrive anaconda \
+  appcleaner downie typora visual-studio-code \
+  parallels tencent-meeting telegram microsoft-remote-desktop \
+  clashx obs bing-wallpaper qqmusic douyin keycastr
+
+# install font
+brew tap homebrew/cask-fonts
+brew install --quiet --cask font-jetbrains-mono
+
 git clone --depth 1 https://github.com/wbthomason/packer.nvim\
  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+nvim --headless -c 'TSUpdateSync' -c 'q'
+nvim --headless -c 'MasonInstall bash-language-server black isort json-lsp lua-language-server yaml-language-server' -c 'q'
+nvim --headless -c 'LspInstall lua_ls pyright bashls jsonls yamlls' -c 'q'

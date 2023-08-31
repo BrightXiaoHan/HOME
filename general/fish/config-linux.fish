@@ -7,8 +7,15 @@ end
 
 set -gx PATH ~/.cache/homecli/bin $PATH
 set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
-set -gx PATH ~/.cache/homecli/miniconda/bin $PATH
+
+if command -q pyenv 1>/dev/null 2>&1; and status --is-interactive
+  pyenv init - | source
+end
+
 # set -gx LD_LIBRARY_PATH ~/.cache/homecli/miniconda/lib $LD_LIBRARY_PATH
+set -gx CPPFLAGS "-I$CONDA_PREFIX/include " $CPPFLAGS
+set -gx LDFLAGS "-L$CONDA_PREFIX/lib " $LDFLAGS
+set -gx CONFIGURE_OPTS "-with-openssl=$CONDA_PREFIX " $CONFIGURE_OPTS
 
 if not nvim --headless -c quit > /dev/null 2>&1
     alias nvim='nvim --appimage-extract-and-run'

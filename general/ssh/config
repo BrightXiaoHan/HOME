@@ -91,6 +91,12 @@ Host ifun-translate
     User ubuntu
     ServerAliveInterval 10
 
+Host ifun-translate-external
+    HostName 39.105.167.2
+    Port 10003
+    User hanbing
+    ServerAliveInterval 10
+
 Host ModelArt
     HostName authoring-ssh.cncentral231.xckpjs.com
     Port 30605

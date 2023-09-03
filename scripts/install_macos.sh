@@ -69,11 +69,12 @@ ln -s $DIR/gitconfig ~/.gitconfig
 
 brew install --quiet \
   git-lfs tmux fish neovim ripgrep fzf pyenv node aliyunpan trzsz-ssh \
-  cmake poetry pipx starship zoxide openssh rich-cli
+  cmake poetry pipx starship zoxide openssh rich-cli \
+  openssl readline sqlite3 xz zlib # pyenv
 
 brew install --quiet --cask \
   iterm2 wechat wpsoffice-cn postman sogouinput \
-  dingtalk todesk microsoft-edge adrive anaconda \
+  dingtalk todesk microsoft-edge adrive \
   appcleaner downie typora visual-studio-code \
   parallels tencent-meeting telegram microsoft-remote-desktop \
   clashx obs bing-wallpaper qqmusic douyin keycastr

@@ -154,6 +154,7 @@ def install_conda():
         "tmux",
         "libcurl",
         "pipx",
+        "compilers",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
@@ -166,17 +167,6 @@ def install_conda():
     else:
         command.extend([])
         url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
-
-    # install clang from defaults channel
-    clang_command = [
-        os.path.join(CACHE_DIR, "miniconda", "bin", "conda"),
-        "install",
-        "-y",
-        "-c",
-        "pkgs/main",
-        "gcc_linux-64" if ARCHITECTURE in ("x86_64", "amd64") else "gcc_linux-aarch64",
-        "gxx_linux-64" if ARCHITECTURE in ("x86_64", "amd64") else "gxx_linux-aarch64",
-    ]
 
     cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
     if not os.path.exists(cache_file):
@@ -196,10 +186,6 @@ def install_conda():
     logging.info("Installing conda done.")
     # conda install fish shell
     logging.info("Installing other packages...")
-    subprocess.run(
-        clang_command,
-        check=True,
-    )
     subprocess.run(
         command,
         check=True,

@@ -8,30 +8,9 @@ end
 set -gx PATH ~/.cache/homecli/bin $PATH
 set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
 
-if command -q pyenv 1>/dev/null 2>&1; and status --is-interactive
-  pyenv init - | source
-end
-
-# set -gx LD_LIBRARY_PATH ~/.cache/homecli/miniconda/lib $LD_LIBRARY_PATH
-set -gx CPPFLAGS "-I$CONDA_PREFIX/include " $CPPFLAGS
-set -gx LDFLAGS "-L$CONDA_PREFIX/lib " $LDFLAGS
-set -gx CONFIGURE_OPTS "-with-openssl=$CONDA_PREFIX " $CONFIGURE_OPTS
-
 if not nvim --headless -c quit > /dev/null 2>&1
     alias nvim='nvim --appimage-extract-and-run'
 end
 
-# x86_64 or aarch64
-if test (uname -m) = "x86_64"
-  test ~/.cache/homecli/miniconda/bin/x86_64-conda-linux-gnu-gcc > /dev/null; \
-    and set -gx CC ~/.cache/homecli/miniconda/bin/x86_64-conda-linux-gnu-gcc
-
-  test ~/.cache/homecli/miniconda/bin/x86_64-conda-linux-gnu-g++ > /dev/null; \
-    and set -gx CXX ~/.cache/homecli/miniconda/bin/x86_64-conda-linux-gnu-g++
-else if test (uname -m) = "aarch64"
-  test ~/.cache/homecli/miniconda/bin/aarch64-conda-linux-gnu-gcc > /dev/null; \
-    and set -gx CC ~/.cache/homecli/miniconda/bin/aarch64-conda-linux-gnu-gcc
-
-  test ~/.cache/homecli/miniconda/bin/aarch64-conda-linux-gnu-g++ > /dev/null; \
-    and set -gx CXX ~/.cache/homecli/miniconda/bin/aarch64-conda-linux-gnu-g++
-end
+set -gx CC ~/.cache/homecli/miniconda/bin/gcc
+set -gx CXX ~/.cache/homecli/miniconda/bin/g++

@@ -15,3 +15,6 @@ rm -rf ~/.cache/homecli
 
 # remove export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' from .bashrc
 sed -i '/export PATH=$HOME\/.cache\/homecli\/miniconda\/bin:$PATH/d' ~/.bashrc
+
+# remove pyenv
+rm -rf .pyenv

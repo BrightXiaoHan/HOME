@@ -186,6 +186,7 @@ def install_conda():
         "libcurl",
         "pipx",
         "compilers",
+        "zlib",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(

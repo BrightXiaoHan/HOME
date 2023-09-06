@@ -7,6 +7,13 @@ end
 
 set -gx PATH ~/.cache/homecli/bin $PATH
 set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
+# Mamba
+set -gx MAMBA_ROOT_PREFIX ~/.cache/homecli/miniconda
+
+# pyenv
+set -gx PYENV_ROOT ~/.cache/homecli/pyenv
+set -gx PATH $PYENV_ROOT/bin $PATH
+command -v pyenv >/dev/null || eval "$(pyenv init -)"
 
 if not nvim --headless -c quit > /dev/null 2>&1
     alias nvim='nvim --appimage-extract-and-run'

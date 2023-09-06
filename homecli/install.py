@@ -134,13 +134,44 @@ def install_aliyunpan(overwrite=True):
     logging.info("Installing aliyunpan done.")
 
 
+def install_mamba(overwrite=True):
+    logging.info("Installing mamba...")
+    bin_file = os.path.join(BIN_DIR, "mamba")
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        url = f"https://micro.mamba.pm/api/micromamba/linux-64/latest"
+    else:
+        url = f"https://micro.mamba.pm/api/micromamba/linux-aarch64/latest"
+
+    if not os.path.exists(bin_file) or overwrite:
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "mamba")
+            # unzip the file
+            with tempfile.TemporaryDirectory() as tmpdir:
+                # extract tar.bz2
+                with tarfile.open(tmp.name, "r:bz2") as tar:
+                    tar.extractall(tmpdir)
+
+                # copy the binary file
+                shutil.copy(
+                    os.path.join(
+                        tmpdir, "bin", "micromamba"
+                    ),
+                    bin_file,
+                )
+                os.chmod(bin_file, 0o755)
+    logging.info("Installing aliyunpan done.")
+
+
 def install_conda():
     logging.info("Installing conda...")
     command = [
         "install",
+        "-n",
+        "base",
         "-c",
         "conda-forge",
         "-y",
+        "conda",
         "fish",
         "ncurses",
         "fzf",
@@ -157,7 +188,6 @@ def install_conda():
         "compilers",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
         command.extend(
             [
                 "starship",
@@ -166,29 +196,23 @@ def install_conda():
         )
     else:
         command.extend([])
-        url = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
-
-    cache_file = os.path.join(CACHE_DIR, os.path.basename(url))
-    if not os.path.exists(cache_file):
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "conda")
-            shutil.copy(tmp.name, cache_file)
-            os.chmod(cache_file, 0o755)
+        
     env = os.environ.copy()
     env["PYTHONPATH"] = ""
+    env["MAMBA_ROOT_PREFIX"] = os.path.join(CACHE_DIR, "miniconda")
+    mamba_path = os.path.join(CACHE_DIR, "bin", "mamba")
     subprocess.run(
-        [cache_file, "-b", "-p", os.path.join(CACHE_DIR, "miniconda")],
+        [mamba_path, "create", "-n", "base"],
         check=True,
         env=env,
     )
-    command = [os.path.join(CACHE_DIR, "miniconda", "bin", "conda")] + command
+    command = [mamba_path] + command
 
-    logging.info("Installing conda done.")
-    # conda install fish shell
-    logging.info("Installing other packages...")
+    logging.info("Installing conda packages...")
     subprocess.run(
         command,
         check=True,
+        env=env,
     )
     for package in ["rich-cli", "shadowsocksr-cli"]:
         subprocess.run(
@@ -263,6 +287,7 @@ def main():
     if "all" in args.component:
         components = [
             "aliyunpan",
+            "mamba",
             "conda",
             "nodejs",
             "neovim",
@@ -271,6 +296,7 @@ def main():
     elif "update" in args.component:
         components = [
             "aliyunpan",
+            "mamba",
             "neovim",
             "trzsz",
         ]

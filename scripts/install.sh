@@ -85,12 +85,13 @@ if ! grep -q "$(cat ~/.ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
 fi
 
 ln -s $DIR/gitconfig ~/.gitconfig
+ln -s $DIR/mambarc ~/.mambarc
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
     PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
     python3 homecli/install.py
-  curl https://pyenv.run | bash
+  curl https://pyenv.run | PYENV_ROOT="${HOME}/.cache/homecli/pyenv" bash
 elif [ "$MODE" = "unpack" ]; then
   mkdir -p ~/.local/share && ln -s $DESTINATION/homecli/nvim/ ~/.local/share/nvim
   source $DESTINATION/homecli/miniconda/bin/activate

@@ -66,6 +66,7 @@ if ! grep -q "$(cat ~/.ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
 fi
 
 ln -s $DIR/gitconfig ~/.gitconfig
+ln -s $DIR/mambarc ~/.mambarc
 
 brew install --quiet \
   git-lfs tmux fish neovim ripgrep fzf pyenv node aliyunpan trzsz-ssh \

@@ -4,5 +4,4 @@ channels:
     - nvidia
     - pytorch
 
-channel_priority: strict
 always_yes: true

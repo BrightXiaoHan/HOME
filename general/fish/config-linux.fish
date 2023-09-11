@@ -19,6 +19,7 @@ if test -f $PYENV_ROOT/bin/pyenv
 end
 
 
+set -gx LD_LIBRARY_PATH "$CONDA_PREFIX/lib"
 set -gx CPPFLAGS "-I$CONDA_PREFIX/include " $CPPFLAGS
 set -gx LDFLAGS "-L$CONDA_PREFIX/lib " $LDFLAGS
 set -gx CONFIGURE_OPTS "-with-openssl=$CONDA_PREFIX " $CONFIGURE_OPTS

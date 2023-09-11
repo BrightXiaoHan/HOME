@@ -187,6 +187,7 @@ def install_conda():
         "pipx",
         "compilers",
         "zlib",
+        "nodejs",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
@@ -306,7 +307,6 @@ def main():
             "aliyunpan",
             "mamba",
             "conda",
-            "nodejs",
             "neovim",
             "trzsz",
         ]

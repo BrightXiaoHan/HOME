@@ -266,6 +266,21 @@ def install_trzsz(overwrite=True):
             if os.path.isfile(os.path.join(CACHE_DIR, "bin", f)):
                 os.remove(os.path.join(CACHE_DIR, "bin", f))
             shutil.move(os.path.join(trzsz_dir, f), os.path.join(CACHE_DIR, "bin"))
+            
+
+def install_docker_compose(overwrite=True):
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        url = "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-x86_64"
+    else:
+        url = "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-aarch64"
+  
+    logging.info("Installing docker-compose...")
+    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "docker-compose")) or overwrite:
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "docker-compose")
+            # move all files to CACHE_DIR/bin
+            shutil.copy(tmp.name, os.path.join(CACHE_DIR, "bin", "docker-compose"))
+            os.chmod(os.path.join(CACHE_DIR, "bin", "docker-compose"), 0o755)
 
 
 def main():
@@ -287,6 +302,7 @@ def main():
     args = parser.parse_args()
     if "all" in args.component:
         components = [
+            "docker_compose",
             "aliyunpan",
             "mamba",
             "conda",
@@ -296,6 +312,7 @@ def main():
         ]
     elif "update" in args.component:
         components = [
+            "docker_compose",
             "aliyunpan",
             "mamba",
             "neovim",

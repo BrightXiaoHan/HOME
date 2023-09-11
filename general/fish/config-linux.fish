@@ -6,7 +6,6 @@ end
 # <<< conda initialize <<<
 
 set -gx PATH ~/.cache/homecli/bin $PATH
-set -gx PATH ~/.cache/homecli/nodejs/bin $PATH
 # Mamba
 set -gx MAMBA_ROOT_PREFIX ~/.cache/homecli/miniconda
 

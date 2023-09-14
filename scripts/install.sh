@@ -95,7 +95,7 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 elif [ "$MODE" = "unpack" ]; then
   mkdir -p ~/.local/share && ln -s $DESTINATION/homecli/nvim/ ~/.local/share/nvim
   source $DESTINATION/homecli/miniconda/bin/activate
-  conda unpack
+  CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda unpack
 
   # Re-link broken symlinks
   for file in $(find $HOME -type l ! -exec test -e {} \; -print); do

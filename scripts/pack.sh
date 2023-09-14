@@ -10,7 +10,7 @@ echo $CURDIR
 OUTFILE=${1:-homecli.tar.gz}
 cd $DIR
 tar -cvf $CURDIR/$OUTFILE \
-    HOME bin miniconda.tar.gz nodejs > /dev/null
+    HOME bin miniconda.tar.gz > /dev/null
 rm miniconda.tar.gz
 cd -
 

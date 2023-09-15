@@ -23,6 +23,9 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
+# pyenv set MAKE_OPTS
+set -gx MAKE_OPTS "-j(nproc --ignore=1)"
+
 switch (uname)
   case Darwin
     source (dirname (status --current-filename))/config-osx.fish

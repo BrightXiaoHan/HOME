@@ -20,17 +20,38 @@ def get_latest_release(owner, repo):
         return data["tag_name"]
 
 
-def download_with_progress(url, path, name=""):
-    with urllib.request.urlopen(url) as response:
-        total_size = int(response.info().get("Content-Length").strip())
+try:
+    import requests
+
+    def download_with_progress(url, path, name=""):
+        response = requests.get(
+            url,
+            stream=True,
+            proxies={
+                "http": os.environ.get("http_proxy", ""),
+                "https": os.environ.get("https_proxy", ""),
+            },
+        )
+        total_size = int(response.headers.get("Content-Length", 0))
         chunk_size = 1024 * 4
         with open(path, "wb") as f:
-            while True:
-                chunk = response.read(chunk_size)
-                if not chunk:
-                    break
-                f.write(chunk)
+            for data in response.iter_content(chunk_size=chunk_size):
+                f.write(data)
                 progress(f.tell(), total_size, name)
+
+except ImportError:
+
+    def download_with_progress(url, path, name=""):
+        with urllib.request.urlopen(url) as response:
+            total_size = int(response.info().get("Content-Length").strip())
+            chunk_size = 1024 * 4
+            with open(path, "wb") as f:
+                while True:
+                    chunk = response.read(chunk_size)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+                    progress(f.tell(), total_size, name)
 
 
 def install_neovim(overwrite=True):
@@ -153,9 +174,7 @@ def install_mamba(overwrite=True):
 
                 # copy the binary file
                 shutil.copy(
-                    os.path.join(
-                        tmpdir, "bin", "micromamba"
-                    ),
+                    os.path.join(tmpdir, "bin", "micromamba"),
                     bin_file,
                 )
                 os.chmod(bin_file, 0o755)
@@ -198,7 +217,7 @@ def install_conda():
         )
     else:
         command.extend([])
-        
+
     env = os.environ.copy()
     env["PYTHONPATH"] = ""
     env["MAMBA_ROOT_PREFIX"] = os.path.join(CACHE_DIR, "miniconda")
@@ -267,16 +286,19 @@ def install_trzsz(overwrite=True):
             if os.path.isfile(os.path.join(CACHE_DIR, "bin", f)):
                 os.remove(os.path.join(CACHE_DIR, "bin", f))
             shutil.move(os.path.join(trzsz_dir, f), os.path.join(CACHE_DIR, "bin"))
-            
+
 
 def install_docker_compose(overwrite=True):
     if ARCHITECTURE in ("x86_64", "amd64"):
         url = "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-x86_64"
     else:
         url = "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-aarch64"
-  
+
     logging.info("Installing docker-compose...")
-    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "docker-compose")) or overwrite:
+    if (
+        not os.path.exists(os.path.join(CACHE_DIR, "bin", "docker-compose"))
+        or overwrite
+    ):
         with tempfile.NamedTemporaryFile() as tmp:
             download_with_progress(url, tmp.name, "docker-compose")
             # move all files to CACHE_DIR/bin

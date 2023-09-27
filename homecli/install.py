@@ -235,11 +235,12 @@ def install_conda():
         check=True,
         env=env,
     )
-    for package in ["rich-cli", "shadowsocksr-cli"]:
+    for package in ["rich-cli", "git+https://github.com/BrightXiaoHan/ssr-command-client.git@socks2http", "mycli", "mdformat"]:
         subprocess.run(
             [
                 os.path.join(CACHE_DIR, "miniconda", "bin", "pipx"),
                 "install",
+                "--force",
                 package,
             ],
             check=True,

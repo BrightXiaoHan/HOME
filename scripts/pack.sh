@@ -1,5 +1,5 @@
+DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
 OUTFILE=${1:-homecli.tar.gz}
-DIR=~/.cache/homecli
 
 source $DIR/miniconda/bin/activate
 $DIR/miniconda/bin/conda-pack -o $DIR/miniconda.tar.gz

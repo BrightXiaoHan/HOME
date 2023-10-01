@@ -1,3 +1,5 @@
+INSTALL_DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
+
 # remove config files
 rm -rf ~/.config/alacritty \
   ~/.config/nvim \
@@ -12,7 +14,7 @@ rm -rf ~/.config/alacritty \
 rm -rf ~/.local/share/nvim
 
 # remove cache
-rm -rf ~/.cache/homecli
+rm -rf $INSTALL_DIR
 
-# remove export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' from .bashrc
-sed -i '/export PATH=$HOME\/.cache\/homecli\/miniconda\/bin:$PATH/d' ~/.bashrc
+# remove export PATH=$INSTALL_DIR/bin:$PATH' from .bashrc
+sed -i '/export PATH=.*homecli\/miniconda\/bin:$PATH/d' ~/.bashrc

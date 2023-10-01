@@ -4,6 +4,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 import urllib.request
@@ -38,6 +39,7 @@ try:
             for data in response.iter_content(chunk_size=chunk_size):
                 f.write(data)
                 progress(f.tell(), total_size, name)
+        sys.stderr.write("\n")
 
 except ImportError:
 
@@ -52,6 +54,7 @@ except ImportError:
                         break
                     f.write(chunk)
                     progress(f.tell(), total_size, name)
+        sys.stderr.write("\n")
 
 
 def install_neovim(overwrite=True):
@@ -235,6 +238,9 @@ def install_conda():
         check=True,
         env=env,
     )
+    
+    env = os.environ.copy()
+    env["PIPX_HOME"] = os.path.join(CACHE_DIR, "pipx")
     for package in ["rich-cli", "git+https://github.com/BrightXiaoHan/ssr-command-client.git@socks2http", "mycli", "mdformat"]:
         subprocess.run(
             [
@@ -244,6 +250,7 @@ def install_conda():
                 package,
             ],
             check=True,
+            env=env,
         )
     logging.info("Installing other packages done.")
 

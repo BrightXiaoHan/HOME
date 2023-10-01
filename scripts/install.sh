@@ -1,30 +1,30 @@
 # MODE: local-install, online-install or unpack. Default: online-install
 MODE=${1:-online-install}
+INSTALL_DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
 
 if [ "$MODE" = "local-install" ]; then
   CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-  DIR="$HOME/.cache/homecli/HOME/general"
-  mkdir -p ~/.cache/homecli/HOME
-  cp -r $CWD/.. ~/.cache/homecli/HOME
-  cd ~/.cache/homecli/HOME
+  DIR="$INSTALL_DIR/HOME/general"
+  mkdir -p $INSTALL_DIR/HOME
+  cp -r $CWD/.. $INSTALL_DIR/HOME
+  cd $INSTALL_DIR/HOME
 
 elif [ "$MODE" = "unpack" ]; then
   TARFILE="$2"
-  DESTINATION=$HOME/.cache
-  if [ -z "$DESTINATION" || -z "$TARFILE" ]; then
+  if [ -z "$TARFILE" ]; then
     echo "Usage: install.sh unpack <tarfile>"
     exit 1
   fi
-  mkdir -p $DESTINATION/homecli
-  tar -xvf "$TARFILE" -C "$DESTINATION/homecli"
-  mkdir -p $DESTINATION/homecli/miniconda
-  tar -xvf $DESTINATION/homecli/miniconda.tar.gz -C $DESTINATION/homecli/miniconda
-  DIR="$DESTINATION/homecli/HOME/general"
+  mkdir -p $INSTALL_DIR
+  tar -xvf "$TARFILE" -C "$INSTALL_DIR"
+  mkdir -p $INSTALL_DIR/miniconda
+  tar -xvf $INSTALL_DIR/miniconda.tar.gz -C $INSTALL_DIR/miniconda
+  DIR="$INSTALL_DIR/HOME/general"
 elif [ "$MODE" = "online-install" ]; then
-  DIR="$HOME/.cache/homecli/HOME/general"
-  mkdir -p ~/.cache/homecli
-  git clone https://github.com/BrightXiaoHan/HOME ~/.cache/homecli/HOME
-  cd ~/.cache/homecli/HOME
+  DIR="$INSTALL_DIR/HOME/general"
+  mkdir -p $INSTALL_DIR
+  git clone https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
+  cd $INSTALL_DIR/HOME
 fi
 
 # get current dir
@@ -89,21 +89,21 @@ ln -s $DIR/mambarc ~/.mambarc
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
   PYTHONPATH="./:$PYTHONPATH" \
-    PATH="$HOME/.cache/homecli/miniconda/bin:$HOME/.cache/homecli/nodejs/bin:$PATH" \
+    PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
     python3 homecli/install.py
-  curl https://pyenv.run | PYENV_ROOT="${HOME}/.cache/homecli/pyenv" bash
+  curl https://pyenv.run | PYENV_ROOT="$INSTALL_DIR/pyenv" bash
 elif [ "$MODE" = "unpack" ]; then
-  mkdir -p ~/.local/share && ln -s $DESTINATION/homecli/nvim/ ~/.local/share/nvim
-  source $DESTINATION/homecli/miniconda/bin/activate
+  mkdir -p ~/.local/share && ln -s $INSTALL_DIR/nvim/ ~/.local/share/nvim
+  source $INSTALL_DIR/miniconda/bin/activate
   CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda unpack
 
   # Re-link broken symlinks
   for file in $(find $HOME -type l ! -exec test -e {} \; -print); do
     old=$(readlink $file)
     # Re-link to the new location with $HOME prefix
-    # e.g.> /root/.cache/homecli/xxx -> $HOME/.cache/homecli/xxx
+    # e.g.> /root/.homecli/xxx -> /home/hanbing/.homecli/xxx
     
-    # extract str after .cache/homecli
+    # extract str after .homecli
     if [[ $old == *".local/share/nvim"* ]]; then
       prefix=$(echo $old | sed 's/\.local\/share\/nvim.*//')
       # replace prefix with $HOME
@@ -115,6 +115,9 @@ elif [ "$MODE" = "unpack" ]; then
 fi
 
 # add fish path to .bashrc
-if ! grep -q 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' ~/.bashrc; then
-  echo 'export PATH=$HOME/.cache/homecli/miniconda/bin:$PATH' >> ~/.bashrc
+if ! grep -q "export PATH=$INSTALL_DIR/miniconda/bin:\$PATH" ~/.bashrc; then
+  echo "export PATH=$INSTALL_DIR/miniconda/bin:\$PATH" >> ~/.bashrc
 fi
+
+# add HOMECLI_INSTALL_DIR to config-local.fish
+echo "set -gx HOMECLI_INSTALL_DIR $INSTALL_DIR" > ~/.config/fish/config-local.fish

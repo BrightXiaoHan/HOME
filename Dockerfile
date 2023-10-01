@@ -22,7 +22,7 @@ RUN bash ./scripts/install.sh
 
 ENV http_proxy="" https_proxy=""
 
-ENV PATH="/root/.cache/homecli/miniconda/bin:${PATH}"
+ENV PATH="/root/.homecli/miniconda/bin:${PATH}"
 
 WORKDIR /workspace
 VOLUME ["/workplace"]

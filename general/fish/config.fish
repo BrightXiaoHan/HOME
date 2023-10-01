@@ -33,16 +33,16 @@ alias ip="curl http://ip-api.com/json/?lang=zh-CN"
 alias sethttpproxy="set HTTPS_PROXY 'http://127.0.0.1:7890'"
 alias unsethttpproxy="set -e HTTPS_PROXY"
 
+set LOCAL_CONFIG (dirname (status --current-filename))/config-local.fish
+if test -f $LOCAL_CONFIG
+  source $LOCAL_CONFIG
+end
+
 switch (uname)
   case Darwin
     source (dirname (status --current-filename))/config-osx.fish
   case Linux
     source (dirname (status --current-filename))/config-linux.fish
-end
-
-set LOCAL_CONFIG (dirname (status --current-filename))/config-local.fish
-if test -f $LOCAL_CONFIG
-  source $LOCAL_CONFIG
 end
 
 # if starship and zoxide installed, init them

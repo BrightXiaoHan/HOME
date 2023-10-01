@@ -25,7 +25,7 @@ elif [ "$MODE" = "online-install" ]; then
   mkdir -p $INSTALL_DIR
   git clone https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
   cd $INSTALL_DIR/HOME
-elif [ "$MODE" = "relink"]; then
+elif [ "$MODE" = "relink" ]; then
   DIR="$INSTALL_DIR/HOME/general"
 else
   echo "Usage: install.sh <mode> [tarfile]"
@@ -121,7 +121,7 @@ elif [ "$MODE" = "unpack" ]; then
     fi
   done
 elif [ "$MODE" = "relink" ]; then
-  pass
+  ln -s $INSTALL_DIR/nvim/ ~/.local/share/nvim
 fi
 
 # add fish path to .bashrc

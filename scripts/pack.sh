@@ -10,10 +10,6 @@ echo $CURDIR
 OUTFILE=${1:-homecli.tar.gz}
 cd $DIR
 tar -cvf $CURDIR/$OUTFILE \
-    HOME bin miniconda.tar.gz pyenv
+    HOME bin miniconda.tar.gz pyenv pipx nvim
 rm miniconda.tar.gz
-cd -
-
-cd ~/.local/share/
-tar -rvf $CURDIR/$OUTFILE nvim/
 cd -

@@ -25,6 +25,12 @@ elif [ "$MODE" = "online-install" ]; then
   mkdir -p $INSTALL_DIR
   git clone https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
   cd $INSTALL_DIR/HOME
+elif [ "$MODE" = "relink"]; then
+  DIR="$INSTALL_DIR/HOME/general"
+else
+  echo "Usage: install.sh <mode> [tarfile]"
+  echo "mode: local-install, online-install, unpack or relink (local-install is default)"
+  exit 1
 fi
 
 # get current dir
@@ -92,6 +98,8 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
     PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
     python3 homecli/install.py
   curl https://pyenv.run | PYENV_ROOT="$INSTALL_DIR/pyenv" bash
+  mv $HOME/.local/share/nvim $INSTALL_DIR/nvim
+  ln -s $INSTALL_DIR/nvim $HOME/.local/share/nvim
 elif [ "$MODE" = "unpack" ]; then
   mkdir -p ~/.local/share && ln -s $INSTALL_DIR/nvim/ ~/.local/share/nvim
   source $INSTALL_DIR/miniconda/bin/activate
@@ -112,6 +120,8 @@ elif [ "$MODE" = "unpack" ]; then
       ln -s $new $file
     fi
   done
+elif [ "$MODE" = "relink" ]; then
+  pass
 fi
 
 # add fish path to .bashrc

@@ -125,8 +125,8 @@ elif [ "$MODE" = "relink" ]; then
 fi
 
 # add fish path to .bashrc
-if ! grep -q "export PATH=$INSTALL_DIR/miniconda/bin:\$PATH" ~/.bashrc; then
-  echo "export PATH=$INSTALL_DIR/miniconda/bin:\$PATH" >> ~/.bashrc
+if ! grep -q "alias fish='$INSTALL_DIR/miniconda/bin/fish'" ~/.bashrc; then
+  echo "alias fish='$INSTALL_DIR/miniconda/bin/fish'" >> ~/.bashrc"
 fi
 
 # add HOMECLI_INSTALL_DIR to config-local.fish

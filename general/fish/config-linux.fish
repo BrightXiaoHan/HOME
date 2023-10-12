@@ -14,6 +14,7 @@ set -gx MAMBA_ROOT_PREFIX $INSTALL_DIR/miniconda
 
 # pipx
 set -gx PIPX_HOME $INSTALL_DIR/pipx
+set -gx PIPX_BIN_DIR $INSTALL_DIR/bin
 
 # pyenv
 set -gx PYENV_ROOT $INSTALL_DIR/pyenv

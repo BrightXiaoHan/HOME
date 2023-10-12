@@ -241,6 +241,7 @@ def install_conda():
     
     env = os.environ.copy()
     env["PIPX_HOME"] = os.path.join(CACHE_DIR, "pipx")
+    env["PIPX_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
     for package in ["rich-cli", "git+https://github.com/BrightXiaoHan/ssr-command-client.git@socks2http", "mycli", "mdformat"]:
         subprocess.run(
             [

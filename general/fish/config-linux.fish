@@ -5,6 +5,7 @@ set -l INSTALL_DIR (set -q HOMECLI_INSTALL_DIR; and echo $HOMECLI_INSTALL_DIR; o
 set -gx MAMBA_EXE "$INSTALL_DIR/bin/mamba"
 set -gx MAMBA_ROOT_PREFIX "$INSTALL_DIR/miniconda"
 $MAMBA_EXE shell hook --shell fish --root-prefix $MAMBA_ROOT_PREFIX | source
+micromamba activate
 # <<< mamba initialize <<<
 
 set -gx PATH $INSTALL_DIR/bin $PATH
@@ -22,8 +23,6 @@ if test -f $PYENV_ROOT/bin/pyenv
     pyenv init - | source
 end
 
-
-set -gx LD_LIBRARY_PATH "$CONDA_PREFIX/lib"
 set -gx CPPFLAGS "-I$CONDA_PREFIX/include " $CPPFLAGS
 set -gx LDFLAGS "-L$CONDA_PREFIX/lib " $LDFLAGS
 set -gx CONFIGURE_OPTS "-with-openssl=$CONDA_PREFIX " $CONFIGURE_OPTS

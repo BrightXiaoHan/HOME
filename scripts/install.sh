@@ -111,11 +111,18 @@ elif [ "$MODE" = "unpack" ]; then
     # Re-link to the new location with $HOME prefix
     # e.g.> /root/.homecli/xxx -> /home/hanbing/.homecli/xxx
     
-    # extract str after .homecli
     if [[ $old == *".local/share/nvim"* ]]; then
       prefix=$(echo $old | sed 's/\.local\/share\/nvim.*//')
       # replace prefix with $HOME
       new=$(echo $old | sed "s|^$prefix|$HOME/|")
+      rm $file
+      ln -s $new $file
+    fi
+
+    if [[ $old == *"miniconda/bin/"* ]]; then
+      prefix=$(echo $old | sed 's/\/miniconda\/bin.*//')
+      # replace prefix with $HOME
+      new=$(echo $old | sed "s|^$prefix|$INSTALL_DIR/|")
       rm $file
       ln -s $new $file
     fi

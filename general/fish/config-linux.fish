@@ -1,11 +1,11 @@
 set -l INSTALL_DIR (set -q HOMECLI_INSTALL_DIR; and echo $HOMECLI_INSTALL_DIR; or echo $HOME/.homecli)
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-if test -f $INSTALL_DIR/miniconda/bin/conda
-    eval $INSTALL_DIR/miniconda/bin/conda "shell.fish" "hook" $argv | source
-end
-# <<< conda initialize <<<
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba init' !!
+set -gx MAMBA_EXE "$INSTALL_DIR/bin/mamba"
+set -gx MAMBA_ROOT_PREFIX "$INSTALL_DIR/miniconda"
+$MAMBA_EXE shell hook --shell fish --root-prefix $MAMBA_ROOT_PREFIX | source
+# <<< mamba initialize <<<
 
 set -gx PATH $INSTALL_DIR/bin $PATH
 # Mamba

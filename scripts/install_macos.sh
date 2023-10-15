@@ -78,7 +78,7 @@ brew install --quiet --cask \
   dingtalk todesk microsoft-edge adrive \
   appcleaner downie typora visual-studio-code \
   parallels tencent-meeting telegram microsoft-remote-desktop \
-  clashx obs bing-wallpaper qqmusic douyin keycastr
+  clashx obs bing-wallpaper qqmusic douyin keycastr bruno
 
 # install font
 brew tap homebrew/cask-fonts

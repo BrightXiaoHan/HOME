@@ -32,11 +32,23 @@ Host A100-external
     User hanbing
     ServerAliveInterval 10
 
-Host LanMT-new
+Host A100-external-chenqiulin
+    HostName 39.105.167.2
+    Port 10088
+    User chenqiulin
+    ServerAliveInterval 10
+
+Host LanMT-new-A100-proxy
     HostName 192.168.2.226
     User hanbing
     Port 2864
     ProxyCommand ssh -W %h:%p A100-external
+    ServerAliveInterval 10
+
+Host LanMT-new
+    HostName 39.105.167.2
+    User hanbing
+    Port 60918
     ServerAliveInterval 10
 
 Host LanMT-7180
@@ -96,10 +108,3 @@ Host ifun-translate-external
     Port 10003
     User hanbing
     ServerAliveInterval 10
-
-Host ModelArt
-    HostName authoring-ssh.cncentral231.xckpjs.com
-    Port 30605
-    User ma-user
-    ServerAliveInterval 10
-    IdentityFile ~/.ssh/id_rsa_hunnu

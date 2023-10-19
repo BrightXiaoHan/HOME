@@ -37,6 +37,16 @@ unpack
 HOMECLI_INSTALL_DIR=$HOME/.homecli bash install.sh unpack homecli.tar.gz
 ```
 
+uninstall but don't delete installation cache, you can relink it if needed.
+```bash
+HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/uninstall.sh false
+```
+
+relink
+```bash
+HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/install.sh relink
+```
+
 ### macos
 
 Install Homebrew

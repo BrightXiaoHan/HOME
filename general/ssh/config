@@ -32,10 +32,10 @@ Host A100-external
     User hanbing
     ServerAliveInterval 10
 
-Host A100-external-chenqiulin
+Host A100-external-yyq
     HostName 39.105.167.2
     Port 10088
-    User chenqiulin
+    User yyq
     ServerAliveInterval 10
 
 Host LanMT-new-A100-proxy
@@ -54,13 +54,13 @@ Host LanMT-new
 Host LanMT-7180
     HostName 192.168.71.80
     User hanbing
-    ProxyCommand ssh -W %h:%p A100-external
+    ProxyCommand ssh -W %h:%p LanMT-new
     ServerAliveInterval 10
 
 Host LanMT-7181
     HostName 192.168.71.81
     User hanbing
-    ProxyCommand ssh -W %h:%p A100-external
+    ProxyCommand ssh -W %h:%p LanMT-new
     ServerAliveInterval 10
 
 Host aliyun_movecar

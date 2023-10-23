@@ -111,5 +111,12 @@ M.gitsigns = {
 	},
 }
 
+M.peek = {
+	n = {
+		["<leader>mo"] = { "<cmd>lua require('peek').open()<cr>", "Markdown Preview" },
+		["<leader>mc"] = { "<cmd>lua require('peek').close()<cr>", "Markdown Close" },
+	},
+}
+
 -- more keybinds!
 return M

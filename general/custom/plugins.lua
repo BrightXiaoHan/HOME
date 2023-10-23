@@ -42,18 +42,23 @@ local plugins = { -- Override plugin definition options
 	},
 	{
 		"iamcco/markdown-preview.nvim",
-		run = function()
-			vim.fn["mkdp#util#install"]()
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_echo_preview_url = 1
+      vim.g.mkdp_open_to_the_world = 1
 		end,
+		ft = { "markdown" },
 	},
 	{
 		"github/copilot.vim",
 		lazy = false,
-    config = function()
-      vim.g.copilot_no_tab_map = true;
-      vim.g.copilot_assume_mapped = true;
-      -- vim.g.copilot_tab_fallback = "";
-    end
+		config = function()
+			vim.g.copilot_no_tab_map = true
+			vim.g.copilot_assume_mapped = true
+			-- vim.g.copilot_tab_fallback = "";
+		end,
 	},
 	{
 		"Pocco81/auto-save.nvim",

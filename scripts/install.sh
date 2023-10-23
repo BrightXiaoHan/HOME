@@ -23,7 +23,7 @@ elif [ "$MODE" = "unpack" ]; then
 elif [ "$MODE" = "online-install" ]; then
   DIR="$INSTALL_DIR/HOME/general"
   mkdir -p $INSTALL_DIR
-  git clone https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
+  git clone -recurse-submodules https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
   cd $INSTALL_DIR/HOME
 elif [ "$MODE" = "relink" ]; then
   DIR="$INSTALL_DIR/HOME/general"
@@ -52,8 +52,8 @@ fi
 
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
-  ln -s $DIR/nvim/ ~/.config/
-
+  ln -s $DIR/custom/ $DIR/NvChad/lua/custom
+  ln -s $DIR/NvChad/ ~/.config/nvim
 else
   echo "nvim config already exist. Please backup or remove it."
   exit 1

@@ -28,8 +28,8 @@ fi
 
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
-  ln -s $DIR/nvim/ ~/.config/
-
+  ln -s $DIR/custom/ $DIR/NvChad/lua/custom
+  ln -s $DIR/NvChad/ ~/.config/nvim
 else
   echo "nvim config already exist. Please backup or remove it."
   exit 1
@@ -83,10 +83,3 @@ brew install --quiet --cask \
 # install font
 brew tap homebrew/cask-fonts
 brew install --quiet --cask font-jetbrains-mono
-
-git clone --depth 1 https://github.com/wbthomason/packer.nvim\
- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-nvim --headless -c 'TSUpdateSync' -c 'q'
-nvim --headless -c 'MasonInstall bash-language-server black isort json-lsp lua-language-server yaml-language-server' -c 'q'
-nvim --headless -c 'LspInstall lua_ls pyright bashls jsonls yamlls' -c 'q'

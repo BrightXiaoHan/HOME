@@ -74,17 +74,10 @@ def install_neovim(overwrite=True):
             os.chmod(bin_file, 0o755)
     logging.info("Installing neovim done.")
 
-    # install packer
-    subprocess.run(
-        os.path.join(CACHE_DIR, "miniconda", "bin", "git")
-        + " clone --depth 1 https://github.com/wbthomason/packer.nvim "
-        "~/.local/share/nvim/site/pack/packer/start/packer.nvim",
-        shell=True,
-    )
     # install plugins
     subprocess.run(
         os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'",
+        + ' --appimage-extract-and-run --headless "+Lazy! sync" +qa',
         shell=True,
     )
 

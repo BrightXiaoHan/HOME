@@ -25,7 +25,7 @@ M.general = {
 		["<leader>e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
 		["<leader>f"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "Find" },
 
-		["<C-`>"] = {
+		["<C-\\>"] = {
 			function()
 				require("nvterm.terminal").toggle("horizontal")
 			end,
@@ -36,7 +36,7 @@ M.general = {
 		[">"] = { ">gv", "indent" },
 	},
 	t = {
-		["<C-`>"] = {
+		["<C-\\>"] = {
 			function()
 				require("nvterm.terminal").toggle("horizontal")
 			end,

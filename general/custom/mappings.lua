@@ -111,10 +111,10 @@ M.gitsigns = {
 	},
 }
 
-M.peek = {
+M.markdown_preview = {
 	n = {
-		["<leader>mo"] = { "<cmd>lua require('peek').open()<cr>", "Markdown Preview" },
-		["<leader>mc"] = { "<cmd>lua require('peek').close()<cr>", "Markdown Close" },
+		["<leader>mo"] = { "<cmd>MarkdownPreview<cr>", "Markdown Preview" },
+		["<leader>mc"] = { "<cmd>MarkdownPreviewStop<cr>", "Markdown Close" },
 	},
 }
 

@@ -64,7 +64,7 @@ M.lsp = {
 	n = {
 		["<leader>lf"] = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
 		["<leader>lr"] = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-		["<leader>ld"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", "Line diagnostics" },
+		["<leader>ld"] = { "<cmd>lua vim.diagnostic.open_float(0, {scope='line'})<CR>", "Line diagnostics" },
 		["<leader>lp"] = { "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>", "Previous diagnostic" },
 		["<leader>ln"] = { "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>", "Next diagnostic" },
 	},

@@ -83,7 +83,7 @@ def install_neovim(overwrite=True):
 
     subprocess.run(
         os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'TSUpdateSync' -c 'q'",
+        + " --appimage-extract-and-run --headless -c 'TSInstallSync' -c 'q'",
         shell=True,
     )
 

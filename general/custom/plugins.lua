@@ -24,6 +24,7 @@ local plugins = { -- Override plugin definition options
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = overrides.treesitter,
+		lazy = false,
 	},
 	{
 		"nvim-tree/nvim-tree.lua",
@@ -57,7 +58,7 @@ local plugins = { -- Override plugin definition options
 	},
 	{
 		"github/copilot.vim",
-    lazy = false,
+		lazy = false,
 	},
 	{
 		"Pocco81/auto-save.nvim",

@@ -15,7 +15,8 @@ New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\general\gitconf
 
 # Create symbolic links to the neovim config file
 $nvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
-New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\nvim -Force
+New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\NvChad -Force
+New-Item -ItemType SymbolicLink -Path $nvimDir\lua\custom -Value $rootDir\general\custom -Force
 
 # install scoop
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
@@ -41,13 +42,6 @@ scoop install extras/tssh
 
 $ProgressPreference = "SilentlyContinue"
 Install-Module -Name PSFzf
-
-# Install packer
-git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-nvim --headless -c 'TSUpdateSync' -c 'q'
-nvim --headless -c 'MasonInstall bash-language-server black isort json-lsp lua-language-server yaml-language-server' -c 'q'
-nvim --headless -c 'LspInstall lua_ls pyright bashls jsonls yamlls' -c 'q'
 
 # Install Visual Studio Build Tools
 winget install -e --id Microsoft.VisualStudio.2019.BuildTools 

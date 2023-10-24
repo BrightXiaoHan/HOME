@@ -74,57 +74,23 @@ def install_neovim(overwrite=True):
             os.chmod(bin_file, 0o755)
     logging.info("Installing neovim done.")
 
-    # install packer
-    subprocess.run(
-        os.path.join(CACHE_DIR, "miniconda", "bin", "git")
-        + " clone --depth 1 https://github.com/wbthomason/packer.nvim "
-        "~/.local/share/nvim/site/pack/packer/start/packer.nvim",
-        shell=True,
-    )
     # install plugins
     subprocess.run(
         os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'",
+        + ' --appimage-extract-and-run --headless "+Lazy! sync" +qa',
         shell=True,
     )
 
     subprocess.run(
         os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'TSUpdateSync' -c 'q'",
+        + " --appimage-extract-and-run --headless -c 'TSInstallSync' -c 'q'",
         shell=True,
     )
 
     # mason
-    mason_list = [
-        "bash-language-server",
-        "black",
-        "isort",
-        "json-lsp",
-        "lua-language-server",
-        "yaml-language-server",
-    ]
     subprocess.run(
         os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'MasonInstall "
-        + " ".join(mason_list)
-        + "'"
-        + " -c 'q'",
-        shell=True,
-    )
-
-    # LspInstall
-    lsp_list = [
-        "lua_ls",
-        "pyright",
-        "bashls",
-        "jsonls",
-        "yamlls",
-    ]
-    subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'LspInstall "
-        + " ".join(lsp_list)
-        + "'"
+        + " --appimage-extract-and-run --headless -c 'MasonInstallAll'"
         + " -c 'q'",
         shell=True,
     )
@@ -238,11 +204,16 @@ def install_conda():
         check=True,
         env=env,
     )
-    
+
     env = os.environ.copy()
     env["PIPX_HOME"] = os.path.join(CACHE_DIR, "pipx")
     env["PIPX_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
-    for package in ["rich-cli", "git+https://github.com/BrightXiaoHan/ssr-command-client.git@socks2http", "mycli", "mdformat"]:
+    for package in [
+        "rich-cli",
+        "git+https://github.com/BrightXiaoHan/ssr-command-client.git@socks2http",
+        "mycli",
+        "mdformat",
+    ]:
         subprocess.run(
             [
                 os.path.join(CACHE_DIR, "miniconda", "bin", "pipx"),

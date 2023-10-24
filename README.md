@@ -7,14 +7,16 @@ My Personal Home Directory.
 ### linux
 
 install
+
 ```bash
 HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh)"
 ```
+
 update
+
 ```bash
 HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/update.sh)"
 ```
-
 
 uninstall
 
@@ -30,19 +32,21 @@ HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.github
 
 unpack
 
-* Download prepacked `home-cli.tar` file and `install.sh`
-* Run `install.sh`
+- Download prepacked `home-cli.tar` file and `install.sh`
+- Run `install.sh`
 
 ```bash
 HOMECLI_INSTALL_DIR=$HOME/.homecli bash install.sh unpack homecli.tar.gz
 ```
 
 uninstall but don't delete installation cache, you can relink it if needed.
+
 ```bash
 HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/uninstall.sh false
 ```
 
 relink
+
 ```bash
 HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/install.sh relink
 ```

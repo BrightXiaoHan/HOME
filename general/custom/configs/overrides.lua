@@ -79,14 +79,30 @@ M.nvimtree = {
 }
 
 M.cmp = {
-  mapping = {
-    ["<A-Space>"] = require("cmp").mapping.complete(),
-    ["<C-e>"] = require("cmp").mapping.close(),
-    ["<CR>"] = require("cmp").mapping.confirm({
-      behavior = require("cmp").ConfirmBehavior.Replace,
-      select = true,
-    }),
-  },
+	mapping = {
+		["<A-Space>"] = require("cmp").mapping.complete(),
+		["<C-e>"] = require("cmp").mapping.close(),
+		["<CR>"] = require("cmp").mapping.confirm({
+			behavior = require("cmp").ConfirmBehavior.Replace,
+			select = true,
+		}),
+	},
+}
+
+-- if win32 then use powershell else fish
+if vim.fn.has("win32") == 1 then
+	SHELL = "powershell.exe"
+else
+	SHELL = "fish"
+end
+
+M.nvterm = {
+	terminals = {
+		shell = SHELL,
+		type_opts = {
+			horizontal = { location = "rightbelow", split_ratio = 0.5, size = 50 },
+		},
+	},
 }
 
 return M

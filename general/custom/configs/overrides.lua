@@ -5,10 +5,9 @@ M.treesitter = {
 		"lua",
 		"c",
 		"cpp",
-		"markdown",
-		"markdown_inline",
 		"fish",
 		"python",
+		"bash",
 	},
 	indent = {
 		enable = true,
@@ -38,11 +37,6 @@ M.mason = {
 		"black",
 		"isort",
 		"mypy",
-
-		-- markdown stuff
-		"marksman",
-		"markdownlint",
-		"mdformat",
 	},
 }
 
@@ -84,21 +78,18 @@ M.cmp = {
 		["<Down>"] = require("cmp").mapping.select_next_item(),
 		["<C-e>"] = require("cmp").mapping.close(),
 		["<Tab>"] = require("cmp").config.disable,
-		["<S-Tab>"] = require("cmp").config.disable,
-    -- manual completion
-    ["<leader>1"] = require("cmp").mapping.complete(),
 	},
 	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "buffer" },
 		{ name = "path" },
+		{ name = "nvim_lsp", max_item_count = 3 },
+		{ name = "buffer" },
 		{ name = "nvim_lua" },
 		{ name = "treesitter" },
 	},
 	-- disable auto-complete
-	completion = {
-		autocomplete = false,
-	},
+	-- completion = {
+	-- 	autocomplete = false,
+	-- },
 }
 
 -- if win32 then use powershell else fish

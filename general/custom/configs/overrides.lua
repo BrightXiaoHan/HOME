@@ -80,12 +80,24 @@ M.nvimtree = {
 
 M.cmp = {
 	mapping = {
-		["<A-Space>"] = require("cmp").mapping.complete(),
+		["<Up>"] = require("cmp").mapping.select_prev_item(),
+		["<Down>"] = require("cmp").mapping.select_next_item(),
 		["<C-e>"] = require("cmp").mapping.close(),
-		["<CR>"] = require("cmp").mapping.confirm({
-			behavior = require("cmp").ConfirmBehavior.Replace,
-			select = true,
-		}),
+		["<Tab>"] = require("cmp").config.disable,
+		["<S-Tab>"] = require("cmp").config.disable,
+    -- manual completion
+    ["<leader>1"] = require("cmp").mapping.complete(),
+	},
+	sources = {
+		{ name = "nvim_lsp" },
+		{ name = "buffer" },
+		{ name = "path" },
+		{ name = "nvim_lua" },
+		{ name = "treesitter" },
+	},
+	-- disable auto-complete
+	completion = {
+		autocomplete = false,
 	},
 }
 

@@ -1,5 +1,13 @@
+# install scoop
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
+Invoke-RestMethod get.scoop.sh | Invoke-Expression
+scoop install git
+
+# Clone the repository
+git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git
+
 # Create symbolic links to the user profile and the OMP configuration file
-$rootDir = Split-Path -Parent $PSScriptRoot
+$rootDir = (Get-Item -Path ".\HOME").FullName
 $profileDir = Split-Path -Parent $PROFILE
 New-Item -ItemType SymbolicLink -Path $PROFILE -Value $rootDir\general\powershell\user_profile.ps1 -Force
 $omp_config = Join-Path $rootDir "powershell\takuya.omp.json"
@@ -17,10 +25,6 @@ New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\general\gitconf
 $nvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
 New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\NvChad -Force
 New-Item -ItemType SymbolicLink -Path $nvimDir\lua\custom -Value $rootDir\general\custom -Force
-
-# install scoop
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
-Invoke-RestMethod get.scoop.sh | Invoke-Expression
 
 scoop bucket add main
 scoop install main/winget

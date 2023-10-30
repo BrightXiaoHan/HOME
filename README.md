@@ -76,7 +76,7 @@ iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
 Install Packages
 
 ```bash
-iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install_macos.sh").Content
+iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.ps1").Content
 ```
 
 ## Dev Container

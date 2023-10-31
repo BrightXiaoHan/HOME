@@ -1,6 +1,16 @@
 # install scoop
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
-Invoke-RestMethod get.scoop.sh | Invoke-Expression
+# 判断是否为管理员
+$isAdministrator = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
+
+if ($isAdministrator) {
+    irm get.scoop.sh -outfile 'install.ps1'
+    iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+    Remove-Item install.ps1
+} else {
+    Invoke-RestMethod get.scoop.sh | Invoke-Expression
+}
+
 scoop install git
 
 # Clone the repository
@@ -41,20 +51,19 @@ scoop install main/wget
 scoop install main/mosh-client
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrains-Mono
+scoop install main/tssh
 scoop bucket add extras
-scoop install extras/tssh
 
 $ProgressPreference = "SilentlyContinue"
 Install-Module -Name PSFzf
 
 # Install Visual Studio Build Tools
-winget install -e --id Microsoft.VisualStudio.2019.BuildTools 
+winget install Microsoft.VisualStudio.2019.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
 winget install -e --id Microsoft.VisualStudioCode
-winget install -e --id Anaconda.Anaconda3
+winget install -e --id Anaconda.Miniconda3
 winget install -e --id Tencent.WeChat
 winget install -e --id Microsoft.WindowsTerminal
 winget install -e --id Kingsoft.WPSOffice.CN
-winget install -e --id Postman.Postman
 winget install -e --id Microsoft.PowerToys
 winget install -e --id Sogou.SogouInput
 winget install -e --id Alibaba.DingTalk

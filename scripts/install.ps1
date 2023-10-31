@@ -50,7 +50,7 @@ scoop install main/clangd
 scoop install main/wget
 scoop install main/mosh-client
 scoop bucket add nerd-fonts
-scoop install nerd-fonts/JetBrains-Mono
+scoop install nerd-fonts/JetBrainsMono-NF
 scoop install main/tssh
 scoop bucket add extras
 
@@ -71,3 +71,5 @@ winget install -e --id Valve.Steam
 winget install -e --id Alibaba.aDrive
 winget install -e --id tickstep.aliyunpan --silent
 winget install -e --id Youqu.ToDesk
+winget install -e --id Google.Chrome
+winget install -e --id 9NBLGGH5R558 --silent  # Microsoft Store To-Do

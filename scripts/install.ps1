@@ -26,6 +26,7 @@ New-Item -ItemType SymbolicLink -Path $profileDir\takuya.omp.json -Value $omp_co
 # Create symbolic links to the ssh config file
 $sshDir = Join-Path $env:USERPROFILE ".ssh"
 New-Item -ItemType SymbolicLink -Path $sshDir\config -Value $rootDir\general\ssh\config -Force
+New-Item -ItemType SymbolicLink -Path $sshDir\id_rsa.pub -Value $rootDir\general\ssh\id_rsa.pub -Force
 
 # Create symbolic links to the git config file
 $gitConfig = Join-Path $env:USERPROFILE ".gitconfig"

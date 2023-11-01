@@ -23,7 +23,7 @@ elif [ "$MODE" = "unpack" ]; then
 elif [ "$MODE" = "online-install" ]; then
 	DIR="$INSTALL_DIR/HOME/general"
 	mkdir -p $INSTALL_DIR
-	git clone -recurse-submodules https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
+	git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
 	cd $INSTALL_DIR/HOME
 elif [ "$MODE" = "relink" ]; then
 	DIR="$INSTALL_DIR/HOME/general"

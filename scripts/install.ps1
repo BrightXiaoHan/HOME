@@ -50,6 +50,7 @@ scoop install main/zoxide
 scoop install main/clangd
 scoop install main/wget
 scoop install main/mosh-client
+scoop install main/poetry
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrainsMono-NF
 scoop install main/tssh

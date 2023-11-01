@@ -94,7 +94,7 @@ M.cmp = {
 
 -- if win32 then use powershell else fish
 if vim.fn.has("win32") == 1 then
-	SHELL = "powershell.exe"
+	SHELL = "pwsh.exe"
 else
 	SHELL = "fish"
 end

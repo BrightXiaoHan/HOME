@@ -6,7 +6,6 @@ Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 # PSReadLine
-Set-PSReadLineOption -EditMode Emacs
 Set-PSReadLineOption -BellStyle None
 Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineOption -PredictionSource History
@@ -14,13 +13,6 @@ Set-PSReadLineOption -PredictionSource History
 # Fzf
 Import-Module PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
-
-# Env
-$env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
-$env:POETRY_VIRTUALENVS_IN_PROJECT = "true"
-
-# Alias
-Set-Alias -Name vim -Value nvim
 
 # Utilities
 function which ($command) {
@@ -30,3 +22,6 @@ function which ($command) {
 
 # add scoop bin to Path
 $env:Path += ";$HOME\scoop\shims"
+
+# Poetry
+$env:POETRY_VIRTUALENVS_IN_PROJECT = 'true'

@@ -20,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Install
         shell: bash
@@ -40,6 +42,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - uses: actions/download-artifact@v3
         with:
@@ -57,6 +61,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - uses: pguyot/arm-runner-action@v2
         with:
@@ -64,6 +70,8 @@ jobs:
           exit_on_fail: true
           copy_artifact_path: home-cli-arm64.tar
           commands: |
+            apt update
+            apt install -y python3 python3-pip curl fuse git
             scripts/install.sh local-install
             scripts/pack.sh home-cli-arm64.tar
 
@@ -78,6 +86,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-arm64

@@ -13,6 +13,6 @@ if [ ! -d "$COPILOT_DIR" ]; then
 	mkdir -p "$COPILOT_DIR"
 fi
 
-echo '{"github.com":{"user":"cocopilot","oauth_token":"ghu_ThisIsARealFreeCopilotKeyByCoCopilot","dev_override":{"copilot_token_url":"https://api.cocopilot.org/copilot_internal/v2/token"}}}' >"$COPILOT_DIR/hosts.json"
+echo '{"github.com":{"user":"cocopilot","oauth_token":"ccu_g0Bsu1J6dbYtEAWW8GoJyDZnc27VS6iavjqK","dev_override":{"copilot_token_url":"https://api.cocopilot.org/copilot_internal/v2/token"}}}' >"$COPILOT_DIR/hosts.json"
 
 echo 'done. please restart your ide.'

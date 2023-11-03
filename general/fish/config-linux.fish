@@ -17,6 +17,7 @@ set -gx PIPX_HOME $INSTALL_DIR/pipx
 set -gx PIPX_BIN_DIR $INSTALL_DIR/bin
 
 # pyenv
+set -gx MAKE_OPTS -j(nproc --ignore=1)  # pyenv set MAKE_OPTS to number of cores minus 1
 set -gx PYENV_ROOT $INSTALL_DIR/pyenv
 set -gx PATH $PYENV_ROOT/bin $PATH
 # if pyenv exists, initialize it

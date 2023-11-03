@@ -1,9 +1,11 @@
 # install scoop
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
-# 判断是否为管理员
+
+# Judge whether the current user is an administrator 
 $isAdministrator = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 
 if ($isAdministrator) {
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
     irm get.scoop.sh -outfile 'install.ps1'
     iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
     Remove-Item install.ps1
@@ -12,6 +14,9 @@ if ($isAdministrator) {
 }
 
 scoop install git
+
+# install pyenv
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
 
 # Clone the repository
 git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git
@@ -62,7 +67,6 @@ Install-Module -Name PSFzf
 # Install Visual Studio Build Tools
 winget install Microsoft.VisualStudio.2019.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
 winget install -e --id Microsoft.VisualStudioCode
-winget install -e --id Anaconda.Miniconda3
 winget install -e --id Tencent.WeChat
 winget install -e --id Microsoft.WindowsTerminal
 winget install -e --id Kingsoft.WPSOffice.CN

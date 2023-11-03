@@ -78,23 +78,38 @@ def install_neovim(overwrite=True):
 
     # install plugins
     subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + ' --appimage-extract-and-run --headless "+Lazy! sync" +qa',
-        shell=True,
+        [
+            os.path.join(BIN_DIR, "nvim"),
+            "--appimage-extract-and-run",
+            "--headless",
+            '"+Lazy! sync"',
+            "+qa",
+        ],
     )
 
     subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'TSInstallSync' -c 'q'",
-        shell=True,
+        [
+            os.path.join(BIN_DIR, "nvim"),
+            "--appimage-extract-and-run",
+            "--headless",
+            "-c",
+            "TSInstallSync",
+            "-c",
+            "'q'",
+        ],
     )
 
     # mason
     subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'MasonInstallAll'"
-        + " -c 'q'",
-        shell=True,
+        [
+            os.path.join(BIN_DIR, "nvim"),
+            "--appimage-extract-and-run",
+            "--headless",
+            "-c",
+            "MasonInstallAll",
+            "-c",
+            "'q'",
+        ]
     )
 
 

@@ -58,16 +58,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Install
-        shell: bash
-        run: scripts/install.sh local-install
-
-      - name: Pack
-        shell: bash
-        run: scripts/pack.sh home-cli-arm64.tar
+      - uses: pguyot/arm-runner-action@v2
+        with:
+          shell: bash
+          exit_on_fail: true
+          copy_artifact_path: home-cli-arm64.tar
+          commands: |
+            scripts/install.sh local-install
+            scripts/pack.sh home-cli-arm64.tar
 
       - uses: actions/upload-artifact@v3
         with:
@@ -80,17 +78,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-arm64
 
-      - name: Unpack
-        shell: bash
-        run: scripts/install.sh unpack home-cli-arm64.tar
+      - uses: pguyot/arm-runner-action@v2
+        with:
+          shell: bash
+          exit_on_fail: true
+          commands: |
+            scripts/install.sh unpack home-cli-arm64.tar
 
   release:
     runs-on: ubuntu-20.04

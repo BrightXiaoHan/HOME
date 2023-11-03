@@ -76,10 +76,25 @@ def install_neovim(overwrite=True):
             os.chmod(bin_file, 0o755)
     logging.info("Installing neovim done.")
 
+    if ARCHITECTURE not in ("x86_64", "amd64"):
+        tmpfile = os.path.join(BIN_DIR, "nvim.appimage")
+        shutil.copy(bin_file, tmpfile)
+        # https://github.com/AppImage/AppImageKit/issues/965
+        # https://github.com/AppImage/AppImageKit/issues/1056
+        subprocess.run(
+            [
+                "sed",
+                "-i",
+                r's|AI\x02|\x00\x00\x00|',
+                tmpfile,
+            ]
+        )
+        bin_file = tmpfile
+
     # install plugins
     subprocess.run(
         [
-            os.path.join(BIN_DIR, "nvim"),
+            bin_file,
             "--appimage-extract-and-run",
             "--headless",
             '"+Lazy! sync"',
@@ -89,7 +104,7 @@ def install_neovim(overwrite=True):
 
     subprocess.run(
         [
-            os.path.join(BIN_DIR, "nvim"),
+            bin_file,
             "--appimage-extract-and-run",
             "--headless",
             "-c",
@@ -102,7 +117,7 @@ def install_neovim(overwrite=True):
     # mason
     subprocess.run(
         [
-            os.path.join(BIN_DIR, "nvim"),
+            bin_file,
             "--appimage-extract-and-run",
             "--headless",
             "-c",

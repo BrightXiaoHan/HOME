@@ -25,6 +25,7 @@ try:
     import requests
 
     def download_with_progress(url, path, name=""):
+        sys.stderr.write("Downloading {}...\n".format(name))
         response = requests.get(
             url,
             stream=True,
@@ -39,11 +40,12 @@ try:
             for data in response.iter_content(chunk_size=chunk_size):
                 f.write(data)
                 progress(f.tell(), total_size, name)
-        sys.stderr.write("\n")
+        sys.stderr.write("Donwload {} done.\n".format(name))
 
 except ImportError:
 
     def download_with_progress(url, path, name=""):
+        sys.stderr.write("Downloading {}...\n".format(name))
         with urllib.request.urlopen(url) as response:
             total_size = int(response.info().get("Content-Length").strip())
             chunk_size = 1024 * 4
@@ -54,7 +56,7 @@ except ImportError:
                         break
                     f.write(chunk)
                     progress(f.tell(), total_size, name)
-        sys.stderr.write("\n")
+        sys.stderr.write("Donwload {} done.\n".format(name))
 
 
 def install_neovim(overwrite=True):

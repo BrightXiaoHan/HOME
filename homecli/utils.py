@@ -1,7 +1,10 @@
 import datetime
 import json
+import os
 import sys
 import urllib.request
+
+PRINT_PROGRESS = os.environ.get("PRINT_PROGRESS", "true").lower() == "true"
 
 
 def progress(count, total, suffix=""):
@@ -9,8 +12,9 @@ def progress(count, total, suffix=""):
     filled_len = int(round(bar_len * count / float(total)))
     percents = round(100.0 * count / float(total), 1)
     bar = "=" * filled_len + "-" * (bar_len - filled_len)
-    sys.stderr.write("[%s] %s%s ...%s\r" % (bar, percents, "%", suffix))
-    sys.stderr.flush()
+    if PRINT_PROGRESS:
+        sys.stderr.write("[%s] %s%s ...%s\r" % (bar, percents, "%", suffix))
+        sys.stderr.flush()
 
 
 def get_latest_stable_nodejs_version():

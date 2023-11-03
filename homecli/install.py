@@ -66,7 +66,7 @@ def install_neovim(overwrite=True):
         url = "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
     else:
         release_tag = get_latest_release("matsuu", "neovim-aarch64-appimage")
-        url = f"https://github.com/matsuu/neovim-aarch64-appimage/releases/download/{release_tag}/nvim-{release_tag}.appimage"
+        url = f"https://github.com/matsuu/neovim-aarch64-appimage/releases/download/{release_tag}/nvim-{release_tag}-aarch64.appimage"
     bin_file = os.path.join(BIN_DIR, "nvim")
 
     if not os.path.exists(bin_file) or overwrite:

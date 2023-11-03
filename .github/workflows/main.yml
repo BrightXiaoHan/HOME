@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  PRINT_PROGRESS: false
+
 on:
   push:
     branches:
@@ -69,6 +72,7 @@ jobs:
           shell: bash
           exit_on_fail: true
           copy_artifact_path: home-cli-arm64.tar
+          cpu: cortex-a53  # aarch64
           commands: |
             apt update
             apt install -y python3 python3-pip curl fuse git
@@ -97,6 +101,7 @@ jobs:
         with:
           shell: bash
           exit_on_fail: true
+          cpu: cortex-a53  # aarch64
           commands: |
             scripts/install.sh unpack home-cli-arm64.tar
 

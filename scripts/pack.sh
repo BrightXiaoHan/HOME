@@ -1,3 +1,5 @@
+set -e
+
 DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
 OUTFILE=${1:-homecli.tar.gz}
 

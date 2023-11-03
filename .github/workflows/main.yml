@@ -69,7 +69,6 @@ jobs:
 
       - uses: pguyot/arm-runner-action@v2
         with:
-          shell: bash
           exit_on_fail: true
           copy_artifact_path: home-cli-arm64.tar
           base_image: raspios_lite_arm64:latest
@@ -100,7 +99,6 @@ jobs:
 
       - uses: pguyot/arm-runner-action@v2
         with:
-          shell: bash
           exit_on_fail: true
           base_image: raspios_lite_arm64:latest
           image_additional_mb: 10000

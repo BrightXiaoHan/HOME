@@ -74,6 +74,7 @@ jobs:
           copy_artifact_path: home-cli-arm64.tar
           cpu: cortex-a53  # aarch64
           base_image: raspios_lite_arm64:latest
+          image_additional_mb: 10000
           commands: |
             apt update
             apt install -y python3 python3-pip curl fuse git
@@ -104,6 +105,7 @@ jobs:
           exit_on_fail: true
           cpu: cortex-a53  # aarch64
           base_image: raspios_lite_arm64:latest
+          image_additional_mb: 10000
           commands: |
             scripts/install.sh unpack home-cli-arm64.tar
 

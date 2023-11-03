@@ -23,8 +23,8 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
-# pyenv set MAKE_OPTS
-set -gx MAKE_OPTS "-j(nproc --ignore=1)"
+# pyenv set MAKE_OPTS to number of cores minus 1
+set -gx MAKE_OPTS -j(nproc --ignore=1)
 
 # proxy alias
 alias setproxy="set ALL_PROXY 'socks5://127.0.0.1:1080'"

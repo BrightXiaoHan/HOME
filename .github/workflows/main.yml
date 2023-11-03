@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  PRINT_PROGRESS: false
+  HOMECLI_PRINT_PROGRESS: false
 
 on:
   push:

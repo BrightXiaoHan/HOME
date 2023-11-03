@@ -72,7 +72,6 @@ jobs:
           shell: bash
           exit_on_fail: true
           copy_artifact_path: home-cli-arm64.tar
-          cpu: cortex-a53  # aarch64
           base_image: raspios_lite_arm64:latest
           image_additional_mb: 10000
           commands: |
@@ -103,7 +102,6 @@ jobs:
         with:
           shell: bash
           exit_on_fail: true
-          cpu: cortex-a53  # aarch64
           base_image: raspios_lite_arm64:latest
           image_additional_mb: 10000
           commands: |

@@ -4,7 +4,7 @@ import os
 import sys
 import urllib.request
 
-HOMECLI_PRINT_PROGRESS = os.environ.get("PRINT_PROGRESS", "true").lower() == "true"
+HOMECLI_PRINT_PROGRESS = os.environ.get("HOMECLI_PRINT_PROGRESS", "true").lower() == "true"
 
 
 def progress(count, total, suffix=""):

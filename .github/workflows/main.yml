@@ -67,15 +67,24 @@ jobs:
         with:
           submodules: recursive
 
-      - uses: pguyot/arm-runner-action@v2
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
         with:
-          exit_on_fail: true
-          copy_artifact_path: home-cli-arm64.tar
-          base_image: raspios_lite_arm64:latest
-          image_additional_mb: 10000
-          commands: |
-            apt update
+          arch: aarch64
+          distro: ubuntu20.04
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}:/workspace"
+
+          install: |
+            apt update -y
             apt install -y python3 python3-pip curl fuse git
+
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            uname -a
+            cd /workspace
             scripts/install.sh local-install
             scripts/pack.sh home-cli-arm64.tar
 
@@ -97,12 +106,19 @@ jobs:
         with:
           name: home-cli-pack-arm64
 
-      - uses: pguyot/arm-runner-action@v2
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
         with:
-          exit_on_fail: true
-          base_image: raspios_lite_arm64:latest
-          image_additional_mb: 10000
-          commands: |
+          arch: aarch64
+          distro: ubuntu20.04
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}:/workspace"
+
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            cd workspace
             scripts/install.sh unpack home-cli-arm64.tar
 
   release:

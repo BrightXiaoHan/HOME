@@ -121,7 +121,7 @@ jobs:
 
           # Set an output parameter `uname` for use in subsequent steps
           run: |
-            cd workspace
+            cd /workspace
             scripts/install.sh unpack home-cli-arm64.tar
 
   release:

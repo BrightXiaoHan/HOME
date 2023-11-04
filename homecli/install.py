@@ -111,7 +111,7 @@ def install_neovim(overwrite=True):
             "-c",
             "TSInstallSync",
             "-c",
-            "'q'",
+            "q",
         ],
     )
 
@@ -124,7 +124,7 @@ def install_neovim(overwrite=True):
             "-c",
             "MasonInstallAll",
             "-c",
-            "'q'",
+            "q",
         ]
     )
 

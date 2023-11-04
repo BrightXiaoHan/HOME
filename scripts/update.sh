@@ -1,3 +1,4 @@
+set -e
 DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
 
 cd $DIR/HOME

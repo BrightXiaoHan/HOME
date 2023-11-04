@@ -1,3 +1,4 @@
+set -e
 # MODE: local-install, online-install or unpack. Default: online-install
 MODE=${1:-online-install}
 INSTALL_DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}

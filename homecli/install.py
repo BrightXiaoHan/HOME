@@ -25,6 +25,7 @@ try:
     import requests
 
     def download_with_progress(url, path, name=""):
+        sys.stderr.write("Downloading {}...\n".format(name))
         response = requests.get(
             url,
             stream=True,
@@ -39,11 +40,12 @@ try:
             for data in response.iter_content(chunk_size=chunk_size):
                 f.write(data)
                 progress(f.tell(), total_size, name)
-        sys.stderr.write("\n")
+        sys.stderr.write("Donwload {} done.\n".format(name))
 
 except ImportError:
 
     def download_with_progress(url, path, name=""):
+        sys.stderr.write("Downloading {}...\n".format(name))
         with urllib.request.urlopen(url) as response:
             total_size = int(response.info().get("Content-Length").strip())
             chunk_size = 1024 * 4
@@ -54,7 +56,7 @@ except ImportError:
                         break
                     f.write(chunk)
                     progress(f.tell(), total_size, name)
-        sys.stderr.write("\n")
+        sys.stderr.write("Donwload {} done.\n".format(name))
 
 
 def install_neovim(overwrite=True):
@@ -64,7 +66,7 @@ def install_neovim(overwrite=True):
         url = "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
     else:
         release_tag = get_latest_release("matsuu", "neovim-aarch64-appimage")
-        url = f"https://github.com/matsuu/neovim-aarch64-appimage/releases/download/{release_tag}/nvim-{release_tag}.appimage"
+        url = f"https://github.com/matsuu/neovim-aarch64-appimage/releases/download/{release_tag}/nvim-{release_tag}-aarch64.appimage"
     bin_file = os.path.join(BIN_DIR, "nvim")
 
     if not os.path.exists(bin_file) or overwrite:
@@ -74,25 +76,56 @@ def install_neovim(overwrite=True):
             os.chmod(bin_file, 0o755)
     logging.info("Installing neovim done.")
 
+    if ARCHITECTURE not in ("x86_64", "amd64"):
+        tmpfile = os.path.join(BIN_DIR, "nvim.appimage")
+        shutil.copy(bin_file, tmpfile)
+        # https://github.com/AppImage/AppImageKit/issues/965
+        # https://github.com/AppImage/AppImageKit/issues/1056
+        subprocess.run(
+            [
+                "sed",
+                "-i",
+                # r's|AI\x02|\x00\x00\x00|',
+                r"0,/AI\x02/{s|AI\x02|\x00\x00\x00|}",
+                tmpfile,
+            ]
+        )
+        bin_file = tmpfile
+
     # install plugins
     subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + ' --appimage-extract-and-run --headless "+Lazy! sync" +qa',
-        shell=True,
+        [
+            bin_file,
+            "--appimage-extract-and-run",
+            "--headless",
+            '"+Lazy! sync"',
+            "+qa",
+        ],
     )
 
     subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'TSInstallSync' -c 'q'",
-        shell=True,
+        [
+            bin_file,
+            "--appimage-extract-and-run",
+            "--headless",
+            "-c",
+            "TSInstallSync",
+            "-c",
+            "q",
+        ],
     )
 
     # mason
     subprocess.run(
-        os.path.join(BIN_DIR, "nvim")
-        + " --appimage-extract-and-run --headless -c 'MasonInstallAll'"
-        + " -c 'q'",
-        shell=True,
+        [
+            bin_file,
+            "--appimage-extract-and-run",
+            "--headless",
+            "-c",
+            "MasonInstallAll",
+            "-c",
+            "q",
+        ]
     )
 
 
@@ -210,7 +243,7 @@ def install_conda():
     env["PIPX_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
     for package in [
         "rich-cli",
-        "git+https://github.com/TyrantLucifer/ssr-command-client.git",
+        "git+https://github.com/BrightXiaoHan/ssr-command-client.git@master",
         "mycli",
         "mdformat",
     ]:

@@ -20,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Install
         shell: bash
@@ -40,6 +42,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - uses: actions/download-artifact@v3
         with:
@@ -57,17 +61,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
 
-      - name: Install
-        shell: bash
-        run: scripts/install.sh local-install
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}:/workspace"
 
-      - name: Pack
-        shell: bash
-        run: scripts/pack.sh home-cli-arm64.tar
+          env: |
+            HOMECLI_PRINT_PROGRESS: false
+
+          install: |
+            apt update -y
+            apt install -y python3 python3-pip curl libfuse-dev git
+
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            uname -a
+            cd /workspace
+            scripts/install.sh local-install
+            scripts/pack.sh home-cli-arm64.tar
 
       - uses: actions/upload-artifact@v3
         with:
@@ -80,17 +99,34 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        with:
+          submodules: recursive
 
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-arm64
 
-      - name: Unpack
-        shell: bash
-        run: scripts/install.sh unpack home-cli-arm64.tar
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+
+          env: |
+            HOMECLI_PRINT_PROGRESS: false
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}:/workspace"
+
+          install: |
+            apt update -y
+            apt install -y python3 python3-pip curl libfuse-dev git
+
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            cd /workspace
+            scripts/install.sh unpack home-cli-arm64.tar
 
   release:
     runs-on: ubuntu-20.04

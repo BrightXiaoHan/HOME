@@ -53,6 +53,7 @@ fi
 
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
+  rm $DIR/NvChad/lua/custom || true
 	ln -s $DIR/custom/ $DIR/NvChad/lua/custom
 	ln -s $DIR/NvChad/ ~/.config/nvim
 else

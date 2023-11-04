@@ -85,7 +85,8 @@ def install_neovim(overwrite=True):
             [
                 "sed",
                 "-i",
-                r's|AI\x02|\x00\x00\x00|',
+                # r's|AI\x02|\x00\x00\x00|',
+                r"0,/AI\x02/{s|AI\x02|\x00\x00\x00|}",
                 tmpfile,
             ]
         )

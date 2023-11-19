@@ -58,7 +58,10 @@ end
 M.nvimtree = {
 	git = {
 		enable = true,
+		ignore = false,
 	},
+
+	filters = { custom = { "^.git$", "^__pycache__" } },
 
 	on_attach = nvimtree_attach,
 

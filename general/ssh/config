@@ -103,8 +103,23 @@ Host ifun-translate
     User ubuntu
     ServerAliveInterval 10
 
-Host ifun-translate-external
-    HostName 39.105.167.2
-    Port 10003
-    User hanbing
+Host personal-aliyun
+    HostName 39.99.244.8
+    Port 22
+    User root
     ServerAliveInterval 10
+
+Host telecom-ascend
+    HostName 127.0.0.1
+    Port 10000
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host telecom-cpu
+    HostName 127.0.0.1
+    Port 10001
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+

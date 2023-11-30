@@ -1,6 +1,10 @@
 ---@type MappingsTable
 local M = {}
 
+function ToggleWrap()
+	vim.wo.wrap = not vim.wo.wrap
+end
+
 M.general = {
 	n = {
 		[";"] = {
@@ -9,6 +13,11 @@ M.general = {
 			opts = { nowait = true },
 		},
 		["<C-a>"] = { "gg<S-v>G", "Select All" },
+		-- toggle wrap or unwrap lines
+		["<leader>w"] = {
+      "<cmd>lua ToggleWrap()<cr>",
+			"Toggle wrap",
+		},
 		-- Window
 		["<C-Left>"] = { "<C-w><" },
 		["<C-Right>"] = { "<C-w>>", "" },
@@ -62,7 +71,7 @@ M.copilot = {
 
 M.lsp = {
 	n = {
-    ["gd"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
+		["gd"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
 		["<leader>lf"] = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
 		["<leader>lr"] = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 		["<leader>ld"] = { "<cmd>lua vim.diagnostic.open_float(0, {scope='line'})<CR>", "Line diagnostics" },

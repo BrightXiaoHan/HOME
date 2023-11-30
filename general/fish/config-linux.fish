@@ -9,6 +9,9 @@ micromamba activate
 # <<< mamba initialize <<<
 
 set -gx PATH $INSTALL_DIR/bin $PATH
+alias node="$INSTALL_DIR/miniconda/bin/node"
+alias npm="$INSTALL_DIR/miniconda/bin/npm"
+alias fish="$INSTALL_DIR/miniconda/bin/fish"
 # Mamba
 set -gx MAMBA_ROOT_PREFIX $INSTALL_DIR/miniconda
 

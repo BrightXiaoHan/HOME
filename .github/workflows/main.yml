@@ -180,6 +180,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-x86_64
@@ -231,3 +235,25 @@ jobs:
           asset_path: ./home-cli-arm64.tar
           asset_name: home-cli-arm64.tar
           asset_content_type: application/tar
+
+      - name: Upload Assets install.sh
+        if: "!contains(github.ref, 'nightly')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./scripts/install.sh
+          asset_name: install.sh
+          asset_content_type: text/plain
+
+      - name: Upload Pre-Release Assets install.sh
+        if: "contains(github.ref, 'nightly')"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
+          asset_path: ./scripts/install.sh
+          asset_name: install.sh
+          asset_content_type: text/plain

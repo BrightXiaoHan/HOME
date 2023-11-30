@@ -192,6 +192,7 @@ def install_conda():
         "-c",
         "conda-forge",
         "-y",
+        "python=3.11",
         "conda",
         "fish",
         "ncurses",

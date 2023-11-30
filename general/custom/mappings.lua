@@ -18,6 +18,11 @@ M.general = {
       "<cmd>lua ToggleWrap()<cr>",
 			"Toggle wrap",
 		},
+    -- toggle mouse mode or disable it
+    ["<leader>m"] = {
+      "<cmd>lua vim.o.mouse = vim.o.mouse == 'a' and 'v' or 'a'<cr>",
+      "Toggle mouse mode",
+    },
 		-- Window
 		["<C-Left>"] = { "<C-w><" },
 		["<C-Right>"] = { "<C-w>>", "" },

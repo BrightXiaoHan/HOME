@@ -62,6 +62,7 @@ M.copilot = {
 
 M.lsp = {
 	n = {
+    ["gd"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
 		["<leader>lf"] = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
 		["<leader>lr"] = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 		["<leader>ld"] = { "<cmd>lua vim.diagnostic.open_float(0, {scope='line'})<CR>", "Line diagnostics" },

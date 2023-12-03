@@ -123,3 +123,16 @@ Host telecom-cpu
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 
+Host lm100
+    HostName 127.0.0.1
+    Port 10002
+    User yyq
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host ifun
+    HostName 127.0.0.1
+    Port 10003
+    User ubuntu
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun

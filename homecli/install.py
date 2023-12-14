@@ -331,11 +331,11 @@ def install_zoxide(overwrite=True):
     logging.info("Installing zoxide...")
     if not os.path.exists(os.path.join(CACHE_DIR, "bin", "zoxide")) or overwrite:
         with tempfile.NamedTemporaryFile() as tmp:
-            print(url)
             download_with_progress(url, tmp.name, "zoxide")
             with tarfile.open(tmp.name) as tar:
                 tar.extractall(path=CACHE_DIR)
 
+        print(os.system(f"tree {CACHE_DIR} -L 2"))
         # move zoxide to CACHE_DIR/bin
         zoxide_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
         shutil.copy(os.path.join(zoxide_dir, "zoxide"), os.path.join(CACHE_DIR, "bin"))
@@ -381,21 +381,21 @@ def main():
             "docker_compose",
             "aliyunpan",
             "mamba",
+            "starship",
+            "zoxide",
             "conda",
             "neovim",
             "trzsz",
-            "starship",
-            "zoxide",
         ]
     elif "update" in args.component:
         components = [
             "docker_compose",
             "aliyunpan",
             "mamba",
-            "neovim",
-            "trzsz",
             "starship",
             "zoxide",
+            "neovim",
+            "trzsz",
         ]
     else:
         components = args.component

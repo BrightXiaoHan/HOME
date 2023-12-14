@@ -335,7 +335,7 @@ def install_zoxide(overwrite=True):
             with tarfile.open(tmp.name) as tar:
                 tar.extractall(path=CACHE_DIR)
 
-        print(os.system(f"tree {CACHE_DIR} -L 2"))
+        print(os.system(f"ls {CACHE_DIR}"))
         # move zoxide to CACHE_DIR/bin
         zoxide_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
         shutil.copy(os.path.join(zoxide_dir, "zoxide"), os.path.join(CACHE_DIR, "bin"))

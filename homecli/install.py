@@ -333,12 +333,8 @@ def install_zoxide(overwrite=True):
         with tempfile.NamedTemporaryFile() as tmp:
             download_with_progress(url, tmp.name, "zoxide")
             with tarfile.open(tmp.name) as tar:
-                tar.extractall(path=CACHE_DIR)
-
-        print(os.system(f"ls {CACHE_DIR}"))
-        # move zoxide to CACHE_DIR/bin
-        zoxide_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
-        shutil.copy(os.path.join(zoxide_dir, "zoxide"), os.path.join(CACHE_DIR, "bin"))
+                # extract zoxide
+                tar.extract("zoxide", path=os.path.join(CACHE_DIR, "bin"))
         os.chmod(os.path.join(CACHE_DIR, "bin", "zoxide"), 0o755)
 
 

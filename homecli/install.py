@@ -354,15 +354,7 @@ def install_starship(overwrite=True):
         with tempfile.NamedTemporaryFile() as tmp:
             download_with_progress(url, tmp.name, "starship")
             with tarfile.open(tmp.name) as tar:
-                tar.extractall(path=CACHE_DIR)
-
-        # move starship to CACHE_DIR/bin
-        starship_dir = os.path.join(
-            CACHE_DIR, url.split("/")[-1].replace(".tar.gz", "")
-        )
-        shutil.copy(
-            os.path.join(starship_dir, "starship"), os.path.join(CACHE_DIR, "bin")
-        )
+                tar.extractall(path=os.path.join(CACHE_DIR, "bin"))
         os.chmod(os.path.join(CACHE_DIR, "bin", "starship"), 0o755)
 
 

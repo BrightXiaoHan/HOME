@@ -109,9 +109,23 @@ Host personal-aliyun
     User root
     ServerAliveInterval 10
 
+Host telecom-ascend-root
+    HostName 127.0.0.1
+    Port 10000
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
 Host telecom-ascend
     HostName 127.0.0.1
     Port 10000
+    User hanbing
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host telecom-cpu-root
+    HostName 127.0.0.1
+    Port 10001
     User root
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
@@ -119,7 +133,7 @@ Host telecom-ascend
 Host telecom-cpu
     HostName 127.0.0.1
     Port 10001
-    User root
+    User hanbing
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 

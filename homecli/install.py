@@ -331,6 +331,7 @@ def install_zoxide(overwrite=True):
     logging.info("Installing zoxide...")
     if not os.path.exists(os.path.join(CACHE_DIR, "bin", "zoxide")) or overwrite:
         with tempfile.NamedTemporaryFile() as tmp:
+            print(url, tmp.name)
             download_with_progress(url, tmp.name, "zoxide")
             with tarfile.open(tmp.name) as tar:
                 tar.extractall(path=CACHE_DIR)

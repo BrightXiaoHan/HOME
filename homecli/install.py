@@ -320,6 +320,52 @@ def install_docker_compose(overwrite=True):
             os.chmod(os.path.join(CACHE_DIR, "bin", "docker-compose"), 0o755)
 
 
+def install_zoxide(overwrite=True):
+    latest_version = get_latest_release("ajeetdsouza", "zoxide")
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        # url = f"https://github.com/ajeetdsouza/zoxide/releases/download/{latest_version}/zoxide-{latest_version}-x86_64-unknown-linux-musl.tar.gz"
+        return
+    else:
+        url = f"https://github.com/ajeetdsouza/zoxide/releases/download/{latest_version}/zoxide-{latest_version}-aarch64-unknown-linux-musl.tar.gz"
+
+    logging.info("Installing zoxide...")
+    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "zoxide")) or overwrite:
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "zoxide")
+            with tarfile.open(tmp.name) as tar:
+                tar.extractall(path=CACHE_DIR)
+
+        # move zoxide to CACHE_DIR/bin
+        zoxide_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
+        shutil.copy(os.path.join(zoxide_dir, "zoxide"), os.path.join(CACHE_DIR, "bin"))
+        os.chmod(os.path.join(CACHE_DIR, "bin", "zoxide"), 0o755)
+
+
+def install_starship(overwrite=True):
+    latest_version = get_latest_release("starship", "starship")
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        # url = f"https://github.com/starship/starship/releases/download/{latest_version}/starship-x86_64-unknown-linux-musl.tar.gz"
+        return
+    else:
+        url = f"https://github.com/starship/starship/releases/download/{latest_version}/starship-aarch64-unknown-linux-musl.tar.gz"
+
+    logging.info("Installing starship...")
+    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "starship")) or overwrite:
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "starship")
+            with tarfile.open(tmp.name) as tar:
+                tar.extractall(path=CACHE_DIR)
+
+        # move starship to CACHE_DIR/bin
+        starship_dir = os.path.join(
+            CACHE_DIR, url.split("/")[-1].replace(".tar.gz", "")
+        )
+        shutil.copy(
+            os.path.join(starship_dir, "starship"), os.path.join(CACHE_DIR, "bin")
+        )
+        os.chmod(os.path.join(CACHE_DIR, "bin", "starship"), 0o755)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -345,6 +391,8 @@ def main():
             "conda",
             "neovim",
             "trzsz",
+            "starship",
+            "zoxide",
         ]
     elif "update" in args.component:
         components = [
@@ -353,6 +401,8 @@ def main():
             "mamba",
             "neovim",
             "trzsz",
+            "starship",
+            "zoxide",
         ]
     else:
         components = args.component

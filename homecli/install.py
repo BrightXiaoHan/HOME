@@ -326,12 +326,11 @@ def install_zoxide(overwrite=True):
         # url = f"https://github.com/ajeetdsouza/zoxide/releases/download/{latest_version}/zoxide-{latest_version}-x86_64-unknown-linux-musl.tar.gz"
         return
     else:
-        url = f"https://github.com/ajeetdsouza/zoxide/releases/download/{latest_version}/zoxide-{latest_version}-aarch64-unknown-linux-musl.tar.gz"
+        url = f"https://github.com/ajeetdsouza/zoxide/releases/download/v{latest_version}/zoxide-{latest_version}-aarch64-unknown-linux-musl.tar.gz"
 
     logging.info("Installing zoxide...")
     if not os.path.exists(os.path.join(CACHE_DIR, "bin", "zoxide")) or overwrite:
         with tempfile.NamedTemporaryFile() as tmp:
-            print(url, tmp.name)
             download_with_progress(url, tmp.name, "zoxide")
             with tarfile.open(tmp.name) as tar:
                 tar.extractall(path=CACHE_DIR)

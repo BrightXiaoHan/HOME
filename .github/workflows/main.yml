@@ -8,8 +8,13 @@ on:
       - v*
       - nightly
   pull_request:
+    types: [opened, synchronize, reopened, labeled]
     branches:
       - main
+    paths-ignore:
+      - '**/*.md'
+    labels:
+      - linux
 
 jobs:
   build-x86_64:

@@ -1,0 +1,31 @@
+name: Windows Workflow
+
+on:
+  push:
+    branches:
+      - release*
+    tags:
+      - v*
+      - nightly
+
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+    labels:
+      - macos
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Run PowerShell script
+        run: |
+          ./script/install_macos.sh
+        shell: bash

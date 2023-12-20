@@ -25,3 +25,5 @@ $env:Path += ";$HOME\scoop\shims"
 
 # Poetry
 $env:POETRY_VIRTUALENVS_IN_PROJECT = 'true'
+
+if(Test-Path 'C:\Users\Administrator\.inshellisense\key-bindings-pwsh.ps1' -PathType Leaf){. C:\Users\Administrator\.inshellisense\key-bindings-pwsh.ps1}

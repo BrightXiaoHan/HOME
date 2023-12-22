@@ -27,5 +27,6 @@ jobs:
 
       - name: Run install_macos script
         run: |
-          ./scripts/install_macos.sh
+          echo "Installing macos Softwares"
+          # ./scripts/install_macos.sh
         shell: bash

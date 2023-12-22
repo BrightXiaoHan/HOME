@@ -27,5 +27,5 @@ jobs:
 
       - name: Run PowerShell script
         run: |
-          ./script/install_macos.sh
+          ./scripts/install_macos.sh
         shell: bash

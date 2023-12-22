@@ -68,16 +68,16 @@ Install-Module -Name PSFzf
 
 # Install Visual Studio Build Tools
 winget install Microsoft.VisualStudio.2019.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
-winget install -e --id Microsoft.VisualStudioCode
-winget install -e --id Tencent.WeChat
-winget install -e --id Microsoft.WindowsTerminal
-winget install -e --id Kingsoft.WPSOffice.CN
-winget install -e --id Microsoft.PowerToys
-winget install -e --id Sogou.SogouInput
-winget install -e --id Alibaba.DingTalk
-winget install -e --id Valve.Steam
-winget install -e --id Alibaba.aDrive
-winget install -e --id tickstep.aliyunpan --silent
-winget install -e --id Youqu.ToDesk
-winget install -e --id Google.Chrome
-winget install -e --id 9NBLGGH5R558 --silent  # Microsoft Store To-Do
+winget install -e --accept-package-agreements --id Microsoft.VisualStudioCode
+winget install -e --accept-package-agreements --id Tencent.WeChat
+winget install -e --accept-package-agreements --id Microsoft.WindowsTerminal
+winget install -e --accept-package-agreements --id Kingsoft.WPSOffice.CN
+winget install -e --accept-package-agreements --id Microsoft.PowerToys
+winget install -e --accept-package-agreements --id Sogou.SogouInput
+winget install -e --accept-package-agreements --id Alibaba.DingTalk
+winget install -e --accept-package-agreements --id Valve.Steam
+winget install -e --accept-package-agreements --id Alibaba.aDrive
+winget install -e --accept-package-agreements --id tickstep.aliyunpan
+winget install -e --accept-package-agreements --id Youqu.ToDesk
+winget install -e --accept-package-agreements --id Google.Chrome
+winget install -e --accept-package-agreements --id 9NBLGGH5R558 --silent  # Microsoft Store To-Do

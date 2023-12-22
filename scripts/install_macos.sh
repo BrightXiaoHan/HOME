@@ -59,6 +59,7 @@ if [ ! -d ~/.ssh ]; then
 	mkdir ~/.ssh
 fi
 ln -s $DIR/ssh/config ~/.ssh/config
+ln -s $DIR/ssh/id_rsa.pub ~/.ssh/id_rsa.pub
 
 # add authorized_keys into .ssh/authorized_keys
 if [ ! -f ~/.ssh/authorized_keys ]; then

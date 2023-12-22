@@ -1,4 +1,4 @@
-name: Windows Workflow
+name: Macos Workflow
 
 on:
   push:
@@ -14,12 +14,12 @@ on:
       - main
     paths-ignore:
       - '**/*.md'
-    labels:
-      - macos
 
 jobs:
   build:
-    runs-on: windows-latest
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'macos') || github.event_name == 'push'
+
+    runs-on: macos-latest
 
     steps:
       - name: Check out repository

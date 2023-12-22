@@ -13,11 +13,10 @@ on:
       - main
     paths-ignore:
       - '**/*.md'
-    labels:
-      - linux
 
 jobs:
   build-x86_64:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'linux') || github.event_name == 'push'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -59,6 +58,7 @@ jobs:
         run: scripts/install.sh unpack home-cli-x86_64.tar
 
   build-arm64:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'linux') || github.event_name == 'push'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

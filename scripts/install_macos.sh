@@ -83,7 +83,7 @@ brew tap homebrew/cask-fonts
 brew install --quiet --cask font-jetbrains-mono
 
 brew install --quiet --cask \
-	iterm2 wechat wpsoffice-cn \
+	iterm2 wechat wpsoffice-cn alacritty \
 	dingtalk todesk microsoft-edge adrive \
 	appcleaner downie typora visual-studio-code \
 	parallels tencent-meeting telegram microsoft-remote-desktop \

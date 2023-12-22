@@ -1,0 +1,34 @@
+name: Macos Workflow
+
+on:
+  push:
+    branches:
+      - release*
+    tags:
+      - v*
+      - nightly
+
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  build:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'macos') || github.event_name == 'push'
+
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Run install_macos script
+        run: |
+          echo "Installing macos Softwares"
+          bash scripts/install_macos.sh
+        shell: bash

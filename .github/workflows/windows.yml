@@ -1,0 +1,33 @@
+name: Windows Workflow
+
+on:
+  push:
+    branches:
+      - release*
+    tags:
+      - v*
+      - nightly
+
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  build:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'windows') || github.event_name == 'push'
+
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Run PowerShell script
+        run: |
+          .\scripts\install.ps1
+        shell: pwsh

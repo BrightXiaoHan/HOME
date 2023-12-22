@@ -63,21 +63,21 @@ scoop install nerd-fonts/JetBrainsMono-NF
 scoop install main/tssh
 scoop bucket add extras
 
-$ProgressPreference = "SilentlyContinue"
 Install-Module -Name PSFzf
 
 # Install Visual Studio Build Tools
-winget install Microsoft.VisualStudio.2019.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
-winget install -e --id Microsoft.VisualStudioCode
-winget install -e --id Tencent.WeChat
-winget install -e --id Microsoft.WindowsTerminal
-winget install -e --id Kingsoft.WPSOffice.CN
-winget install -e --id Microsoft.PowerToys
-winget install -e --id Sogou.SogouInput
-winget install -e --id Alibaba.DingTalk
-winget install -e --id Valve.Steam
-winget install -e --id Alibaba.aDrive
-winget install -e --id tickstep.aliyunpan --silent
-winget install -e --id Youqu.ToDesk
-winget install -e --id Google.Chrome
-winget install -e --id 9NBLGGH5R558 --silent  # Microsoft Store To-Do
+winget install -e --id Microsoft.VisualStudio.2019.BuildTools --accept-source-agreements --accept-package-agreements --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
+winget install -e --id Microsoft.VisualStudioCode --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Tencent.WeChat --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Microsoft.WindowsTerminal --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Kingsoft.WPSOffice.CN --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Microsoft.PowerToys --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Sogou.SogouInput --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Alibaba.DingTalk --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Valve.Steam --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Alibaba.aDrive --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id tickstep.aliyunpan --accept-source-agreements --accept-package-agreements --silent
+winget install -e --id Youqu.ToDesk --accept-source-agreements --accept-package-agreements --silent
+# winget install -e --id Google.Chrome --accept-source-agreements --accept-package-agreements --silent
+# Microsoft Store To-Do
+# winget install -e --id 9NBLGGH5R558  --accept-source-agreements --accept-package-agreements --silent 

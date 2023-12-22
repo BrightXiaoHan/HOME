@@ -78,13 +78,14 @@ brew install --quiet \
 	cmake poetry pipx starship zoxide openssh rich-cli \
 	openssl readline sqlite3 xz zlib # pyenv
 
-brew install --quiet --cask \
-	iterm2 wechat wpsoffice-cn baiduinput \
-	dingtalk todesk microsoft-edge adrive \
-	appcleaner downie typora visual-studio-code \
-	parallels tencent-meeting telegram microsoft-remote-desktop \
-	clashx obs bing-wallpaper qqmusic keycastr
-
 # install font
 brew tap homebrew/cask-fonts
 brew install --quiet --cask font-jetbrains-mono
+
+brew install --quiet --cask \
+	iterm2 wechat wpsoffice-cn \
+	dingtalk todesk microsoft-edge adrive \
+	appcleaner downie typora visual-studio-code \
+	parallels tencent-meeting telegram microsoft-remote-desktop \
+	obs bing-wallpaper qqmusic keycastr
+# missing sogouinput, clashx

@@ -63,11 +63,10 @@ scoop install nerd-fonts/JetBrainsMono-NF
 scoop install main/tssh
 scoop bucket add extras
 
-$ProgressPreference = "SilentlyContinue"
 Install-Module -Name PSFzf
 
 # Install Visual Studio Build Tools
-winget install Microsoft.VisualStudio.2019.BuildTools --accept-source-agreements --accept-package-agreements --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
+winget install -e --id Microsoft.VisualStudio.2019.BuildTools --accept-source-agreements --accept-package-agreements --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
 winget install -e --id Microsoft.VisualStudioCode --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Tencent.WeChat --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Microsoft.WindowsTerminal --accept-source-agreements --accept-package-agreements --silent
@@ -79,5 +78,6 @@ winget install -e --id Valve.Steam --accept-source-agreements --accept-package-a
 winget install -e --id Alibaba.aDrive --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id tickstep.aliyunpan --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Youqu.ToDesk --accept-source-agreements --accept-package-agreements --silent
-winget install -e --id Google.Chrome --accept-source-agreements --accept-package-agreements --silent
-# winget install -e --id 9NBLGGH5R558 --silent --accept-source-agreements --accept-package-agreements # Microsoft Store To-Do
+# winget install -e --id Google.Chrome --accept-source-agreements --accept-package-agreements --silent
+# Microsoft Store To-Do
+# winget install -e --id 9NBLGGH5R558  --accept-source-agreements --accept-package-agreements --silent 

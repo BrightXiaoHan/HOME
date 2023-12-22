@@ -25,7 +25,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Run PowerShell script
+      - name: Run install_macos script
         run: |
           ./scripts/install_macos.sh
         shell: bash

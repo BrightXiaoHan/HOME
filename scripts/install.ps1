@@ -80,4 +80,4 @@ winget install -e --id Alibaba.aDrive --silent --accept-source-agreements --acce
 winget install -e --id tickstep.aliyunpan --silent --accept-source-agreements --accept-package-agreements
 winget install -e --id Youqu.ToDesk --silent --accept-source-agreements --accept-package-agreements
 winget install -e --id Google.Chrome --silent --accept-source-agreements --accept-package-agreements
-winget install -e --id 9NBLGGH5R558 --silent --accept-source-agreements --accept-package-agreements # Microsoft Store To-Do
+# winget install -e --id 9NBLGGH5R558 --silent --accept-source-agreements --accept-package-agreements # Microsoft Store To-Do

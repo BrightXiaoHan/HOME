@@ -79,11 +79,11 @@ brew install --quiet \
 	openssl readline sqlite3 xz zlib # pyenv
 
 brew install --quiet --cask \
-	iterm2 wechat wpsoffice-cn postman sogouinput \
+	iterm2 wechat wpsoffice-cn baiduinput \
 	dingtalk todesk microsoft-edge adrive \
 	appcleaner downie typora visual-studio-code \
 	parallels tencent-meeting telegram microsoft-remote-desktop \
-	clashx obs bing-wallpaper qqmusic douyin keycastr bruno
+	clashx obs bing-wallpaper qqmusic keycastr
 
 # install font
 brew tap homebrew/cask-fonts

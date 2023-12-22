@@ -3,11 +3,12 @@ echo "Install Softwares for macOS"
 export NONINTERACTIVE=1
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install mas git make clang
+
 # Install xcode command line tools
 # git make clang will be installed by xcode-select --install
-brew install mas
-mas install 497799835
-xcode-select --install
+# mas install 497799835
+# xcode-select --install
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 DIR="$DIR/../general"

@@ -151,6 +151,13 @@ Host ifun
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 
+Host ifun-pc
+    HostName 127.0.0.1
+    Port 10004
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
 Host ascend-310
     HostName 101.204.146.85
     Port 10033

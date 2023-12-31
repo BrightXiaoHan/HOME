@@ -16,6 +16,7 @@ elif [ "$MODE" = "unpack" ]; then
 		echo "Usage: install.sh unpack <tarfile>"
 		exit 1
 	fi
+  OLD_INSTALL_DIR=${3:-/root/.homecli}
 	mkdir -p $INSTALL_DIR
 	tar -xvf "$TARFILE" -C "$INSTALL_DIR"
 	mkdir -p $INSTALL_DIR/miniconda
@@ -108,7 +109,7 @@ elif [ "$MODE" = "unpack" ]; then
 	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda unpack
 
 	# Re-link broken symlinks
-	for file in $(find $HOME -type l ! -exec test -e {} \; -print); do
+	for file in $(find $HOME/.local/share/nvim/ -type l ! -exec test -e {} \; -print); do
 		old=$(readlink $file)
 		# Re-link to the new location with $HOME prefix
 		# e.g.> /root/.homecli/xxx -> /home/hanbing/.homecli/xxx
@@ -118,17 +119,33 @@ elif [ "$MODE" = "unpack" ]; then
 			# replace prefix with $HOME
 			new=$(echo $old | sed "s|^$prefix|$HOME/|")
 			rm $file
-			ln -s $new $file
-		fi
-
-		if [[ $old == *"miniconda/bin/"* ]]; then
-			prefix=$(echo $old | sed 's/\/miniconda\/bin.*//')
-			# replace prefix with $HOME
-			new=$(echo $old | sed "s|^$prefix|$INSTALL_DIR/|")
-			rm $file
-			ln -s $new $file
+			ln -sf $new $file
 		fi
 	done
+
+  for file in $(find $INSTALL_DIR -type l ! -exec test -e {} \; -print); do
+		old=$(readlink $file)
+    if [[ $old == $OLD_INSTALL_DIR* ]]; then
+			new=$(echo $old | sed "s|$OLD_INSTALL_DIR|$INSTALL_DIR|")
+			rm $file
+			ln -sf $new $file
+		fi
+
+  for file in $(find $INSTALL_DIR -name "pyvenv.cfg"); do
+    sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
+  done
+
+  for file in $(find $HOME/.local/share/nvim -name "pyvenv.cfg"); do
+    sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
+    sed -i "s|venv .*/.local/share/nvim|venv $HOME/.local/share/nvim|g" $file
+  done
+
+  for file in $(find $HOME/.local/share/nvim/mason/bin -type l); do
+    origin_file=$(readlink $file)
+    sed -i "s|#!.*/.local/share/nvim/mason/packages|#!$HOME/.local/share/nvim/mason/packages|g" $origin_file
+  done
+done
+
 elif [ "$MODE" = "relink" ]; then
 	ln -s $INSTALL_DIR/nvim/ ~/.local/share/nvim
 fi

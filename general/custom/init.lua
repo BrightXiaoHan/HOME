@@ -6,3 +6,6 @@ vim.g.mkdp_port = 33333
 
 -- disable mouse
 vim.opt.mouse = ""
+
+-- disable swap file
+vim.opt.swapfile = false

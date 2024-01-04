@@ -46,7 +46,7 @@ fi
 
 # link alacritty dir if .config/alacritty not exist
 if [ ! -d ~/.config/alacritty ]; then
-	ln -s $DIR/alacritty/ ~/.config/
+	ln -sf $DIR/alacritty/ ~/.config/
 else
 	echo "alacritty config already exist. Please backup or remove it."
 	exit 1
@@ -55,8 +55,8 @@ fi
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
   rm $DIR/NvChad/lua/custom || true
-	ln -s $DIR/custom/ $DIR/NvChad/lua/custom
-	ln -s $DIR/NvChad/ ~/.config/nvim
+	ln -sf $DIR/custom/ $DIR/NvChad/lua/custom
+	ln -sf $DIR/NvChad/ ~/.config/nvim
 else
 	echo "nvim config already exist. Please backup or remove it."
 	exit 1
@@ -64,7 +64,7 @@ fi
 
 # link tmux dir if .config/tmux not exist
 if [ ! -d ~/.config/tmux ]; then
-	ln -s $DIR/tmux/ ~/.config/
+	ln -sf $DIR/tmux/ ~/.config/
 else
 	echo "tmux config already exist. Please backup or remove it."
 	exit 1
@@ -72,7 +72,7 @@ fi
 
 # link fish dir if .config/fish not exist
 if [ ! -d ~/.config/fish ]; then
-	ln -s $DIR/fish/ ~/.config/
+	ln -sf $DIR/fish/ ~/.config/
 else
 	echo "fish config already exist. Please backup or remove it."
 	exit 1
@@ -81,8 +81,8 @@ fi
 if [ ! -d ~/.ssh ]; then
 	mkdir ~/.ssh
 fi
-ln -s $DIR/ssh/config ~/.ssh/config
-ln -s $DIR/ssh/id_rsa.pub ~/.ssh/id_rsa.pub
+ln -sf $DIR/ssh/config ~/.ssh/config
+ln -sf $DIR/ssh/id_rsa.pub ~/.ssh/id_rsa.pub
 
 # add authorized_keys into .ssh/authorized_keys
 if [ ! -f ~/.ssh/authorized_keys ]; then
@@ -93,8 +93,8 @@ if ! grep -q "$(cat ~/.ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
 	cat ~/.ssh/id_rsa.pub >>~/.ssh/authorized_keys
 fi
 
-ln -s $DIR/gitconfig ~/.gitconfig
-ln -s $DIR/mambarc ~/.mambarc
+ln -sf $DIR/gitconfig ~/.gitconfig
+ln -sf $DIR/mambarc ~/.mambarc
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 	PYTHONPATH="./:$PYTHONPATH" \
@@ -102,9 +102,9 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 		python3 homecli/install.py
 	curl https://pyenv.run | PYENV_ROOT="$INSTALL_DIR/pyenv" bash
 	mv $HOME/.local/share/nvim $INSTALL_DIR/nvim
-	ln -s $INSTALL_DIR/nvim $HOME/.local/share/nvim
+	ln -sf $INSTALL_DIR/nvim $HOME/.local/share/nvim
 elif [ "$MODE" = "unpack" ]; then
-	mkdir -p ~/.local/share && ln -s $INSTALL_DIR/nvim/ ~/.local/share/nvim
+	mkdir -p ~/.local/share && ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
 	source $INSTALL_DIR/miniconda/bin/activate
 	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda unpack
 
@@ -147,7 +147,7 @@ elif [ "$MODE" = "unpack" ]; then
 done
 
 elif [ "$MODE" = "relink" ]; then
-	ln -s $INSTALL_DIR/nvim/ ~/.local/share/nvim
+	ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
 fi
 
 # add fish path to .bashrc

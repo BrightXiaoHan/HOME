@@ -163,3 +163,11 @@ Host ascend-310
     Port 10033
     User root
     ServerAliveInterval 10
+
+
+Host haiguang
+    HostName cancon.hpccube.com
+    Port 65023
+    User acdiclg35e
+    ServerAliveInterval 10
+    IdentityFile /Users/hanbing/Desktop/cancon.hpccube.com_0113222940_rsa.txt

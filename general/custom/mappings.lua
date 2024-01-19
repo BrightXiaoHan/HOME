@@ -15,14 +15,14 @@ M.general = {
 		["<C-a>"] = { "gg<S-v>G", "Select All" },
 		-- toggle wrap or unwrap lines
 		["<leader>w"] = {
-      "<cmd>lua ToggleWrap()<cr>",
+			"<cmd>lua ToggleWrap()<cr>",
 			"Toggle wrap",
 		},
-    -- toggle mouse mode or disable it
-    ["<leader>m"] = {
-      "<cmd>lua vim.o.mouse = vim.o.mouse == 'a' and 'v' or 'a'<cr>",
-      "Toggle mouse mode",
-    },
+		-- toggle mouse mode or disable it
+		["<leader>m"] = {
+			"<cmd>lua vim.o.mouse = vim.o.mouse == 'a' and 'v' or 'a'<cr>",
+			"Toggle mouse mode",
+		},
 		-- Window
 		["<C-Left>"] = { "<C-w><" },
 		["<C-Right>"] = { "<C-w>>", "" },
@@ -77,7 +77,12 @@ M.copilot = {
 M.lsp = {
 	n = {
 		["gd"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
-		["<leader>lf"] = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
+		["<leader>lf"] = {
+			function()
+				require("conform").format()
+			end,
+			"formatting",
+		},
 		["<leader>lr"] = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 		["<leader>ld"] = { "<cmd>lua vim.diagnostic.open_float(0, {scope='line'})<CR>", "Line diagnostics" },
 		["<leader>lp"] = { "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>", "Previous diagnostic" },

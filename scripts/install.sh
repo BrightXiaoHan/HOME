@@ -111,7 +111,7 @@ elif [ "$MODE" = "unpack" ]; then
 
 	# Re-link broken symlinks
 	for file in $(find $HOME/.local/share/nvim/ -type l ! -exec test -e {} \; -print); do
-		old=$(readlink $file)
+		old=$(readlink -m $file)
 		# Re-link to the new location with $HOME prefix
 		# e.g.> /root/.homecli/xxx -> /home/hanbing/.homecli/xxx
 
@@ -125,13 +125,12 @@ elif [ "$MODE" = "unpack" ]; then
 	done
 
 	for file in $(find $INSTALL_DIR -type l ! -exec test -e {} \; -print); do
-		old=$(readlink $file)
+		old=$(readlink -m $file)
 		if [[ $old == $OLD_INSTALL_DIR* ]]; then
 			new=$(echo $old | sed "s|$OLD_INSTALL_DIR|$INSTALL_DIR|")
 			rm $file
 			ln -sf $new $file
 		fi
-    sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
 	done
 
 	for file in $(find $INSTALL_DIR -name "pyvenv.cfg"); do
@@ -144,10 +143,14 @@ elif [ "$MODE" = "unpack" ]; then
 	done
 
 	for file in $(find $HOME/.local/share/nvim/mason/bin -type l); do
-		origin_file=$(readlink $file)
-		sed -i "s|#!.*/.local/share/nvim/mason/packages|#!$HOME/.local/share/nvim/mason/packages|g" $origin_file
+		origin_file=$(readlink -m $file)
+		sed -i "s|#\!.*/.local/share/nvim/mason/packages|#\!$HOME/.local/share/nvim/mason/packages|g" $origin_file
 	done
 
+	for file in $(find $INSTALL_DIR/bin -type l); do
+		origin_file=$(readlink -m $file)
+		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
+	done
 elif [ "$MODE" = "relink" ]; then
 	ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
 fi

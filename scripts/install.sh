@@ -131,6 +131,7 @@ elif [ "$MODE" = "unpack" ]; then
 			rm $file
 			ln -sf $new $file
 		fi
+    sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
 	done
 
 	for file in $(find $INSTALL_DIR -name "pyvenv.cfg"); do

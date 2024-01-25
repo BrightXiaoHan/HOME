@@ -210,6 +210,7 @@ def install_conda():
         "compilers",
         "zlib",
         "nodejs",
+        "gh",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(

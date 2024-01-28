@@ -1,6 +1,7 @@
 set -e
 echo "Install Softwares for macOS"
 export NONINTERACTIVE=1
+export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install mas git make llvm

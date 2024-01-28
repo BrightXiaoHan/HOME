@@ -8,6 +8,9 @@ M.treesitter = {
 		"fish",
 		"python",
 		"bash",
+    "markdown",
+    "cmake",
+    "dockerfile"
 	},
 	indent = {
 		enable = true,
@@ -22,10 +25,6 @@ M.mason = {
 		"stylua",
 
 		-- web dev stuff
-		"css-lsp",
-		"html-lsp",
-		"typescript-language-server",
-		"deno",
 		"prettier",
 
 		-- c/cpp stuff
@@ -36,7 +35,7 @@ M.mason = {
 		"pyright",
 		"black",
 		"isort",
-		"mypy",
+    "autoflake",
 	},
 }
 

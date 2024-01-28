@@ -83,13 +83,13 @@ local plugins = { -- Override plugin definition options
 			opts = function()
 				---@type Terminal?
 				local saved_terminal
-			
+
 				return {
-				  window = {
-					open = "tab",
-				  },
+					window = {
+						open = "tab",
+					},
 				}
-			  end,
+			end,
 			-- Ensure that it runs first to minimize delay when opening file from terminal
 			lazy = false,
 			priority = 1001,

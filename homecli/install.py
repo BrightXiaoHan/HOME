@@ -211,6 +211,7 @@ def install_conda():
         "zlib",
         "nodejs",
         "gh",
+        "jq",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
@@ -246,8 +247,6 @@ def install_conda():
     for package in [
         "rich-cli",
         "git+https://github.com/BrightXiaoHan/ssr-command-client.git@master",
-        "mycli",
-        "mdformat",
     ]:
         subprocess.run(
             [

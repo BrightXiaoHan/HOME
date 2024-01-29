@@ -77,7 +77,7 @@ ln -sf $DIR/mambarc ~/.mambarc
 brew install --quiet \
 	git-lfs tmux fish neovim ripgrep fzf pyenv node aliyunpan trzsz-ssh \
 	cmake poetry pipx starship zoxide openssh rich-cli \
-	openssl readline sqlite3 xz zlib gh # pyenv
+	openssl readline sqlite3 xz zlib gh gnu-sed
 
 # install font
 brew tap homebrew/cask-fonts

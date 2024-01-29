@@ -62,6 +62,7 @@ scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrainsMono-NF
 scoop install main/tssh
 scoop install main/gh
+scoop install main/sed
 scoop bucket add extras
 
 Install-Module -Name PSFzf

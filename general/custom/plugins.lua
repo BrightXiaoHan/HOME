@@ -81,9 +81,6 @@ local plugins = { -- Override plugin definition options
 			-- config = true,
 			-- or pass configuration with
 			opts = function()
-				---@type Terminal?
-				local saved_terminal
-
 				return {
 					window = {
 						open = "tab",
@@ -96,6 +93,12 @@ local plugins = { -- Override plugin definition options
 		},
 		--- ...
 	},
+  {
+    "nvim-pack/nvim-spectre",
+    requires = {
+      {"nvim-lua/plenary.nvim"},
+    },
+  }
 }
 
 return plugins

@@ -87,6 +87,10 @@ M.lsp = {
 		["<leader>ld"] = { "<cmd>lua vim.diagnostic.open_float(0, {scope='line'})<CR>", "Line diagnostics" },
 		["<leader>lp"] = { "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>", "Previous diagnostic" },
 		["<leader>ln"] = { "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>", "Next diagnostic" },
+
+    -- Mouse
+    ["<C-LeftMouse>"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
+    ["<C-RightMouse>"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Go to references" },
 	},
 }
 

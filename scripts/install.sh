@@ -1,7 +1,61 @@
-set -e
+Usage() {
+	echo "Usage: install.sh <mode> [tarfile]"
+	echo "args can be one or more of the following :"
+	echo "    --mode | -m     : Installation mode. local-install, online-install, unpack or relink (local-install is default)"
+	echo "    --tarfile | -t  : Tarfile to unpack. Only used when mode is unpack"
+	echo "    --install-dir   : Installation directory. Default: $HOME/.homecli"
+	echo "    --help | -h     : Show this help message"
+	exit 1
+}
+
+while true; do
+	case "$1" in
+	--mode | -m)
+		MODE=$2
+		shift 2
+		;;
+	--tarfile | -t)
+		TARFILE=$2
+		shift 2
+		;;
+	--install-dir)
+		INSTALL_DIR=$2
+		shift 2
+		;;
+	--help | -h)
+		Usage
+		;;
+	-*)
+		echo "Unknown option: $1"
+		Usage
+		;;
+	*)
+		break
+		;;
+	esac
+done
 # MODE: local-install, online-install or unpack. Default: online-install
-MODE=${1:-online-install}
-INSTALL_DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
+if [ -z "$MODE" ]; then
+  MODE=online-install
+fi
+
+# INSTALL_DIR: Installation directory. Default: $HOME/.homecli
+if [ -z "$INSTALL_DIR" ]; then
+  INSTALL_DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
+fi
+
+# remove config files
+rm -rf ~/.config/alacritty \
+	~/.config/nvim \
+	~/.config/tmux \
+	~/.config/fish \
+	~/.gitconfig \
+	~/.ssh/config \
+	~/.ssh/id_rsa.pub \
+	~/.mambarc
+
+# remove nvim plugins
+rm -rf ~/.local/share/nvim
 
 if [ "$MODE" = "local-install" ]; then
 	CWD="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
@@ -11,12 +65,16 @@ if [ "$MODE" = "local-install" ]; then
 	cd $INSTALL_DIR/HOME
 
 elif [ "$MODE" = "unpack" ]; then
-	TARFILE="$2"
 	if [ -z "$TARFILE" ]; then
-		echo "Usage: install.sh unpack <tarfile>"
-		exit 1
+		echo "Error: tarfile is required for unpack mode."
+    Usage
 	fi
-  # Github action runner default home dir is /home/runner
+
+  if [ ! -f "$TARFILE" ]; then
+    echo "Error: tarfile not found: $TARFILE"
+    Usage
+  fi
+	# Github action runner default home dir is /home/runner
 	OLD_INSTALL_DIR=${3:-/home/runner/.homecli}
 	mkdir -p $INSTALL_DIR
 	tar -xvf "$TARFILE" -C "$INSTALL_DIR"
@@ -31,9 +89,8 @@ elif [ "$MODE" = "online-install" ]; then
 elif [ "$MODE" = "relink" ]; then
 	DIR="$INSTALL_DIR/HOME/general"
 else
-	echo "Usage: install.sh <mode> [tarfile]"
-	echo "mode: local-install, online-install, unpack or relink (local-install is default)"
-	exit 1
+  echo "Error: Unknown mode: $MODE"
+  Usage
 fi
 
 # get current dir

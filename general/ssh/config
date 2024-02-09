@@ -164,6 +164,11 @@ Host ascend-310
     User root
     ServerAliveInterval 10
 
+Host zyx-asr
+    HostName 183.63.73.146
+    Port 12011
+    User root
+    ServerAliveInterval 10
 
 Host haiguang
     HostName cancon.hpccube.com

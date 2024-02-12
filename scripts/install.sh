@@ -1,9 +1,10 @@
 Usage() {
-	echo "Usage: install.sh <mode> [tarfile]"
+	echo "Usage: $0 --mode <mode> --install-dir <install-dir> [--tarfile <tarfile>] [--old-install-dir <old-install-dir>] [--help]"
 	echo "args can be one or more of the following :"
 	echo "    --mode | -m     : Installation mode. local-install, online-install, unpack or relink (local-install is default)"
 	echo "    --tarfile | -t  : Tarfile to unpack. Only used when mode is unpack"
 	echo "    --install-dir   : Installation directory. Default: $HOME/.homecli"
+	echo "	  --old-install-dir: Old installation directory. Only used when mode is unpack. Default: /home/runner/.homecli"
 	echo "    --help | -h     : Show this help message"
 	exit 1
 }
@@ -20,6 +21,10 @@ while true; do
 		;;
 	--install-dir)
 		INSTALL_DIR=$2
+		shift 2
+		;;
+	--old-install-dir)
+		OLD_INSTALL_DIR=$2
 		shift 2
 		;;
 	--help | -h)
@@ -70,12 +75,12 @@ elif [ "$MODE" = "unpack" ]; then
     Usage
 	fi
 
-  if [ ! -f "$TARFILE" ]; then
-    echo "Error: tarfile not found: $TARFILE"
-    Usage
-  fi
+	if [ ! -f "$TARFILE" ]; then
+		echo "Error: tarfile not found: $TARFILE"
+		Usage
+	fi
 	# Github action runner default home dir is /home/runner
-	OLD_INSTALL_DIR=${3:-/home/runner/.homecli}
+	OLD_INSTALL_DIR=${OLD_INSTALL_DIR:-/home/runner/.homecli}
 	mkdir -p $INSTALL_DIR
 	tar -xvf "$TARFILE" -C "$INSTALL_DIR"
 	mkdir -p $INSTALL_DIR/miniconda
@@ -112,7 +117,7 @@ fi
 
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
-	rm $DIR/NvChad/lua/custom || true
+	rm -f $DIR/NvChad/lua/custom || true
 	ln -sf $DIR/custom/ $DIR/NvChad/lua/custom
 	ln -sf $DIR/NvChad/ ~/.config/nvim
 else
@@ -163,7 +168,7 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 	ln -sf $INSTALL_DIR/nvim $HOME/.local/share/nvim
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p ~/.local/share && ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
-	source $INSTALL_DIR/miniconda/bin/activate
+	. $INSTALL_DIR/miniconda/bin/activate
 	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda unpack
 
 	# Re-link broken symlinks
@@ -206,7 +211,7 @@ elif [ "$MODE" = "unpack" ]; then
 
 	for file in $(find $INSTALL_DIR/bin -type l); do
 		origin_file=$(readlink -m $file)
-		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
+		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $origin_file
 	done
 elif [ "$MODE" = "relink" ]; then
 	ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim

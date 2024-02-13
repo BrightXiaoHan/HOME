@@ -42,7 +42,7 @@ jobs:
 
       - name: Unpack
         shell: bash
-        run: ./home-cli-x86_64.run -- -m install --install-dir ${{ github.workspace }}/home-cli-x86_64
+        run: bash ./home-cli-x86_64.run -- -m install --install-dir ${{ github.workspace }}/home-cli-x86_64
 
       - uses: actions/upload-artifact@v3
         with:

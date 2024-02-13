@@ -30,34 +30,24 @@ jobs:
 
       - name: Install
         shell: bash
-        run: scripts/install.sh local-install
+        run: scripts/install.sh -m local-install
 
       - name: Pack
         shell: bash
-        run: scripts/pack.sh home-cli-x86_64.tar
+        run: scripts/pack.sh -o home-cli-x86_64.run
+      
+      - name: Uninstall
+        shell: bash
+        run: scripts/uninstall.sh
+
+      - name: Unpack
+        shell: bash
+        run: bash ./home-cli-x86_64.run -- -m install --install-dir ${{ github.workspace }}/home-cli-x86_64
 
       - uses: actions/upload-artifact@v3
         with:
           name: home-cli-pack-x86_64
-          path: home-cli-x86_64.tar
-
-  run-x86_64:
-    runs-on: ubuntu-20.04
-    needs: build-x86_64
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          fetch-depth: 0
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: home-cli-pack-x86_64
-
-      - name: Unpack
-        shell: bash
-        run: scripts/install.sh unpack home-cli-x86_64.tar
+          path: home-cli-x86_64.run
 
   build-arm64:
     if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'linux') || github.event_name == 'push'
@@ -93,60 +83,26 @@ jobs:
           run: |
             uname -a
             cd /workspace
-            scripts/install.sh local-install
-            scripts/pack.sh home-cli-arm64.tar
+            scripts/install.sh -m local-install
+            scripts/pack.sh -o home-cli-arm64.run
+            scripts/uninstall.sh
+            bash home-cli-arm64.run -- -m install --install-dir /workspace/home-cli-arm64
 
       - uses: actions/upload-artifact@v3
         with:
           name: home-cli-pack-arm64
-          path: home-cli-arm64.tar
-
-  run-arm64:
-    runs-on: ubuntu-20.04
-    needs: build-arm64
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          fetch-depth: 0
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: home-cli-pack-arm64
-
-      - uses: uraimo/run-on-arch-action@v2
-        name: Run commands
-        with:
-          arch: aarch64
-          distro: ubuntu20.04
-
-          env: |
-            HOMECLI_PRINT_PROGRESS: false
-
-          # Mount the artifacts directory as /artifacts in the container
-          dockerRunArgs: |
-            --volume "${PWD}:/workspace"
-
-          install: |
-            apt update -y
-            apt install -y python3 python3-pip curl libfuse-dev git
-
-          # Set an output parameter `uname` for use in subsequent steps
-          run: |
-            cd /workspace
-            scripts/install.sh unpack home-cli-arm64.tar
+          path: home-cli-arm64.run
 
   release:
     runs-on: ubuntu-20.04
     needs:
-      - run-x86_64
-      - run-arm64
+      - build-x86_64
+      - build-arm64
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
 
     steps:
       - name: Create Release
-        if: "!contains(github.ref, 'nightly')"
+        if: "! contains(github.ref, 'nightly')"
         id: create_release
         uses: actions/create-release@v1
         with:
@@ -158,7 +114,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete Legacy Pre-Release
-        if: "contains(github.ref, 'nightly')"
+        if: contains(github.ref, 'nightly')
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -199,15 +155,15 @@ jobs:
           name: home-cli-pack-x86_64
 
       - name: Upload Assets x86_64
-        if: "!contains(github.ref, 'nightly')"
+        if: "! contains(github.ref, 'nightly')"
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./home-cli-x86_64.tar
-          asset_name: home-cli-x86_64.tar
-          asset_content_type: application/tar
+          asset_path: ./home-cli-x86_64.run
+          asset_name: home-cli-x86_64.run
+          asset_content_type: application/octet-stream
 
       - name: Upload Pre-Release Assets x86_64
         if: contains(github.ref, 'nightly')
@@ -216,24 +172,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-          asset_path: ./home-cli-x86_64.tar
-          asset_name: home-cli-x86_64.tar
-          asset_content_type: application/tar
+          asset_path: ./home-cli-x86_64.run
+          asset_name: home-cli-x86_64.run
+          asset_content_type: application/octet-stream
 
       - uses: actions/download-artifact@v3
         with:
           name: home-cli-pack-arm64
 
       - name: Upload Assets arm64
-        if: "!contains(github.ref, 'nightly')"
+        if: "! contains(github.ref, 'nightly')"
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./home-cli-arm64.tar
-          asset_name: home-cli-arm64.tar
-          asset_content_type: application/tar
+          asset_path: ./home-cli-arm64.run
+          asset_name: home-cli-arm64.run
+          asset_content_type: application/octet-stream
 
       - name: Upload Pre-Release Assets arm64
         if: contains(github.ref, 'nightly')
@@ -242,28 +198,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-          asset_path: ./home-cli-arm64.tar
-          asset_name: home-cli-arm64.tar
-          asset_content_type: application/tar
-
-      - name: Upload Assets install.sh
-        if: "!contains(github.ref, 'nightly')"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./scripts/install.sh
-          asset_name: install.sh
-          asset_content_type: text/plain
-
-      - name: Upload Pre-Release Assets install.sh
-        if: "contains(github.ref, 'nightly')"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-          asset_path: ./scripts/install.sh
-          asset_name: install.sh
-          asset_content_type: text/plain
+          asset_path: ./home-cli-arm64.run
+          asset_name: home-cli-arm64.run
+          asset_content_type: application/octet-stream

@@ -30,7 +30,7 @@ while true; do
 	esac
 done
 
-INSTALL_DIR=${INSTALL_DIR:-$HOME/.homecli}
+INSTALL_DIR=${INSTALL_DIR:-${HOMECLI_INSTALL_DIR:-$HOME/.homecli}}
 REMOVE_CACHE=${REMOVE_CACHE:-true}
 
 # remove config files

@@ -30,19 +30,18 @@ pack
 HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/pack.sh)"
 ```
 
-unpack
+install from pre-built package
 
-- Download prepacked `home-cli.tar` file and `install.sh`
-- Run `install.sh`
+- Download prepacked run file in releases, `home-cli-x86_64.run` for example
 
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli bash install.sh unpack homecli.tar.gz
+bash home-cli-x86_64.run -- -m install --install-dir $HOME/.homecli
 ```
 
 uninstall but don't delete installation cache, you can relink it if needed.
 
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/uninstall.sh false
+HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/uninstall.sh --remove-cache false
 ```
 
 relink

@@ -399,6 +399,7 @@ def main():
     args = parser.parse_args()
     if "all" in args.component:
         components = [
+            "frp",
             "docker_compose",
             "aliyunpan",
             "mamba",
@@ -407,10 +408,10 @@ def main():
             "conda",
             "neovim",
             "trzsz",
-            "frp"
         ]
     elif "update" in args.component:
         components = [
+            "frp",
             "docker_compose",
             "aliyunpan",
             "mamba",
@@ -418,7 +419,6 @@ def main():
             "zoxide",
             "neovim",
             "trzsz",
-            "frp",
         ]
     else:
         components = args.component

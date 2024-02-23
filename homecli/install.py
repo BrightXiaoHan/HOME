@@ -282,10 +282,11 @@ def install_nodejs():
 
 
 def install_trzsz(overwrite=True):
+    latest_version = get_latest_release("trzsz", "trzsz-go")
     if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://github.com/trzsz/trzsz-go/releases/download/v1.1.4/trzsz_1.1.4_linux_x86_64.tar.gz"
+        url = f"https://github.com/trzsz/trzsz-go/releases/download/{latest_version}/trzsz_{latest_version[1:]}_linux_x86_64.tar.gz"
     else:
-        url = "https://github.com/trzsz/trzsz-go/releases/download/v1.1.4/trzsz_1.1.4_linux_aarch64.tar.gz"
+        url = f"https://github.com/trzsz/trzsz-go/releases/download/{latest_version}/trzsz_{latest_version[1:]}_linux_aarch64.tar.gz"
 
     logging.info("Installing trzsz...")
     if not os.path.exists(os.path.join(CACHE_DIR, "bin", "trzsz")) or overwrite:
@@ -302,11 +303,35 @@ def install_trzsz(overwrite=True):
             shutil.move(os.path.join(trzsz_dir, f), os.path.join(CACHE_DIR, "bin"))
 
 
-def install_docker_compose(overwrite=True):
+def install_frp(overwrite=True):
+    latest_version = get_latest_release("fatedier", "frp")
+
     if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-x86_64"
+        url = f"https://github.com/fatedier/frp/releases/download/{latest_version}/frp_{latest_version[1:]}_linux_amd64.tar.gz"
     else:
-        url = "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-linux-aarch64"
+        url = f"https://github.com/fatedier/frp/releases/download/{latest_version}/frp_{latest_version[1:]}_linux_arm64.tar.gz"
+
+    logging.info("Installing frp...")
+    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "frpc")) or overwrite:
+        with tempfile.NamedTemporaryFile() as tmp:
+            download_with_progress(url, tmp.name, "frp")
+            with tarfile.open(tmp.name) as tar:
+                tar.extractall(path=CACHE_DIR)
+
+        # move all files to CACHE_DIR/bin
+        frp_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
+        for f in ["frpc", "frps"]:
+            if os.path.isfile(os.path.join(CACHE_DIR, "bin", f)):
+                os.remove(os.path.join(CACHE_DIR, "bin", f))
+            shutil.move(os.path.join(frp_dir, f), os.path.join(CACHE_DIR, "bin"))
+
+
+def install_docker_compose(overwrite=True):
+    latest_version = get_latest_release("docker", "compose")
+    if ARCHITECTURE in ("x86_64", "amd64"):
+        url = f"https://github.com/docker/compose/releases/download/{latest_version}/docker-compose-linux-x86_64"
+    else:
+        url = f"https://github.com/docker/compose/releases/download/{latest_version}/docker-compose-linux-aarch64"
 
     logging.info("Installing docker-compose...")
     if (
@@ -374,6 +399,7 @@ def main():
     args = parser.parse_args()
     if "all" in args.component:
         components = [
+            "frp",
             "docker_compose",
             "aliyunpan",
             "mamba",
@@ -385,6 +411,7 @@ def main():
         ]
     elif "update" in args.component:
         components = [
+            "frp",
             "docker_compose",
             "aliyunpan",
             "mamba",

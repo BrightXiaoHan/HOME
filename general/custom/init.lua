@@ -9,3 +9,6 @@ vim.opt.mouse = ""
 
 -- disable swap file
 vim.opt.swapfile = false
+
+-- disable wrap
+vim.opt.wrap = false

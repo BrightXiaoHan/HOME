@@ -18,3 +18,8 @@ local options = {
 }
 
 require("conform").setup(options)
+
+-- prepend_args can be a function, just like args
+require("conform").formatters.autoflake = {
+	prepend_args = { "-i", "--remove-all-unused-imports" },
+}

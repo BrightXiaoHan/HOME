@@ -10,13 +10,13 @@ local plugins = { -- Override plugin definition options
 			require("custom.configs.conform")
 		end,
 	},
-  {
-  "neovim/nvim-lspconfig",
-   config = function()
-      require "plugins.configs.lspconfig"
-      require "custom.configs.lspconfig"
-   end,
-  },
+	{
+		"neovim/nvim-lspconfig",
+		config = function()
+			require("plugins.configs.lspconfig")
+			require("custom.configs.lspconfig")
+		end,
+	},
 	{
 		"williamboman/mason.nvim",
 		opts = overrides.mason,
@@ -100,12 +100,24 @@ local plugins = { -- Override plugin definition options
 		},
 		--- ...
 	},
-  {
-    "nvim-pack/nvim-spectre",
-    requires = {
-      {"nvim-lua/plenary.nvim"},
-    },
-  }
+	{
+		"nvim-pack/nvim-spectre",
+		requires = {
+			{ "nvim-lua/plenary.nvim" },
+		},
+	},
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		branch = "canary",
+		dependencies = {
+			{ "github/copilot.vim" },
+			{ "nvim-lua/plenary.nvim" },
+		},
+		opts = {
+			debug = false, -- Enable debugging
+		},
+    lazy = false,
+	},
 }
 
 return plugins

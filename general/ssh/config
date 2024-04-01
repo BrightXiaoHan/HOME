@@ -164,6 +164,12 @@ Host ascend-310
     User root
     ServerAliveInterval 10
 
+Host ascend-310-hanbing
+    HostName 101.204.146.85
+    Port 10033
+    User hanbing
+    ServerAliveInterval 10
+
 Host zyx-asr
     HostName 183.63.73.146
     Port 12011

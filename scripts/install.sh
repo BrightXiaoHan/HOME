@@ -118,7 +118,6 @@ fi
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
 	rm -f $DIR/NvChad/lua/custom || true
-	ln -sf $DIR/custom/ $DIR/NvChad/lua/custom
 	ln -sf $DIR/NvChad/ ~/.config/nvim
 else
 	echo "nvim config already exist. Please backup or remove it."

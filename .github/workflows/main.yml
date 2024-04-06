@@ -220,7 +220,7 @@ jobs:
 
       - name: Upload file to Hugging Face
         run: |
-          huggingface-cli upload home-cli-x86_64.run --repo HOME
-          huggingface-cli upload home-cli-arm64.run --repo HOME
+          huggingface-cli upload BrightXiaoHan/HOME home-cli-x86_64.run home-cli-x86_64.run
+          huggingface-cli upload BrightXiaoHan/HOME home-cli-arm64.run home-cli-arm64.run
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}

@@ -35,7 +35,7 @@ jobs:
       - name: Pack
         shell: bash
         run: scripts/pack.sh -o home-cli-x86_64.run
-      
+
       - name: Uninstall
         shell: bash
         run: scripts/uninstall.sh
@@ -201,3 +201,26 @@ jobs:
           asset_path: ./home-cli-arm64.run
           asset_name: home-cli-arm64.run
           asset_content_type: application/octet-stream
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install huggingface_hub
+
+      - name: Authenticate with Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          huggingface-cli login $HF_TOKEN
+
+      - name: Upload file to Hugging Face
+        run: |
+          huggingface-cli upload home-cli-x86_64.run --repo HOME
+          huggingface-cli upload home-cli-arm64.run --repo HOME
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}

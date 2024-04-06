@@ -42,7 +42,6 @@ New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\general\gitconf
 # Create symbolic links to the neovim config file
 $nvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
 New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\NvChad -Force
-New-Item -ItemType SymbolicLink -Path $nvimDir\lua\custom -Value $rootDir\general\custom -Force
 
 scoop bucket add main
 scoop install main/winget

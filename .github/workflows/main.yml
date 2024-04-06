@@ -216,7 +216,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          huggingface-cli login $HF_TOKEN
+          huggingface-cli login --token $HF_TOKEN --add-to-git-credential
 
       - name: Upload file to Hugging Face
         run: |

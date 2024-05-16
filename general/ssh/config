@@ -103,6 +103,12 @@ Host ifun-translate
     User ubuntu
     ServerAliveInterval 10
 
+Host ifun-119
+    HostName 43.159.142.119
+    Port 22
+    User ubuntu
+    ServerAliveInterval 10
+
 Host personal-aliyun
     HostName 39.99.244.8
     Port 22

@@ -1,3 +1,4 @@
+#!/bin/bash
 Usage() {
 	echo "Usage: $0 --mode <mode> --install-dir <install-dir> [--tarfile <tarfile>] [--old-install-dir <old-install-dir>] [--help]"
 	echo "args can be one or more of the following :"

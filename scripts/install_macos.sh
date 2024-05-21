@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 echo "Install Softwares for macOS"
 export NONINTERACTIVE=1

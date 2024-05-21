@@ -1,3 +1,4 @@
+#!/bin/bash
 Usage() {
 	echo "Usage: $0 --mode <install|uninstall> [--remove-cache <true|false>] [--install-dir <install-dir>] [--help]"
 	echo "args can be one or more of the following :"

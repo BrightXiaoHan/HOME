@@ -1,3 +1,4 @@
+#!/bin/bash
 Usage() {
 	echo "Usage: $0 --outfile <outfile> [--install-dir <install-dir>] [--help]"
 	echo "args can be one or more of the following :"

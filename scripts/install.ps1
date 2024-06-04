@@ -17,9 +17,6 @@ if ($isAdministrator) {
 
 scoop install git
 
-# install pyenv
-Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
-
 # Clone the repository
 git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git
 

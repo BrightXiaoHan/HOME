@@ -188,3 +188,16 @@ Host haiguang
     User acdiclg35e
     ServerAliveInterval 10
     IdentityFile /Users/hanbing/Desktop/cancon.hpccube.com_0113222940_rsa.txt
+
+Host xunfei
+    HostName 172.30.210.29
+    User hanbing
+    Port 22
+    ServerAliveInterval 10
+
+Host xunfei-jingdong
+    HostName 116.198.46.136
+    User hanbing
+    Port 22
+    ServerAliveInterval 10
+

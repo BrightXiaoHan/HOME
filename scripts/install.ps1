@@ -61,6 +61,7 @@ scoop install main/tssh
 scoop install main/gh
 scoop install main/sed
 scoop bucket add extras
+scoop install lazygit
 
 Install-Module -Name PSFzf
 

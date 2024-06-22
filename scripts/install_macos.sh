@@ -75,9 +75,9 @@ ln -sf $DIR/gitconfig ~/.gitconfig
 ln -sf $DIR/mambarc ~/.mambarc
 
 brew install --quiet \
-	git-lfs tmux fish neovim ripgrep fzf pyenv node aliyunpan trzsz-ssh \
+	git-lfs tmux fish neovim ripgrep fzf node aliyunpan trzsz-ssh \
 	cmake poetry pipx starship zoxide openssh rich-cli \
-	openssl readline sqlite3 xz zlib gh gnu-sed
+	openssl readline sqlite3 xz zlib gh gnu-sed layzygit
 
 # install font
 brew tap homebrew/cask-fonts

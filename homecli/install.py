@@ -212,6 +212,7 @@ def install_conda():
         "nodejs",
         "gh",
         "jq",
+        "lazygit",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(

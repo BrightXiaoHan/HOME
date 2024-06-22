@@ -77,7 +77,7 @@ ln -sf $DIR/mambarc ~/.mambarc
 brew install --quiet \
 	git-lfs tmux fish neovim ripgrep fzf node aliyunpan trzsz-ssh \
 	cmake poetry pipx starship zoxide openssh rich-cli \
-	openssl readline sqlite3 xz zlib gh gnu-sed layzygit
+	openssl readline sqlite3 xz zlib gh gnu-sed lazygit
 
 # install font
 brew tap homebrew/cask-fonts

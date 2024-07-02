@@ -91,6 +91,12 @@ Host YuyiGPU
     User parallel
     ServerAliveInterval 10
 
+Host YuyiGPU-tangzhifeng
+    HostName 39.105.167.2
+    Port 5100
+    User tangzhifeng
+    ServerAliveInterval 10
+
 Host YuyiGPURoot
     HostName 39.105.167.2
     Port 5100
@@ -194,6 +200,13 @@ Host xunfei
     User hanbing
     Port 22
     ServerAliveInterval 10
+
+Host xunfei-external
+    HostName 127.0.0.1
+    Port 10006
+    User hanbing
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
 
 Host xunfei-jingdong
     HostName 116.198.46.136

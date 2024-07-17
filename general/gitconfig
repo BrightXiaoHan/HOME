@@ -8,3 +8,9 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[credential "helperselector"]
+	selected = manager
+[credential "http://39.105.167.2:8888"]
+	provider = generic
+[credential "https://gitee.com"]
+	provider = generic

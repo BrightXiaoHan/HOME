@@ -24,14 +24,6 @@ if ! [ -x "$(command -v python3)" ]; then
 	exit 1
 fi
 
-# link alacritty dir if .config/alacritty not exist
-if [ ! -d ~/.config/alacritty ]; then
-	ln -sf $DIR/alacritty/ ~/.config/
-else
-	echo "alacritty config already exist. Please backup or remove it."
-	exit 1
-fi
-
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
 	ln -sf $DIR/NvChad/ ~/.config/nvim
@@ -84,7 +76,7 @@ brew tap homebrew/cask-fonts
 brew install --quiet --cask font-jetbrains-mono
 
 brew install --quiet --cask \
-	iterm2 wechat wpsoffice-cn alacritty \
+	iterm2 wechat wpsoffice-cn \
 	dingtalk todesk microsoft-edge adrive \
 	appcleaner downie typora visual-studio-code \
 	parallels tencent-meeting telegram microsoft-remote-desktop \

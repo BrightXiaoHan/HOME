@@ -51,8 +51,7 @@ if [ -z "$INSTALL_DIR" ]; then
 fi
 
 # remove config files
-rm -rf ~/.config/alacritty \
-	~/.config/nvim \
+rm -rf ~/.config/nvim \
 	~/.config/tmux \
 	~/.config/fish \
 	~/.gitconfig \
@@ -105,14 +104,6 @@ mkdir -p ~/.config
 # test if python3 is installed
 if ! [ -x "$(command -v python3)" ]; then
 	echo 'Error: python3 is not installed.' >&2
-	exit 1
-fi
-
-# link alacritty dir if .config/alacritty not exist
-if [ ! -d ~/.config/alacritty ]; then
-	ln -sf $DIR/alacritty/ ~/.config/
-else
-	echo "alacritty config already exist. Please backup or remove it."
 	exit 1
 fi
 

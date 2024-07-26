@@ -35,8 +35,7 @@ INSTALL_DIR=${INSTALL_DIR:-${HOMECLI_INSTALL_DIR:-$HOME/.homecli}}
 REMOVE_CACHE=${REMOVE_CACHE:-true}
 
 # remove config files
-rm -rf ~/.config/alacritty \
-	~/.config/nvim \
+rm ~/.config/nvim \
 	~/.config/tmux \
 	~/.config/fish \
 	~/.gitconfig \

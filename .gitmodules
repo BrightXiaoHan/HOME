@@ -1,6 +1,3 @@
-[submodule "general/alacritty/themes"]
-	path = general/alacritty/themes
-	url = https://github.com/alacritty/alacritty-theme
 [submodule "scripts/makeself"]
 	path = scripts/makeself
 	url = https://github.com/megastep/makeself

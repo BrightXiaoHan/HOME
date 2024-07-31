@@ -1,9 +1,8 @@
 ARG VERSION=latest
 FROM ubuntu:$VERSION
 
-ARG HTTP_PROXY=""
 ARG HTTPS_PROXY=""
-ENV http_proxy=$HTTP_PROXY https_proxy=$HTTPS_PROXY
+ENV https_proxy=$HTTPS_PROXY
 
 # Change timezone to Shanghai
 ENV TZ=Asia/Shanghai \
@@ -16,15 +15,14 @@ RUN apt update \
     && dpkg-reconfigure --frontend noninteractive tzdata \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /root/.HOME
+WORKDIR /root/HOME
 ADD . .
-RUN bash ./scripts/install.sh
+RUN bash ./scripts/install.sh -m local-install
+RUN ln -s /root/.homecli/miniconda/bin/fish /usr/bin/fish
 
-ENV http_proxy="" https_proxy=""
-
-ENV PATH="/root/.homecli/miniconda/bin:${PATH}"
+ENV https_proxy=""
 
 WORKDIR /workspace
 VOLUME ["/workplace"]
 
-CMD ["fish"]
+ENTRYPOINT ["fish"]

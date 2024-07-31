@@ -80,14 +80,23 @@ iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOM
 
 ## Dev Container
 
+It's highly recommended to use podman to build and run the container.
+You can mount your home directory to the container and do the development work in the container without any permission issue.
+
 Build image
 
-```bash
-docker build -t home .
+```shell
+podman build -t home .
+```
+
+Build with custom args
+
+```shell
+podman build -t home --build-arg "VERSION=20.04" --network=host --build-arg "HTTPS_PROXY=http://127.0.0.1:7890" .
 ```
 
 Run Container
 
-```bash
-docker run -v /path/to/workspace:/workspace --name home -itd home
+```shell
+podman run -v $HOME:/workspace --name home -itd home
 ```

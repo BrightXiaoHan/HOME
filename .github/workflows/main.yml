@@ -1,12 +1,13 @@
 name: CI
 
 on:
+  create:
+    tags:
+      - nightly
+      - v*
   push:
     branches:
       - release*
-    tags:
-      - v*
-      - nightly
   pull_request:
     types: [opened, synchronize, reopened, labeled]
     branches:

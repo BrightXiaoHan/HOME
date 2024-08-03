@@ -1,4 +1,4 @@
-name: CI
+name: Main Linux Workflow
 
 on:
   push:
@@ -11,11 +11,10 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
   schedule:
-    - cron: '0 0 * * *'  # nightly build
-  workflow_dispatch:  # manual trigger
-
+    - cron: "0 0 * * *" # nightly build
+  workflow_dispatch: # manual trigger
 
 jobs:
   build-x86_64:
@@ -107,7 +106,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Ensure we have access to all commit history
+          fetch-depth: 0 # Ensure we have access to all commit history
 
       - name: Set up Git
         run: |
@@ -269,7 +268,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install dependencies
         run: |

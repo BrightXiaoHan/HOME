@@ -15,6 +15,8 @@ brew install mas git make llvm
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 DIR="$DIR/../general"
 
+git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/NvChad
+
 # get current dir
 mkdir -p ~/.config
 

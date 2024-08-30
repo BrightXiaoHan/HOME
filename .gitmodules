@@ -1,6 +1,3 @@
 [submodule "scripts/makeself"]
 	path = scripts/makeself
 	url = https://github.com/megastep/makeself
-[submodule "general/NvChad"]
-	path = general/NvChad
-	url = https://github.com/BrightXiaoHan/nvchad-starter

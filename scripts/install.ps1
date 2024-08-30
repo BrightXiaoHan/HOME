@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 # install scoop
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
 
-# Judge whether the current user is an administrator 
+# Judge whether the current user is an administrator
 $isAdministrator = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 
 if ($isAdministrator) {
@@ -19,6 +19,7 @@ scoop install git
 
 # Clone the repository
 git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git
+git clone https://github.com/BrightXiaoHan/nvchad-starter.git HOME/general/NvChad
 
 # Create symbolic links to the user profile and the OMP configuration file
 $rootDir = (Get-Item -Path ".\HOME").FullName

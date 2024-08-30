@@ -98,6 +98,11 @@ else
   Usage
 fi
 
+# if general/NvChad not exist, clone it
+if [ ! -d $DIR/NvChad ]; then
+  git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/NvChad
+fi
+
 # get current dir
 mkdir -p ~/.config
 

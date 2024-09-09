@@ -92,16 +92,21 @@ def install_neovim(overwrite=True):
         )
         bin_file = tmpfile
 
-    # install plugins
-    subprocess.run(
-        [
-            bin_file,
-            "--appimage-extract-and-run",
-            "--headless",
-            '"+Lazy! sync"',
-            "+qa",
-        ],
-    )
+    # install plugins. Run 3 times to make sure all plugins are installed
+    # 1st time: install nvchad
+    # 2nd time: install plugins
+    # 3rd time: install dependencies
+    for _ in range(3):
+        # install plugins
+        subprocess.run(
+            [
+                bin_file,
+                "--appimage-extract-and-run",
+                "--headless",
+                '"+Lazy! sync"',
+                "+qa",
+            ],
+        )
 
     subprocess.run(
         [

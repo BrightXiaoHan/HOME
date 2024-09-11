@@ -1,9 +1,3 @@
-Host zeng
-    HostName 81.71.18.250
-    Port 20023
-    User zengdj
-    ServerAliveInterval 10
-
 Host wangzhengtong
     HostName 60.205.207.43
     User root
@@ -73,18 +67,6 @@ Host aliyun_inner_movecar
     User root
     ProxyCommand ssh -W %h:%p aliyun_movecar
 
-Host zeng_school
-    HostName 81.71.18.250
-    Port 20023
-    User zengdj
-    ServerAliveInterval 10
-
-Host ShengTeng
-    HostName 101.204.146.85
-    Port 10023
-    User root
-    ServerAliveInterval 10
-
 Host YuyiGPU
     HostName 39.105.167.2
     Port 5100
@@ -101,18 +83,6 @@ Host YuyiGPURoot
     HostName 39.105.167.2
     Port 5100
     User root
-    ServerAliveInterval 10
-
-Host ifun-translate
-    HostName 43.153.70.114
-    Port 22
-    User ubuntu
-    ServerAliveInterval 10
-
-Host ifun-119
-    HostName 43.159.142.119
-    Port 22
-    User ubuntu
     ServerAliveInterval 10
 
 Host personal-aliyun
@@ -156,20 +126,6 @@ Host lm100
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 
-Host ifun
-    HostName 127.0.0.1
-    Port 10003
-    User ubuntu
-    ServerAliveInterval 10
-    ProxyCommand ssh -W %h:%p personal-aliyun
-
-Host ifun-pc
-    HostName 127.0.0.1
-    Port 10004
-    User root
-    ServerAliveInterval 10
-    ProxyCommand ssh -W %h:%p personal-aliyun
-
 Host ascend-310
     HostName 101.204.146.85
     Port 10033
@@ -182,35 +138,20 @@ Host ascend-310-hanbing
     User hanbing
     ServerAliveInterval 10
 
-Host zyx-asr
-    HostName 183.63.73.146
-    Port 12011
-    User root
-    ServerAliveInterval 10
-
-Host haiguang
-    HostName cancon.hpccube.com
-    Port 65023
-    User acdiclg35e
-    ServerAliveInterval 10
-    IdentityFile /Users/hanbing/Desktop/cancon.hpccube.com_0113222940_rsa.txt
-
 Host xunfei
     HostName 172.30.210.29
     User hanbing
     Port 22
     ServerAliveInterval 10
 
-Host xunfei-external
-    HostName 127.0.0.1
-    Port 10006
-    User hanbing
+Host xunfei-test
+    HostName 172.30.210.29
+    Port 22
+    User iflyweb
     ServerAliveInterval 10
-    ProxyCommand ssh -W %h:%p personal-aliyun
 
 Host xunfei-jingdong
     HostName 116.198.46.136
     User hanbing
     Port 22
     ServerAliveInterval 10
-

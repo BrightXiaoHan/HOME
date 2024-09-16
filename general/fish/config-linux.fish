@@ -21,7 +21,7 @@ set -gx PIPX_HOME $INSTALL_DIR/pipx
 set -gx PIPX_BIN_DIR $INSTALL_DIR/bin
 
 # pyenv
-set -gx MAKE_OPTS -j(nproc --ignore=1)  # pyenv set MAKE_OPTS to number of cores minus 1
+set -gx MAKE_OPTS -j(nproc --ignore=1) # pyenv set MAKE_OPTS to number of cores minus 1
 set -gx PYENV_ROOT $INSTALL_DIR/pyenv
 set -gx PATH $PYENV_ROOT/bin $PATH
 # if pyenv exists, initialize it
@@ -33,9 +33,19 @@ set -gx CPPFLAGS "-I$CONDA_PREFIX/include " $CPPFLAGS
 set -gx LDFLAGS "-L$CONDA_PREFIX/lib " $LDFLAGS
 set -gx CONFIGURE_OPTS "-with-openssl=$CONDA_PREFIX " $CONFIGURE_OPTS
 
-if not nvim --headless -c quit > /dev/null 2>&1
+if not nvim --headless -c quit >/dev/null 2>&1
     alias nvim='nvim --appimage-extract-and-run'
 end
 
 set -gx CC $INSTALL_DIR/miniconda/bin/gcc
 set -gx CXX $INSTALL_DIR/miniconda/bin/g++
+
+function osc52-copy
+    set -l data (echo -n $argv | base64 | tr -d '\n')
+    set -l esc "\033]52;c;$data\a"
+    if test -n "$TMUX"
+        printf "\033Ptmux;\033$esc\033\\"
+    else
+        printf $esc
+    end
+end

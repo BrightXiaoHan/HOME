@@ -79,6 +79,12 @@ Host YuyiGPU-tangzhifeng
     User tangzhifeng
     ServerAliveInterval 10
 
+Host YuyiGPU-wuhaodong
+    HostName 39.105.167.2
+    Port 5100
+    User wuhaodong
+    ServerAliveInterval 10
+
 Host YuyiGPURoot
     HostName 39.105.167.2
     Port 5100

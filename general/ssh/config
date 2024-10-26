@@ -161,3 +161,8 @@ Host xunfei-jingdong
     User hanbing
     Port 22
     ServerAliveInterval 10
+
+Host desheng-a100
+    HostName 122.13.25.77
+    User root
+    ServerAliveInterval 10

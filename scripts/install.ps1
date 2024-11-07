@@ -61,6 +61,7 @@ scoop install nerd-fonts/JetBrainsMono-NF
 scoop install main/tssh
 scoop install main/gh
 scoop install main/sed
+scoop install main/uv
 scoop bucket add extras
 scoop install lazygit
 

@@ -212,12 +212,13 @@ def install_conda():
         "tmux",
         "libcurl",
         "pipx",
+        "uv",
+        "ruff",
         "compilers",
         "zlib",
         "nodejs",
         "gh",
         "jq",
-        "lazygit",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
@@ -251,7 +252,6 @@ def install_conda():
     env["PIPX_HOME"] = os.path.join(CACHE_DIR, "pipx")
     env["PIPX_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
     for package in [
-        "rich-cli",
         "git+https://github.com/BrightXiaoHan/ssr-command-client.git@master",
     ]:
         subprocess.run(

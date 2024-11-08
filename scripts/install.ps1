@@ -63,7 +63,6 @@ scoop install main/gh
 scoop install main/sed
 scoop install main/uv
 scoop bucket add extras
-scoop install lazygit
 
 Install-Module -Name PSFzf
 

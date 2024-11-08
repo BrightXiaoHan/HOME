@@ -160,7 +160,6 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 		PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
 		HOMECLI_INSTALL_DIR=$INSTALL_DIR \
 		python3 homecli/install.py
-	curl https://pyenv.run | PYENV_ROOT="$INSTALL_DIR/pyenv" bash
 	mv $HOME/.local/share/nvim $INSTALL_DIR/nvim
 	ln -sf $INSTALL_DIR/nvim $HOME/.local/share/nvim
 elif [ "$MODE" = "unpack" ]; then

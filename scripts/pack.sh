@@ -56,7 +56,7 @@ cd $INSTALL_DIR
 rm -rf $INSTALL_DIR/packed
 mkdir $INSTALL_DIR/packed
 tar --exclude="__pycache__" -cvf $INSTALL_DIR/packed/homecli.tar.gz \
-	HOME bin miniconda.tar.gz pyenv pipx nvim
+	HOME bin miniconda.tar.gz pipx nvim
 rm miniconda.tar.gz
 cp $INSTALL_DIR/HOME/scripts/install.sh \
 	$INSTALL_DIR/HOME/scripts/uninstall.sh \

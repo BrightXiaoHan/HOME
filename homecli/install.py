@@ -153,7 +153,7 @@ def install_conda():
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
             [
-                "docker-commpose",
+                "docker-compose",
             ]
         )
     else:

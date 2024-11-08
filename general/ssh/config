@@ -166,3 +166,8 @@ Host desheng-a100
     HostName 122.13.25.77
     User root
     ServerAliveInterval 10
+
+Host personal-tencent
+    HostName 106.52.220.44
+    User root
+    ServerAliveInterval 10

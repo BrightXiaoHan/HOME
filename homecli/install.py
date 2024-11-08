@@ -146,7 +146,6 @@ def install_conda():
         "nodejs",
         "gh",
         "jq",
-        "docker-compose",
         "zoxide",
         "starship",
         "nvim",
@@ -154,8 +153,7 @@ def install_conda():
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
             [
-                "starship",
-                "zoxide",
+                "docker-commpose",
             ]
         )
     else:

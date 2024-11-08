@@ -8,10 +8,9 @@ import sys
 import tarfile
 import tempfile
 import urllib.request
-import zipfile
 
 from homecli import ARCHITECTURE, BIN_DIR, CACHE_DIR
-from homecli.utils import get_latest_stable_nodejs_version, progress
+from homecli.utils import progress
 
 
 def get_latest_release(owner, repo):
@@ -60,38 +59,8 @@ except ImportError:
 
 
 def install_neovim(overwrite=True):
+    bin_file = os.path.join(CACHE_DIR, "miniconda", "bin", "nvim")
     logging.info("Installing neovim...")
-    # download the stable version of neovim
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        url = "https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
-    else:
-        release_tag = get_latest_release("matsuu", "neovim-aarch64-appimage")
-        url = f"https://github.com/matsuu/neovim-aarch64-appimage/releases/download/{release_tag}/nvim-{release_tag}-aarch64.appimage"
-    bin_file = os.path.join(BIN_DIR, "nvim")
-
-    if not os.path.exists(bin_file) or overwrite:
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "nvim")
-            shutil.copy(tmp.name, bin_file)
-            os.chmod(bin_file, 0o755)
-    logging.info("Installing neovim done.")
-
-    if ARCHITECTURE not in ("x86_64", "amd64"):
-        tmpfile = os.path.join(BIN_DIR, "nvim.appimage")
-        shutil.copy(bin_file, tmpfile)
-        # https://github.com/AppImage/AppImageKit/issues/965
-        # https://github.com/AppImage/AppImageKit/issues/1056
-        subprocess.run(
-            [
-                "sed",
-                "-i",
-                # r's|AI\x02|\x00\x00\x00|',
-                r"0,/AI\x02/{s|AI\x02|\x00\x00\x00|}",
-                tmpfile,
-            ]
-        )
-        bin_file = tmpfile
-
     # install plugins. Run 3 times to make sure all plugins are installed
     # 1st time: install nvchad
     # 2nd time: install plugins
@@ -101,7 +70,6 @@ def install_neovim(overwrite=True):
         subprocess.run(
             [
                 bin_file,
-                "--appimage-extract-and-run",
                 "--headless",
                 '"+Lazy! sync"',
                 "+qa",
@@ -109,57 +77,16 @@ def install_neovim(overwrite=True):
         )
 
     subprocess.run(
-        [
-            bin_file,
-            "--appimage-extract-and-run",
-            "--headless",
-            "-c",
-            "TSInstallSync",
-            "-c",
-            "q",
-        ],
+        f'{bin_file} --headless "+TSInstallSync! c cpp fish python bash markdown cmake dockerfile yaml lua" +qa',
+        shell=True,
     )
 
     # mason
     subprocess.run(
-        [
-            bin_file,
-            "--appimage-extract-and-run",
-            "--headless",
-            "-c",
-            "MasonInstallAll",
-            "-c",
-            "q",
-        ]
+        f'{bin_file} --headless "+MasonInstall lua-language-server stylua '
+        'prettier clangd clang-format pyright black isort autoflake debugpy" +qa',
+        shell=True,
     )
-
-
-def install_aliyunpan(overwrite=True):
-    logging.info("Installing aliyunpan...")
-    bin_file = os.path.join(BIN_DIR, "aliyunpan")
-    release_tag = get_latest_release("tickstep", "aliyunpan")
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        url = f"https://github.com/tickstep/aliyunpan/releases/download/{release_tag}/aliyunpan-{release_tag}-linux-amd64.zip"
-    else:
-        url = f"https://github.com/tickstep/aliyunpan/releases/download/{release_tag}/aliyunpan-{release_tag}-linux-arm64.zip"
-
-    if not os.path.exists(bin_file) or overwrite:
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "aliyunpan")
-            # unzip the file
-            with tempfile.TemporaryDirectory() as tmpdir:
-                with zipfile.ZipFile(tmp.name, "r") as zip_ref:
-                    zip_ref.extractall(tmpdir)
-
-                # copy the binary fileo
-                shutil.copy(
-                    os.path.join(
-                        tmpdir, os.path.basename(url).replace(".zip", ""), "aliyunpan"
-                    ),
-                    bin_file,
-                )
-                os.chmod(bin_file, 0o755)
-    logging.info("Installing aliyunpan done.")
 
 
 def install_mamba(overwrite=True):
@@ -219,6 +146,10 @@ def install_conda():
         "nodejs",
         "gh",
         "jq",
+        "docker-compose",
+        "zoxide",
+        "starship",
+        "nvim",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
@@ -267,26 +198,6 @@ def install_conda():
     logging.info("Installing other packages done.")
 
 
-def install_nodejs():
-    latest_version = get_latest_stable_nodejs_version()
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-x64.tar.gz"
-    else:
-        url = f"https://nodejs.org/dist/{latest_version}/node-{latest_version}-linux-arm64.tar.gz"
-
-    logging.info("Installing nodejs...")
-    with tempfile.NamedTemporaryFile() as tmp:
-        download_with_progress(url, tmp.name, "nodejs")
-        with tarfile.open(tmp.name) as tar:
-            tar.extractall(path=CACHE_DIR)
-
-    # rename nodejs directory
-    nodejs_dir = os.path.join(CACHE_DIR, url.split("/")[-1].replace(".tar.gz", ""))
-    os.rename(nodejs_dir, os.path.join(CACHE_DIR, "nodejs"))
-
-    logging.info("Installing nodejs done.")
-
-
 def install_trzsz(overwrite=True):
     latest_version = get_latest_release("trzsz", "trzsz-go")
     if ARCHITECTURE in ("x86_64", "amd64"):
@@ -332,60 +243,6 @@ def install_frp(overwrite=True):
             shutil.move(os.path.join(frp_dir, f), os.path.join(CACHE_DIR, "bin"))
 
 
-def install_docker_compose(overwrite=True):
-    latest_version = get_latest_release("docker", "compose")
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        url = f"https://github.com/docker/compose/releases/download/{latest_version}/docker-compose-linux-x86_64"
-    else:
-        url = f"https://github.com/docker/compose/releases/download/{latest_version}/docker-compose-linux-aarch64"
-
-    logging.info("Installing docker-compose...")
-    if (
-        not os.path.exists(os.path.join(CACHE_DIR, "bin", "docker-compose"))
-        or overwrite
-    ):
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "docker-compose")
-            # move all files to CACHE_DIR/bin
-            shutil.copy(tmp.name, os.path.join(CACHE_DIR, "bin", "docker-compose"))
-            os.chmod(os.path.join(CACHE_DIR, "bin", "docker-compose"), 0o755)
-
-
-def install_zoxide(overwrite=True):
-    latest_version = get_latest_release("ajeetdsouza", "zoxide")
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        # url = f"https://github.com/ajeetdsouza/zoxide/releases/download/{latest_version}/zoxide-{latest_version}-x86_64-unknown-linux-musl.tar.gz"
-        return
-    else:
-        url = f"https://github.com/ajeetdsouza/zoxide/releases/download/{latest_version}/zoxide-{latest_version[1:]}-aarch64-unknown-linux-musl.tar.gz"
-
-    logging.info("Installing zoxide...")
-    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "zoxide")) or overwrite:
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "zoxide")
-            with tarfile.open(tmp.name) as tar:
-                # extract zoxide
-                tar.extract("zoxide", path=os.path.join(CACHE_DIR, "bin"))
-        os.chmod(os.path.join(CACHE_DIR, "bin", "zoxide"), 0o755)
-
-
-def install_starship(overwrite=True):
-    latest_version = get_latest_release("starship", "starship")
-    if ARCHITECTURE in ("x86_64", "amd64"):
-        # url = f"https://github.com/starship/starship/releases/download/{latest_version}/starship-x86_64-unknown-linux-musl.tar.gz"
-        return
-    else:
-        url = f"https://github.com/starship/starship/releases/download/{latest_version}/starship-aarch64-unknown-linux-musl.tar.gz"
-
-    logging.info("Installing starship...")
-    if not os.path.exists(os.path.join(CACHE_DIR, "bin", "starship")) or overwrite:
-        with tempfile.NamedTemporaryFile() as tmp:
-            download_with_progress(url, tmp.name, "starship")
-            with tarfile.open(tmp.name) as tar:
-                tar.extractall(path=os.path.join(CACHE_DIR, "bin"))
-        os.chmod(os.path.join(CACHE_DIR, "bin", "starship"), 0o755)
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -396,8 +253,7 @@ def main():
             "all",
             "update",
             "trzsz",
-            "aliyunpan",
-            "neovim",
+            "frp",
         ],
         default=["all"],
         help="component to install. all by default",
@@ -406,24 +262,14 @@ def main():
     if "all" in args.component:
         components = [
             "frp",
-            "docker_compose",
-            "aliyunpan",
+            "trzsz",
             "mamba",
-            "starship",
-            "zoxide",
             "conda",
             "neovim",
-            "trzsz",
         ]
     elif "update" in args.component:
         components = [
             "frp",
-            "docker_compose",
-            "aliyunpan",
-            "mamba",
-            "starship",
-            "zoxide",
-            "neovim",
             "trzsz",
         ]
     else:

@@ -47,7 +47,7 @@ if [ -n "$1" ]; then
 fi
 source $INSTALL_DIR/miniconda/bin/activate
 rm -f $INSTALL_DIR/miniconda.tar.gz
-$INSTALL_DIR/miniconda/bin/conda-pack -o $INSTALL_DIR/miniconda.tar.gz
+$INSTALL_DIR/bin/conda-pack -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
 
 CURDIR=$(pwd)
 echo $CURDIR
@@ -56,7 +56,7 @@ cd $INSTALL_DIR
 rm -rf $INSTALL_DIR/packed
 mkdir $INSTALL_DIR/packed
 tar --exclude="__pycache__" -cvf $INSTALL_DIR/packed/homecli.tar.gz \
-	HOME bin miniconda.tar.gz pipx nvim
+	HOME bin miniconda.tar.gz uv nvim
 rm miniconda.tar.gz
 cp $INSTALL_DIR/HOME/scripts/install.sh \
 	$INSTALL_DIR/HOME/scripts/uninstall.sh \

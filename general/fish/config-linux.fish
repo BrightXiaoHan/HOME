@@ -16,10 +16,6 @@ alias tmux="$INSTALL_DIR/miniconda/bin/tmux"
 # Mamba
 set -gx MAMBA_ROOT_PREFIX $INSTALL_DIR/miniconda
 
-# pipx
-set -gx PIPX_HOME $INSTALL_DIR/pipx
-set -gx PIPX_BIN_DIR $INSTALL_DIR/bin
-
 set -gx CPPFLAGS "-I$CONDA_PREFIX/include " $CPPFLAGS
 set -gx LDFLAGS "-L$CONDA_PREFIX/lib " $LDFLAGS
 set -gx CONFIGURE_OPTS "-with-openssl=$CONDA_PREFIX " $CONFIGURE_OPTS

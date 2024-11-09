@@ -23,6 +23,12 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
+# uv
+set -gx UV_TOOL_DIR $INSTALL_DIR/uv/tool
+set -gx UV_TOOL_BIN_DIR $INSTALL_DIR/uv/tool/bin
+set -gx UV_PYTHON_INSTALL_DIR $INSTALL_DIR/uv/python
+set -gx UV_PYTHON_PREFERENCE only-managed
+
 # proxy alias
 alias setproxy="set ALL_PROXY 'socks5://127.0.0.1:1080'"
 alias unsetproxy="set -e ALL_PROXY"

@@ -112,7 +112,7 @@ def install_mamba(overwrite=True):
                     bin_file,
                 )
                 os.chmod(bin_file, 0o755)
-    logging.info("Installing aliyunpan done.")
+    logging.info("Installing micromamba done.")
 
 
 def install_conda():
@@ -124,27 +124,21 @@ def install_conda():
         "-c",
         "conda-forge",
         "-y",
-        "python=3.11",
-        "conda",
         "fish",
         "ncurses",
         "fzf",
         "ripgrep",
         "make",
+        "ninja",
         "cmake",
         "git",
         "git-lfs",
-        "conda-pack",
-        "poetry",
         "tmux",
         "libcurl",
-        "pipx",
         "uv",
-        "ruff",
         "compilers",
         "zlib",
         "nodejs",
-        "gh",
         "jq",
         "zoxide",
         "starship",
@@ -178,16 +172,37 @@ def install_conda():
     )
 
     env = os.environ.copy()
-    env["PIPX_HOME"] = os.path.join(CACHE_DIR, "pipx")
-    env["PIPX_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
+    env["UV_TOOL_DIR"] = os.path.join(CACHE_DIR, "uv", "tool")
+    env["UV_TOOL_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
+    env["UV_PYTHON_INSTALL_DIR"] = os.path.join(CACHE_DIR, "uv", "python")
+
+    # install python
+    subprocess.run(
+        [
+            os.path.join(CACHE_DIR, "miniconda", "bin", "uv"),
+            "python",
+            "install",
+            "3.12",
+        ],
+        check=True,
+        env=env,
+    )
+
     for package in [
         "git+https://github.com/BrightXiaoHan/ssr-command-client.git@master",
+        "conda-pack",
+        "poetry",
+        "gh",
+        "ruff",
     ]:
         subprocess.run(
             [
-                os.path.join(CACHE_DIR, "miniconda", "bin", "pipx"),
+                os.path.join(CACHE_DIR, "miniconda", "bin", "uv"),
+                "tool",
                 "install",
                 "--force",
+                "--python-preference",
+                "only-managed",
                 package,
             ],
             check=True,

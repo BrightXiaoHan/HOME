@@ -45,7 +45,7 @@ fi
 if [ -n "$1" ]; then
 	shift
 fi
-source $INSTALL_DIR/miniconda/bin/activate
+
 rm -f $INSTALL_DIR/miniconda.tar.gz
 $INSTALL_DIR/bin/conda-pack -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
 

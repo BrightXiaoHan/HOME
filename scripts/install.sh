@@ -6,6 +6,7 @@ Usage() {
 	echo "    --tarfile | -t  : Tarfile to unpack. Only used when mode is unpack"
 	echo "    --install-dir   : Installation directory. Default: $HOME/.homecli"
 	echo "	  --old-install-dir: Old installation directory. Only used when mode is unpack. Default: /home/runner/.homecli"
+	echo "	  --old-home-dir   : Old home directory. Only used when mode is unpack. Default: /home/runner"
 	echo "    --help | -h     : Show this help message"
 	exit 1
 }
@@ -26,6 +27,10 @@ while true; do
 		;;
 	--old-install-dir)
 		OLD_INSTALL_DIR=$2
+		shift 2
+		;;
+	--old-home-dir)
+		OLD_HOME_DIR=$2
 		shift 2
 		;;
 	--help | -h)
@@ -81,6 +86,7 @@ elif [ "$MODE" = "unpack" ]; then
 	fi
 	# Github action runner default home dir is /home/runner
 	OLD_INSTALL_DIR=${OLD_INSTALL_DIR:-/home/runner/.homecli}
+	OLD_HOME_DIR=${OLD_HOME_DIR:-/home/runner}
 	mkdir -p $INSTALL_DIR
 	tar -xvf "$TARFILE" -C "$INSTALL_DIR"
 	mkdir -p $INSTALL_DIR/miniconda
@@ -165,7 +171,7 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p ~/.local/share && ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
 	. $INSTALL_DIR/miniconda/bin/activate
-	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda unpack
+	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda-unpack
 
 	# Re-link broken symlinks
 	for file in $(find $HOME/.local/share/nvim/ -type l ! -exec test -e {} \; -print); do
@@ -202,7 +208,7 @@ elif [ "$MODE" = "unpack" ]; then
 
 	for file in $(find $HOME/.local/share/nvim/mason/bin -type l); do
 		origin_file=$(readlink -m $file)
-		sed -i "s|#\!.*/.local/share/nvim/mason/packages|#\!$HOME/.local/share/nvim/mason/packages|g" $origin_file
+		sed -i "s|$OLD_HOME_DIR|$HOME|g" $origin_file
 	done
 
 	for file in $(find $INSTALL_DIR/bin -type l); do

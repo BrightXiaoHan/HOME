@@ -171,7 +171,9 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p ~/.local/share && ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
 	. $INSTALL_DIR/miniconda/bin/activate
-	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 conda-unpack
+  # find python in uv
+  PYTHON_BIN_FOLDER=$(dirname $(find $INSTALL_DIR/uv/python -name python ! -type d | awk 'NR==1'))
+	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 PATH=$PYTHON_BIN_FOLDER:$PATH conda-pack
 
 	# Re-link broken symlinks
 	for file in $(find $HOME/.local/share/nvim/ -type l ! -exec test -e {} \; -print); do

@@ -164,7 +164,7 @@ Host xunfei-jingdong
 
 Host desheng-a100
     HostName 122.13.25.77
-    User root
+    User hanbing
     ServerAliveInterval 10
 
 Host personal-tencent

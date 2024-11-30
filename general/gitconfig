@@ -1,19 +1,20 @@
 [user]
 	email = beatmight@gmail.com
 	name = BrightXiaoHan
-[credential]
-	helper = store
+
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-[credential "helperselector"]
-	selected = manager
-[credential "http://39.105.167.2:8888"]
-	provider = generic
-[credential "https://gitee.com"]
-	provider = generic
+
+[core]
+    # Use SSH instead of HTTPS for URLs starting with 'git:'
+    sshCommand = ssh -i ~/.ssh/id_rsa_git -F ~/.ssh/config
+
+[url "git@github.com:"]
+    # Automatically convert HTTPS GitHub URLs to SSH
+    insteadOf = https://github.com/
 
 [alias]
 lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all

@@ -47,7 +47,7 @@ if [ -n "$1" ]; then
 fi
 
 rm -f $INSTALL_DIR/miniconda.tar.gz
-$INSTALL_DIR/bin/conda-pack -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
+$INSTALL_DIR/tool/conda-pack/bin/conda-pack -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
 
 CURDIR=$(pwd)
 echo $CURDIR

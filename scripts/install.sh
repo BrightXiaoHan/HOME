@@ -173,7 +173,7 @@ elif [ "$MODE" = "unpack" ]; then
 	. $INSTALL_DIR/miniconda/bin/activate
   # find python in uv
   PYTHON_BIN_FOLDER=$(dirname $(find $INSTALL_DIR/uv/python -name python ! -type d | awk 'NR==1'))
-	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 PATH=$PYTHON_BIN_FOLDER:$PATH conda-pack
+	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 PATH=$PYTHON_BIN_FOLDER:$PATH conda-unpack
 
 	# Re-link broken symlinks
 	for file in $(find $HOME/.local/share/nvim/ -type l ! -exec test -e {} \; -print); do

@@ -1,8 +1,12 @@
 #!/bin/bash
 while true; do
   case "$1" in
-  --mode | -u)
+  --user | -u)
     USERNAME=$2
+    shift 2
+    ;;
+  --folder | -f)
+    HOME_FOLDER=$2
     shift 2
     ;;
   --help | -h)
@@ -26,7 +30,8 @@ fi
 
 # Set variables
 USERNAME=${USERNAME:-"hanbing"} # Username
-USER_HOME="/home/$USERNAME"     # User home directory
+HOME_FOLDER=${HOME_FOLDER:-"/home"} # Home folder
+USER_HOME="$HOME_FOLDER/$USERNAME" # User home directory
 USER_SHELL="/bin/bash"          # User shell
 
 # Create user and set home directory and shell
@@ -54,3 +59,6 @@ echo "Sudo privileges: Enabled (no password required)"
 
 # Verify sudo group membership
 groups "$USERNAME"
+
+# add user to docker group
+usermod -aG docker "$USERNAME"

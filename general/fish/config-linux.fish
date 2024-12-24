@@ -32,6 +32,7 @@ set -gx UV_TOOL_DIR $INSTALL_DIR/uv/tool
 set -gx UV_TOOL_BIN_DIR $INSTALL_DIR/uv/tool/bin
 set -gx UV_PYTHON_INSTALL_DIR $INSTALL_DIR/uv/python
 set -gx UV_PYTHON_PREFERENCE only-managed
+set -gx PATH $UV_TOOL_BIN_DIR $PATH
 
 function osc52-copy
     set -l data (echo -n $argv | base64 | tr -d '\n')

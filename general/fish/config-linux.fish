@@ -27,6 +27,12 @@ end
 set -gx CC $INSTALL_DIR/miniconda/bin/gcc
 set -gx CXX $INSTALL_DIR/miniconda/bin/g++
 
+# uv
+set -gx UV_TOOL_DIR $INSTALL_DIR/uv/tool
+set -gx UV_TOOL_BIN_DIR $INSTALL_DIR/uv/tool/bin
+set -gx UV_PYTHON_INSTALL_DIR $INSTALL_DIR/uv/python
+set -gx UV_PYTHON_PREFERENCE only-managed
+
 function osc52-copy
     set -l data (echo -n $argv | base64 | tr -d '\n')
     set -l esc "\033]52;c;$data\a"

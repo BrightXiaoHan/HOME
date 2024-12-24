@@ -171,3 +171,8 @@ Host personal-tencent
     HostName 106.52.220.44
     User root
     ServerAliveInterval 10
+
+Host desheng
+    HostName 157.148.120.119
+    User hanbing
+    ServerAliveInterval 10

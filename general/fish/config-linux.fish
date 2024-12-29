@@ -33,13 +33,3 @@ set -gx UV_TOOL_BIN_DIR $INSTALL_DIR/uv/tool/bin
 set -gx UV_PYTHON_INSTALL_DIR $INSTALL_DIR/uv/python
 set -gx UV_PYTHON_PREFERENCE only-managed
 set -gx PATH $UV_TOOL_BIN_DIR $PATH
-
-function osc52-copy
-    set -l data (echo -n $argv | base64 | tr -d '\n')
-    set -l esc "\033]52;c;$data\a"
-    if test -n "$TMUX"
-        printf "\033Ptmux;\033$esc\033\\"
-    else
-        printf $esc
-    end
-end

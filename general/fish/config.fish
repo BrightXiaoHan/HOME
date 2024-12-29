@@ -49,6 +49,8 @@ switch (uname)
         source (dirname (status --current-filename))/config-linux.fish
 end
 
+source (dirname (status --current-filename))/cmd.fish
+
 # if starship and zoxide installed, init them
 if type starship >/dev/null 2>&1
     starship init fish | source

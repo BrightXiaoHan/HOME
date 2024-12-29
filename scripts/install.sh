@@ -60,8 +60,6 @@ rm -rf ~/.config/nvim \
 	~/.config/tmux \
 	~/.config/fish \
 	~/.gitconfig \
-	~/.ssh/config \
-	~/.ssh/id_rsa.pub \
 	~/.mambarc
 
 # remove nvim plugins
@@ -143,22 +141,15 @@ else
 	exit 1
 fi
 
-if [ ! -d ~/.ssh ]; then
-	mkdir ~/.ssh
-fi
-ln -sf $DIR/ssh/config ~/.ssh/config
-ln -sf $DIR/ssh/id_rsa.pub ~/.ssh/id_rsa.pub
-
 # add authorized_keys into .ssh/authorized_keys
 if [ ! -f ~/.ssh/authorized_keys ]; then
 	touch ~/.ssh/authorized_keys
 fi
 # if id_rsa.pub not in authorized_keys, add it
-if ! grep -q "$(cat ~/.ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
-	cat ~/.ssh/id_rsa.pub >>~/.ssh/authorized_keys
+if ! grep -q "$(cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
+	cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub >>~/.ssh/authorized_keys
 fi
 
-ln -sf $DIR/gitconfig ~/.gitconfig
 ln -sf $DIR/mambarc ~/.mambarc
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then

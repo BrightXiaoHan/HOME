@@ -62,5 +62,10 @@ cp $INSTALL_DIR/HOME/scripts/install.sh \
 	$INSTALL_DIR/HOME/scripts/uninstall.sh \
 	$INSTALL_DIR/HOME/scripts/_unpack.sh \
 	$INSTALL_DIR/packed
-./HOME/scripts/makeself/makeself.sh ./packed $CURDIR/$OUTFILE "HOME Installer" ./_unpack.sh
+
+# if OUTFILE is a relative path, make it absolute
+if [[ ! "$OUTFILE" = /* ]]; then
+	OUTFILE=$CURDIR/$OUTFILE
+fi
+./HOME/scripts/makeself/makeself.sh ./packed $OUTFILE "HOME Installer" ./_unpack.sh
 cd -

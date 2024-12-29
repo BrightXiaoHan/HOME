@@ -38,9 +38,6 @@ REMOVE_CACHE=${REMOVE_CACHE:-true}
 rm ~/.config/nvim \
 	~/.config/tmux \
 	~/.config/fish \
-	~/.gitconfig \
-	~/.ssh/config \
-	~/.ssh/id_rsa.pub \
 	~/.mambarc
 
 # remove nvim plugins

@@ -128,8 +128,10 @@ jobs:
           else
             NIGHTLY_COMMIT=""
           fi
-          # Compare the hashes
-          if [ "$MAIN_LATEST" = "$NIGHTLY_COMMIT" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual trigger detected."
+            echo "::set-output name=should_run::true"
+          elif [ "$MAIN_LATEST" = "$NIGHTLY_COMMIT" ]; then
             echo "Nightly tag is already up-to-date with the latest main commit."
             echo "::set-output name=should_run::false"
           else

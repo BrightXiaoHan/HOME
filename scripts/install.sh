@@ -141,6 +141,7 @@ else
 	exit 1
 fi
 
+mkdir -p ~/.ssh
 # add authorized_keys into .ssh/authorized_keys
 if [ ! -f ~/.ssh/authorized_keys ]; then
 	touch ~/.ssh/authorized_keys

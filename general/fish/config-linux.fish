@@ -35,13 +35,3 @@ set -gx UV_PYTHON_PREFERENCE only-managed
 set -gx PATH $UV_TOOL_BIN_DIR $PATH
 set -gx GIT_CONFIG_GLOBAL $INSTALL_DIR/HOME/general/gitconfig
 set -gx SSH_HOME $INSTALL_DIR/HOME/general/ssh
-
-function osc52-copy
-    set -l data (echo -n $argv | base64 | tr -d '\n')
-    set -l esc "\033]52;c;$data\a"
-    if test -n "$TMUX"
-        printf "\033Ptmux;\033$esc\033\\"
-    else
-        printf $esc
-    end
-end

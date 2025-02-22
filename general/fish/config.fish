@@ -23,20 +23,6 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
-function start-proxy
-    shadowsocksr-cli --setting-url https://xxjcdy.cfd/link/suKDLaU0nUv6Ye1d
-    shadowsocksr-cli -u
-    shadowsocksr-cli --fast-node
-    shadowsocksr-cli --http-proxy start
-end
-
-# proxy alias
-alias setproxy="set ALL_PROXY 'socks5://127.0.0.1:1080'"
-alias unsetproxy="set -e ALL_PROXY"
-alias ip="curl http://ip-api.com/json/?lang=zh-CN"
-alias sethttpproxy="set -gx HTTPS_PROXY 'http://127.0.0.1:7890'"
-alias unsethttpproxy="set -e HTTPS_PROXY"
-
 set LOCAL_CONFIG (dirname (status --current-filename))/config-local.fish
 if test -f $LOCAL_CONFIG
     source $LOCAL_CONFIG

@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: bash ./home-cli-x86_64.run -- -m install --install-dir ${{ github.workspace }}/home-cli-x86_64
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: home-cli-pack-x86_64
           path: home-cli-x86_64.run
@@ -90,7 +90,7 @@ jobs:
             scripts/uninstall.sh
             bash home-cli-arm64.run -- -m install --install-dir /workspace/home-cli-arm64
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: home-cli-pack-arm64
           path: home-cli-arm64.run
@@ -187,12 +187,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         if: steps.check_nightly.outputs.should_run == 'true'
         with:
           name: home-cli-pack-x86_64
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         if: steps.check_nightly.outputs.should_run == 'true'
         with:
           name: home-cli-pack-arm64
@@ -239,11 +239,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: home-cli-pack-x86_64
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: home-cli-pack-arm64
 

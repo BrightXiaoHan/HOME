@@ -132,18 +132,6 @@ Host lm100
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 
-Host ascend-310
-    HostName 101.204.146.85
-    Port 10033
-    User root
-    ServerAliveInterval 10
-
-Host ascend-310-hanbing
-    HostName 101.204.146.85
-    Port 10033
-    User hanbing
-    ServerAliveInterval 10
-
 Host xunfei
     HostName 172.30.210.29
     User hanbing
@@ -156,17 +144,6 @@ Host xunfei-test
     User iflyweb
     ServerAliveInterval 10
 
-Host xunfei-jingdong
-    HostName 116.198.46.136
-    User hanbing
-    Port 22
-    ServerAliveInterval 10
-
-Host desheng-a100
-    HostName 122.13.25.77
-    User hanbing
-    ServerAliveInterval 10
-
 Host personal-tencent
     HostName 106.52.220.44
     User root
@@ -175,4 +152,24 @@ Host personal-tencent
 Host desheng
     HostName 157.148.120.119
     User hanbing
+    ServerAliveInterval 10
+
+Host xunfei-a800
+    User binghan3
+    HostName 10.100.106.35
+    Port 11022
+    ServerAliveInterval 10
+
+
+Host dongguan-competition-1
+    User admin1
+    HostName 39.105.167.2
+    Port 6000
+    ServerAliveInterval 10
+
+
+Host dongguan-competition-2
+    User admin1
+    HostName 39.105.167.2
+    Port 6001
     ServerAliveInterval 10

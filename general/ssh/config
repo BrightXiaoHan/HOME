@@ -173,3 +173,15 @@ Host dongguan-competition-2
     HostName 39.105.167.2
     Port 6001
     ServerAliveInterval 10
+
+Host gitcode.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git
+
+Host github.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git
+
+Host gitee.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git

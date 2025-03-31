@@ -160,20 +160,6 @@ Host xunfei-a800
     Port 11022
     ServerAliveInterval 10
 
-
-Host dongguan-competition-1
-    User admin1
-    HostName 39.105.167.2
-    Port 6000
-    ServerAliveInterval 10
-
-
-Host dongguan-competition-2
-    User admin1
-    HostName 39.105.167.2
-    Port 6001
-    ServerAliveInterval 10
-
 Host gitcode.com
     IdentityFile ~/.ssh/id_rsa_git
     User git
@@ -185,3 +171,13 @@ Host github.com
 Host gitee.com
     IdentityFile ~/.ssh/id_rsa_git
     User git
+
+Host gitcode.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git
+
+Host xunfei-dify
+    HostName 47.94.242.225
+    User root
+    IdentityFile ~/.ssh/id_rsa_dify
+    ServerAliveInterval 10

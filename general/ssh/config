@@ -172,12 +172,15 @@ Host gitee.com
     IdentityFile ~/.ssh/id_rsa_git
     User git
 
-Host gitcode.com
-    IdentityFile ~/.ssh/id_rsa_git
-    User git
-
 Host xunfei-dify
     HostName 47.94.242.225
     User root
     IdentityFile ~/.ssh/id_rsa_dify
     ServerAliveInterval 10
+
+Host tax
+    HostName 39.105.167.2
+    User admin1
+    Port 6000
+    ServerAliveInterval 10
+

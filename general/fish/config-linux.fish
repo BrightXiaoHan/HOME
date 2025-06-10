@@ -35,3 +35,9 @@ set -gx UV_PYTHON_PREFERENCE only-managed
 set -gx PATH $UV_TOOL_BIN_DIR $PATH
 set -gx GIT_CONFIG_GLOBAL $INSTALL_DIR/HOME/general/gitconfig
 set -gx SSH_HOME $INSTALL_DIR/HOME/general/ssh
+
+# pnpm
+set -gx PNPM_HOME $INSTALL_DIR/pnpm
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end

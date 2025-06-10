@@ -124,7 +124,7 @@ def install_conda():
         "-c",
         "conda-forge",
         "-y",
-        "fish",
+        "fish=3.6",
         "ncurses",
         "fzf",
         "ripgrep",

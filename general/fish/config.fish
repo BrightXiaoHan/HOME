@@ -23,19 +23,19 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
-set LOCAL_CONFIG (dirname (status --current-filename))/config-local.fish
+set LOCAL_CONFIG (path dirname (status --current-filename))/config-local.fish
 if test -f $LOCAL_CONFIG
     source $LOCAL_CONFIG
 end
 
 switch (uname)
     case Darwin
-        source (dirname (status --current-filename))/config-osx.fish
+        source (path dirname (status --current-filename))/config-osx.fish
     case Linux
-        source (dirname (status --current-filename))/config-linux.fish
+        source (path dirname (status --current-filename))/config-linux.fish
 end
 
-source (dirname (status --current-filename))/cmd.fish
+source (path dirname (status --current-filename))/cmd.fish
 
 # if starship and zoxide installed, init them
 if type starship >/dev/null 2>&1

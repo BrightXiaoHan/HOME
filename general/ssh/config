@@ -20,53 +20,6 @@ Host 56Server
     User hanbing
     ServerAliveInterval 10
 
-Host A100-external
-    HostName 39.105.167.2
-    Port 10088
-    User hanbing
-    ServerAliveInterval 10
-
-Host A100-external-yyq
-    HostName 39.105.167.2
-    Port 10088
-    User yyq
-    ServerAliveInterval 10
-
-Host LanMT-new-A100-proxy
-    HostName 192.168.2.226
-    User hanbing
-    Port 2864
-    ProxyCommand ssh -W %h:%p A100-external
-    ServerAliveInterval 10
-
-Host LanMT-new
-    HostName 39.105.167.2
-    User hanbing
-    Port 60918
-    ServerAliveInterval 10
-
-Host LanMT-7180
-    HostName 192.168.71.80
-    User hanbing
-    ProxyCommand ssh -W %h:%p LanMT-new
-    ServerAliveInterval 10
-
-Host LanMT-7181
-    HostName 192.168.71.81
-    User hanbing
-    ProxyCommand ssh -W %h:%p LanMT-new
-    ServerAliveInterval 10
-
-Host aliyun_movecar
-    HostName 8.134.104.9
-    User root
-    ServerAliveInterval 10
-
-Host aliyun_inner_movecar
-    HostName 172.27.18.42
-    User root
-    ProxyCommand ssh -W %h:%p aliyun_movecar
-
 Host YuyiGPU
     HostName 39.105.167.2
     Port 5100
@@ -77,12 +30,6 @@ Host YuyiGPU-tangzhifeng
     HostName 39.105.167.2
     Port 5100
     User tangzhifeng
-    ServerAliveInterval 10
-
-Host YuyiGPU-wuhaodong
-    HostName 39.105.167.2
-    Port 5100
-    User wuhaodong
     ServerAliveInterval 10
 
 Host YuyiGPURoot
@@ -122,13 +69,6 @@ Host telecom-cpu
     HostName 127.0.0.1
     Port 10001
     User hanbing
-    ServerAliveInterval 10
-    ProxyCommand ssh -W %h:%p personal-aliyun
-
-Host lm100
-    HostName 127.0.0.1
-    Port 10002
-    User yyq
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 
@@ -184,3 +124,8 @@ Host tax
     Port 6000
     ServerAliveInterval 10
 
+Host yuyi-virtual
+    HostName 39.105.167.2
+    User hanbing
+    Port 60920
+    ServerAliveInterval 10

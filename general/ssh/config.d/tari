@@ -1,0 +1,5 @@
+Host tari-ascend-310
+    HostName 121.37.101.215
+    User root
+    ServerAliveInterval 10
+

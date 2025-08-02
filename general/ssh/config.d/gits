@@ -1,0 +1,12 @@
+Host gitcode.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git
+
+Host github.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git
+
+Host gitee.com
+    IdentityFile ~/.ssh/id_rsa_git
+    User git
+

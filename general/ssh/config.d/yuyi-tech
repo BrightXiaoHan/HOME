@@ -1,0 +1,85 @@
+Host wangzhengtong
+    HostName 60.205.207.43
+    User root
+    ServerAliveInterval 10
+
+Host aliyun
+    HostName 39.105.167.2
+    User root
+    ServerAliveInterval 10
+
+Host movecar
+    HostName 39.105.167.2
+    User movecar
+    Port 9022
+    ServerAliveInterval 10
+
+Host 56Server
+    HostName 39.105.167.2
+    Port 60913
+    User hanbing
+    ServerAliveInterval 10
+
+Host YuyiGPU
+    HostName 39.105.167.2
+    Port 5100
+    User parallel
+    ServerAliveInterval 10
+
+Host YuyiGPU-tangzhifeng
+    HostName 39.105.167.2
+    Port 5100
+    User tangzhifeng
+    ServerAliveInterval 10
+
+Host YuyiGPURoot
+    HostName 39.105.167.2
+    Port 5100
+    User root
+    ServerAliveInterval 10
+
+Host telecom-ascend-root
+    HostName 127.0.0.1
+    Port 10000
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host telecom-ascend
+    HostName 127.0.0.1
+    Port 10000
+    User hanbing
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host telecom-cpu-root
+    HostName 127.0.0.1
+    Port 10001
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host telecom-cpu
+    HostName 127.0.0.1
+    Port 10001
+    User hanbing
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p personal-aliyun
+
+Host desheng
+    HostName 157.148.120.119
+    User hanbing
+    ServerAliveInterval 10
+
+Host tax
+    HostName 39.105.167.2
+    User admin1
+    Port 6000
+    ServerAliveInterval 10
+
+Host yuyi-virtual
+    HostName 39.105.167.2
+    User hanbing
+    Port 60920
+    ServerAliveInterval 10
+

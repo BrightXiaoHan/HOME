@@ -1,0 +1,24 @@
+Host xunfei
+    HostName 172.30.210.29
+    User hanbing
+    Port 22
+    ServerAliveInterval 10
+
+Host xunfei-test
+    HostName 172.30.210.29
+    Port 22
+    User iflyweb
+    ServerAliveInterval 10
+
+Host xunfei-a800
+    User binghan3
+    HostName 10.100.106.35
+    Port 11022
+    ServerAliveInterval 10
+
+Host xunfei-dify
+    HostName 47.94.242.225
+    User root
+    IdentityFile ~/.ssh/id_rsa_dify
+    ServerAliveInterval 10
+

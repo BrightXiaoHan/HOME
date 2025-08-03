@@ -93,9 +93,9 @@ def install_mamba(overwrite=True):
     logging.info("Installing mamba...")
     bin_file = os.path.join(BIN_DIR, "mamba")
     if ARCHITECTURE in ("x86_64", "amd64"):
-        url = f"https://micro.mamba.pm/api/micromamba/linux-64/latest"
+        url = "https://micro.mamba.pm/api/micromamba/linux-64/latest"
     else:
-        url = f"https://micro.mamba.pm/api/micromamba/linux-aarch64/latest"
+        url = "https://micro.mamba.pm/api/micromamba/linux-aarch64/latest"
 
     if not os.path.exists(bin_file) or overwrite:
         with tempfile.NamedTemporaryFile() as tmp:
@@ -189,10 +189,7 @@ def install_conda():
     )
 
     for package in [
-        "git+https://github.com/BrightXiaoHan/ssr-command-client.git@master",
         "conda-pack",
-        "poetry",
-        "gh",
         "ruff",
     ]:
         subprocess.run(

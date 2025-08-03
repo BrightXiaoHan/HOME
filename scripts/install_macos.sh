@@ -53,8 +53,8 @@ fi
 if [ ! -d ~/.ssh ]; then
 	mkdir ~/.ssh
 fi
-ln -sf $DIR/ssh/config ~/.ssh/config
-ln -sf $DIR/ssh/id_rsa.pub ~/.ssh/id_rsa.pub
+ln -sf $DIR/ssh/* ~/.ssh/
+ln -sf $DIR/ssh/config.d ~/.ssh/
 
 # add authorized_keys into .ssh/authorized_keys
 if [ ! -f ~/.ssh/authorized_keys ]; then
@@ -71,7 +71,8 @@ ln -sf $DIR/mambarc ~/.mambarc
 brew install --quiet \
 	git-lfs tmux fish neovim ripgrep fzf node aliyunpan trzsz-ssh \
 	cmake poetry starship zoxide openssh \
-	openssl readline sqlite3 xz zlib gh gnu-sed uv
+	openssl readline sqlite3 xz zlib gh gnu-sed uv \
+	stylelua
 
 # install font
 brew tap homebrew/cask-fonts
@@ -79,8 +80,8 @@ brew install --quiet --cask font-jetbrains-mono
 
 brew install --quiet --cask \
 	iterm2 wechat wpsoffice-cn \
-	dingtalk todesk microsoft-edge adrive \
+	dingtalk todesk microsoft-edge \
 	appcleaner downie typora visual-studio-code \
 	parallels tencent-meeting telegram microsoft-remote-desktop \
-	obs bing-wallpaper qqmusic keycastr
+	obs qqmusic keycastr
 # missing sogouinput, clashx

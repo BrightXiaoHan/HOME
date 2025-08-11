@@ -81,13 +81,6 @@ def install_neovim(overwrite=True):
         shell=True,
     )
 
-    # mason
-    subprocess.run(
-        f'{bin_file} --headless "+MasonInstall lua-language-server stylua '
-        'prettier clangd clang-format pyright black isort autoflake debugpy" +qa',
-        shell=True,
-    )
-
 
 def install_mamba(overwrite=True):
     logging.info("Installing mamba...")
@@ -143,6 +136,12 @@ def install_conda():
         "zoxide",
         "starship",
         "nvim",
+        "lua-language-server",
+        "stylua",
+        "prettier",
+        "pyright",
+        "ruff",
+        "typescript-language-server",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
@@ -190,7 +189,6 @@ def install_conda():
 
     for package in [
         "conda-pack",
-        "ruff",
     ]:
         subprocess.run(
             [

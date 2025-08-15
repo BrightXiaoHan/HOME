@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +56,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -68,7 +68,7 @@ jobs:
         name: Run commands
         with:
           arch: aarch64
-          distro: ubuntu20.04
+          distro: ubuntu24.04
 
           # Mount the artifacts directory as /artifacts in the container
           dockerRunArgs: |
@@ -96,7 +96,7 @@ jobs:
           path: home-cli-arm64.run
 
   pre-release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs:
       - build-x86_64
@@ -220,7 +220,7 @@ jobs:
           asset_content_type: application/octet-stream
 
   release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - build-x86_64
       - build-arm64

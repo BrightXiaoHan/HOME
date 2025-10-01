@@ -1,0 +1,9 @@
+payload:
+  # 域名
+  - DOMAIN-SUFFIX,github.com
+  - DOMAIN,raw.githubusercontent.com
+  - DOMAIN-SUFFIX,anthropic.com
+  # IP 段
+  - IP-CIDR,8.8.8.8/32
+  # GEOIP
+  - GEOIP,US

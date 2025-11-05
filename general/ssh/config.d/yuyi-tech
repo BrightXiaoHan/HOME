@@ -78,8 +78,9 @@ Host tax
     ServerAliveInterval 10
 
 Host yuyi-virtual
-    HostName 39.105.167.2
+    HostName 127.0.0.1
     User hanbing
     Port 60920
     ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p aliyun
 

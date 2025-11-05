@@ -1,5 +1,28 @@
-Host tari-ascend-310
-    HostName 121.37.101.215
+Host image-gen-202509
+    HostName 47.99.242.152
     User root
     ServerAliveInterval 10
 
+Host image-gen-202509-2
+    HostName 47.76.162.64
+    User root
+    ServerAliveInterval 10
+
+Host image-gen-202509-3
+    HostName 8.148.178.111
+    User root
+    ServerAliveInterval 10
+
+Host gpu-debug
+    HostName 123.57.66.113
+    Port 6267
+    User wangjiaying
+
+Host multimodal-cls
+  HostName 172.16.1.28
+  User ubuntu
+
+Host connect.gda1.seetacloud.com
+  HostName connect.gda1.seetacloud.com
+  Port 31262
+  User root

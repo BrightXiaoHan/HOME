@@ -12,7 +12,7 @@ set -g theme_hostname always
 set -gx EDITOR nvim
 
 set -gx PATH bin $PATH
-set -gx PATH ~/.local/bin $PATH
+fish_add_path --path ~/.local/bin
 
 # Poetry
 set -gx POETRY_VIRTUALENVS_IN_PROJECT true
@@ -23,24 +23,27 @@ set -gx CRYPTOGRAPHY_OPENSSL_NO_LEGACY 1
 # NodeJS
 set -gx PATH node_modules/.bin $PATH
 
-set LOCAL_CONFIG (path dirname (status --current-filename))/config-local.fish
-if test -f $LOCAL_CONFIG
-    source $LOCAL_CONFIG
+set -l __config_dir (path dirname (status --current-filename))
+
+set -l __local_config $__config_dir/config-local.fish
+if test -f $__local_config
+    source $__local_config
 end
 
 switch (uname)
     case Darwin
-        source (path dirname (status --current-filename))/config-osx.fish
+        source $__config_dir/config-osx.fish
     case Linux
-        source (path dirname (status --current-filename))/config-linux.fish
+        source $__config_dir/config-linux.fish
 end
 
-source (path dirname (status --current-filename))/cmd.fish
+source $__config_dir/cmd.fish
 
-# if starship and zoxide installed, init them
-if type starship >/dev/null 2>&1
-    starship init fish | source
-end
-if type zoxide >/dev/null 2>&1
-    zoxide init fish | source
+if status is-interactive
+    if command -q starship
+        starship init fish | source
+    end
+    if command -q zoxide
+        zoxide init fish | source
+    end
 end

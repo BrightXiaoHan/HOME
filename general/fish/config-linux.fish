@@ -8,7 +8,7 @@ $MAMBA_EXE shell hook --shell fish --root-prefix $MAMBA_ROOT_PREFIX | source
 micromamba activate
 # <<< mamba initialize <<<
 
-set -gx PATH $INSTALL_DIR/bin $PATH
+fish_add_path --path $INSTALL_DIR/bin
 alias node="$INSTALL_DIR/miniconda/bin/node"
 alias npm="$INSTALL_DIR/miniconda/bin/npm"
 alias fish="$INSTALL_DIR/miniconda/bin/fish"
@@ -32,12 +32,10 @@ set -gx UV_TOOL_DIR $INSTALL_DIR/uv/tool
 set -gx UV_TOOL_BIN_DIR $INSTALL_DIR/uv/tool/bin
 set -gx UV_PYTHON_INSTALL_DIR $INSTALL_DIR/uv/python
 set -gx UV_PYTHON_PREFERENCE only-managed
-set -gx PATH $UV_TOOL_BIN_DIR $PATH
+fish_add_path --path $UV_TOOL_BIN_DIR
 set -gx GIT_CONFIG_GLOBAL $INSTALL_DIR/HOME/general/gitconfig
 set -gx SSH_HOME $INSTALL_DIR/HOME/general/ssh
 
 # pnpm
 set -gx PNPM_HOME $INSTALL_DIR/pnpm
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
+fish_add_path --path $PNPM_HOME

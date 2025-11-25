@@ -128,6 +128,7 @@ def install_conda():
         "git-lfs",
         "tmux",
         "libcurl",
+        "libgit2",
         "uv",
         "compilers",
         "zlib",

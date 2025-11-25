@@ -26,3 +26,19 @@ Host connect.gda1.seetacloud.com
   HostName connect.gda1.seetacloud.com
   Port 31262
   User root
+
+Host aws-videolingo
+  HostName 43.207.122.123
+  User ubuntu
+  ServerAliveInterval 10
+
+Host aws-videolingo-linux
+  HostName 43.207.122.123
+  User zhanglab01
+  Port 1935
+  ServerAliveInterval 10
+
+Host tencent-tokyo
+  HostName 43.165.187.118
+  User ubuntu
+  ServerAliveInterval 10

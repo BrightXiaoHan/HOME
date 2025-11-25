@@ -33,19 +33,20 @@ done
 
 INSTALL_DIR=${INSTALL_DIR:-${HOMECLI_INSTALL_DIR:-$HOME/.homecli}}
 REMOVE_CACHE=${REMOVE_CACHE:-true}
-
-# remove config files
-rm ~/.config/nvim \
-	~/.config/tmux \
-	~/.config/fish \
-	~/.mambarc
-
-# remove nvim plugins
-rm -rf ~/.local/share/nvim
+ABS_INSTALL_DIR=$(python3 - <<'PY' "$INSTALL_DIR"
+import os, sys
+print(os.path.abspath(sys.argv[1]))
+PY
+)
+DEFAULT_INSTALL_DIR=$(python3 - <<'PY' "${HOMECLI_INSTALL_DIR:-$HOME/.homecli}"
+import os, sys
+print(os.path.abspath(sys.argv[1]))
+PY
+)
 
 # remove cache
 if [ "$REMOVE_CACHE" = "true" ]; then
-	rm -rf $INSTALL_DIR
+	rm -rf "$INSTALL_DIR"
 elif [ "$REMOVE_CACHE" = "false" ]; then
 	echo "remove cache skipped"
 else
@@ -54,5 +55,48 @@ else
 	exit 1
 fi
 
-# remove alias fish=xxx
-sed -i '/alias fish=/d' ~/.bashrc
+# clean up legacy symlinks from earlier installs to avoid broken configs
+remove_legacy_symlink() {
+	local path=$1
+	if [ ! -L "$path" ]; then
+		return
+	fi
+
+	local target
+	target=$(readlink "$path" || true)
+	if [ -z "$target" ]; then
+		return
+	fi
+
+	if [ "${target#/}" = "$target" ]; then
+		target=$(python3 - <<'PY' "$path" "$target"
+import os, sys
+link, target = sys.argv[1:]
+link_dir = os.path.dirname(os.path.abspath(link))
+print(os.path.abspath(os.path.join(link_dir, target)))
+PY
+)
+	fi
+
+	case "$target" in
+		"$ABS_INSTALL_DIR"/* | "$DEFAULT_INSTALL_DIR"/*)
+			rm -f "$path"
+			;;
+	esac
+}
+
+LEGACY_PATHS=(
+	"$HOME/.config/nvim"
+	"$HOME/.config/tmux"
+	"$HOME/.config/fish"
+	"$HOME/.gitconfig"
+	"$HOME/.mambarc"
+	"$HOME/.local/share/nvim"
+)
+
+for legacy_path in "${LEGACY_PATHS[@]}"; do
+	remove_legacy_symlink "$legacy_path"
+done
+
+# remove alias created by installer
+sed -i '/homecli-fish/d' ~/.bashrc 2>/dev/null || true

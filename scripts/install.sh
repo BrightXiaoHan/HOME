@@ -55,15 +55,15 @@ if [ -z "$INSTALL_DIR" ]; then
   INSTALL_DIR=${HOMECLI_INSTALL_DIR:-$HOME/.homecli}
 fi
 
-# remove config files
-rm -rf ~/.config/nvim \
-	~/.config/tmux \
-	~/.config/fish \
-	~/.gitconfig \
-	~/.mambarc
+# XDG-style roots inside install dir so configs remain self-contained
+CONFIG_HOME=${HOMECLI_XDG_CONFIG_HOME:-$INSTALL_DIR/config}
+DATA_HOME=${HOMECLI_XDG_DATA_HOME:-$INSTALL_DIR/data}
+STATE_HOME=${HOMECLI_XDG_STATE_HOME:-$INSTALL_DIR/state}
+CACHE_HOME=${HOMECLI_XDG_CACHE_HOME:-$INSTALL_DIR/cache}
+NVIM_DATA_DIR=$DATA_HOME/nvim
 
-# remove nvim plugins
-rm -rf ~/.local/share/nvim
+mkdir -p "$CONFIG_HOME" "$DATA_HOME" "$STATE_HOME" "$CACHE_HOME"
+mkdir -p "$INSTALL_DIR/bin"
 
 if [ "$MODE" = "local-install" ]; then
 	CWD="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
@@ -116,30 +116,18 @@ if ! [ -x "$(command -v python3)" ]; then
 	exit 1
 fi
 
-# link nvim dir if .config/nvim not exist
-if [ ! -d ~/.config/nvim ]; then
-	rm -f $DIR/NvChad/lua/custom || true
-	ln -sf $DIR/NvChad/ ~/.config/nvim
-else
-	echo "nvim config already exist. Please backup or remove it."
-	exit 1
-fi
+rm -f $DIR/NvChad/lua/custom || true
 
-# link tmux dir if .config/tmux not exist
-if [ ! -d ~/.config/tmux ]; then
-	ln -sf $DIR/tmux/ ~/.config/
-else
-	echo "tmux config already exist. Please backup or remove it."
-	exit 1
-fi
+ln -sfn $DIR/NvChad "$CONFIG_HOME/nvim"
+ln -sfn $DIR/tmux "$CONFIG_HOME/tmux"
+ln -sfn $DIR/fish "$CONFIG_HOME/fish"
 
-# link fish dir if .config/fish not exist
-if [ ! -d ~/.config/fish ]; then
-	ln -sf $DIR/fish/ ~/.config/
-else
-	echo "fish config already exist. Please backup or remove it."
-	exit 1
-fi
+mkdir -p "$CONFIG_HOME/git"
+ln -sfn $DIR/gitconfig "$CONFIG_HOME/git/config"
+
+mkdir -p "$INSTALL_DIR/etc"
+ln -sfn $DIR/ssh "$INSTALL_DIR/etc/ssh"
+ln -sfn $DIR/mambarc "$INSTALL_DIR/etc/mambarc"
 
 mkdir -p ~/.ssh
 # add authorized_keys into .ssh/authorized_keys
@@ -151,32 +139,31 @@ if ! grep -q "$(cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub)" ~/.ssh/authorized
 	cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub >>~/.ssh/authorized_keys
 fi
 
-ln -sf $DIR/mambarc ~/.mambarc
-
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 	PYTHONPATH="./:$PYTHONPATH" \
 		PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
 		HOMECLI_INSTALL_DIR=$INSTALL_DIR \
+		XDG_CONFIG_HOME=$CONFIG_HOME \
+		XDG_DATA_HOME=$DATA_HOME \
+		XDG_STATE_HOME=$STATE_HOME \
+		XDG_CACHE_HOME=$CACHE_HOME \
 		python3 homecli/install.py
-	mv $HOME/.local/share/nvim $INSTALL_DIR/nvim
-	ln -sf $INSTALL_DIR/nvim $HOME/.local/share/nvim
+	if [ -d "$NVIM_DATA_DIR" ]; then
+		ln -sfn "$NVIM_DATA_DIR" "$INSTALL_DIR/nvim"
+	fi
 elif [ "$MODE" = "unpack" ]; then
-	mkdir -p ~/.local/share && ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
+	mkdir -p "$DATA_HOME"
+	ln -sfn "$INSTALL_DIR/nvim" "$DATA_HOME/nvim"
 	. $INSTALL_DIR/miniconda/bin/activate
   # find python in uv
   PYTHON_BIN_FOLDER=$(dirname $(find $INSTALL_DIR/uv/python -name python ! -type d | awk 'NR==1'))
 	CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1 PATH=$PYTHON_BIN_FOLDER:$PATH conda-unpack
 
 	# Re-link broken symlinks
-	for file in $(find $HOME/.local/share/nvim/ -type l ! -exec test -e {} \; -print); do
+	for file in $(find "$NVIM_DATA_DIR" -type l ! -exec test -e {} \; -print); do
 		old=$(readlink -m $file)
-		# Re-link to the new location with $HOME prefix
-		# e.g.> /root/.homecli/xxx -> /home/hanbing/.homecli/xxx
-
-		if [[ $old == *".local/share/nvim"* ]]; then
-			prefix=$(echo $old | sed 's/\.local\/share\/nvim.*//')
-			# replace prefix with $HOME
-			new=$(echo $old | sed "s|^$prefix|$HOME/|")
+		if [[ -n "$OLD_HOME_DIR" && $old == $OLD_HOME_DIR* ]]; then
+			new=${old/#$OLD_HOME_DIR/$HOME}
 			rm $file
 			ln -sf $new $file
 		fi
@@ -195,12 +182,12 @@ elif [ "$MODE" = "unpack" ]; then
 		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
 	done
 
-	for file in $(find $HOME/.local/share/nvim -name "pyvenv.cfg"); do
+	for file in $(find "$NVIM_DATA_DIR" -name "pyvenv.cfg"); do
 		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
-		sed -i "s|venv .*/.local/share/nvim|venv $HOME/.local/share/nvim|g" $file
+		sed -i "s|venv .*/nvim|venv $NVIM_DATA_DIR|g" $file
 	done
 
-	for file in $(find $HOME/.local/share/nvim/mason/bin -type l); do
+	for file in $(find "$NVIM_DATA_DIR/mason/bin" -type l 2>/dev/null); do
 		origin_file=$(readlink -m $file)
 		sed -i "s|$OLD_HOME_DIR|$HOME|g" $origin_file
 	done
@@ -210,13 +197,22 @@ elif [ "$MODE" = "unpack" ]; then
 		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $origin_file
 	done
 elif [ "$MODE" = "relink" ]; then
-	ln -sf $INSTALL_DIR/nvim/ ~/.local/share/nvim
+	ln -sfn "$INSTALL_DIR/nvim" "$NVIM_DATA_DIR"
 fi
 
-# add fish path to .bashrc
-if ! grep -q 'alias fish.*' ~/.bashrc; then
-	echo "alias fish='$INSTALL_DIR/miniconda/bin/fish'" >>~/.bashrc
-fi
+# create wrapper to enter isolated fish session with XDG dirs
+cat >"$INSTALL_DIR/bin/homecli-fish" <<EOF
+#!/usr/bin/env bash
+export HOMECLI_INSTALL_DIR="$INSTALL_DIR"
+export XDG_CONFIG_HOME="\${XDG_CONFIG_HOME:-$CONFIG_HOME}"
+export XDG_DATA_HOME="\${XDG_DATA_HOME:-$DATA_HOME}"
+export XDG_STATE_HOME="\${XDG_STATE_HOME:-$STATE_HOME}"
+export XDG_CACHE_HOME="\${XDG_CACHE_HOME:-$CACHE_HOME}"
+exec "$INSTALL_DIR/miniconda/bin/fish" "\$@"
+EOF
+chmod +x "$INSTALL_DIR/bin/homecli-fish"
 
-# add HOMECLI_INSTALL_DIR to config-local.fish
-echo "set -gx HOMECLI_INSTALL_DIR $INSTALL_DIR" >~/.config/fish/config-local.fish
+# add fish wrapper alias to .bashrc if missing
+if ! grep -q 'alias fish=.*homecli-fish' ~/.bashrc 2>/dev/null; then
+	echo "alias fish='$INSTALL_DIR/bin/homecli-fish'" >>~/.bashrc
+fi

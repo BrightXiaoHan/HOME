@@ -14,6 +14,15 @@ set -gx EDITOR nvim
 set -gx PATH bin $PATH
 fish_add_path --path ~/.local/bin
 
+# Optional extra PATH entries can be provided via HOMECLI_EXTRA_FISH_PATHS (colon or space separated)
+if set -q HOMECLI_EXTRA_FISH_PATHS
+    for __extra_path in (string split ':' $HOMECLI_EXTRA_FISH_PATHS)
+        if test -d $__extra_path
+            fish_add_path --path $__extra_path
+        end
+    end
+end
+
 # Poetry
 set -gx POETRY_VIRTUALENVS_IN_PROJECT true
 

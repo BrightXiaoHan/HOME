@@ -18,6 +18,11 @@ Host gpu-debug
     Port 6267
     User wangjiaying
 
+Host multimodal-cls-aliyun
+  HostName 47.95.12.234
+  Port 7001
+  User root
+
 Host multimodal-cls
   HostName 172.16.1.28
   User ubuntu

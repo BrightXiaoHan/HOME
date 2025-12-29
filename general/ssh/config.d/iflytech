@@ -22,3 +22,16 @@ Host xunfei-dify
     IdentityFile ~/.ssh/id_rsa_dify
     ServerAliveInterval 10
 
+Host xunfei-112
+    HostName oas.iflysec.com
+    User binghan3
+    Port 2222
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedAlgorithms +ssh-rsa
+
+
+Host code.iflytek.com
+    HostName code.iflytek.com
+    User git
+    Port 30004
+    IdentityFile ~/.ssh/id_rsa

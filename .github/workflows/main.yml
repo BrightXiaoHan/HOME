@@ -14,11 +14,30 @@ on:
       - "**/*.md"
   schedule:
     - cron: "0 0 * * *" # nightly build
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:
+    inputs:
+      build_arch:
+        description: "Which Linux package to build"
+        required: false
+        default: "both"
+        type: choice
+        options:
+          - both
+          - x86_64
+          - arm64
 
 jobs:
   build-x86_64:
-    if: "github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'linux')"
+    if: >-
+      (
+        github.event_name != 'pull_request'
+        || contains(github.event.pull_request.labels.*.name, 'linux')
+        || contains(github.event.pull_request.labels.*.name, 'linux-x86_64')
+      ) && (
+        github.event_name != 'workflow_dispatch'
+        || inputs.build_arch == 'both'
+        || inputs.build_arch == 'x86_64'
+      )
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -60,7 +79,16 @@ jobs:
           path: home-cli-x86_64.run
 
   build-arm64:
-    if: "github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'linux')"
+    if: >-
+      (
+        github.event_name != 'pull_request'
+        || contains(github.event.pull_request.labels.*.name, 'linux')
+        || contains(github.event.pull_request.labels.*.name, 'linux-arm64')
+      ) && (
+        github.event_name != 'workflow_dispatch'
+        || inputs.build_arch == 'both'
+        || inputs.build_arch == 'arm64'
+      )
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

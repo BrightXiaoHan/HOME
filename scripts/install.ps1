@@ -19,7 +19,7 @@ scoop install git
 
 # Clone the repository
 git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git
-git clone https://github.com/BrightXiaoHan/nvchad-starter.git HOME/general/NvChad
+git clone https://github.com/BrightXiaoHan/nvchad-starter.git HOME/general/nvim
 
 # Create symbolic links to the user profile and the OMP configuration file
 $rootDir = (Get-Item -Path ".\HOME").FullName
@@ -39,7 +39,7 @@ New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\general\gitconf
 
 # Create symbolic links to the neovim config file
 $nvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
-New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\NvChad -Force
+New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\nvim -Force
 
 scoop bucket add main
 scoop install main/winget

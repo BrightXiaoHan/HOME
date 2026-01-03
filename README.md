@@ -129,7 +129,7 @@ podman run -v $HOME:/workspace --name home -itd home
   - `fish/` - Fish shell configuration
   - `ssh/` - SSH configuration and keys
   - `tmux/` - Tmux configuration
-  - `NvChad/` - NeoVim configuration
+  - `nvim/` - NeoVim configuration
   - `gitconfig` - Global Git configuration
 - `homecli/` - Python package for installation and management
 - `scripts/` - Installation and utility scripts for different platforms

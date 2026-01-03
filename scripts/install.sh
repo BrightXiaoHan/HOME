@@ -102,9 +102,9 @@ else
   Usage
 fi
 
-# if general/NvChad not exist, clone it
-if [ ! -d $DIR/NvChad ]; then
-  git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/NvChad
+# if general/nvim not exist, clone it
+if [ ! -d $DIR/nvim ]; then
+  git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/nvim
 fi
 
 # get current dir
@@ -116,9 +116,9 @@ if ! [ -x "$(command -v python3)" ]; then
 	exit 1
 fi
 
-rm -f $DIR/NvChad/lua/custom || true
+rm -f $DIR/nvim/lua/custom || true
 
-ln -sfn $DIR/NvChad "$CONFIG_HOME/nvim"
+ln -sfn $DIR/nvim "$CONFIG_HOME/nvim"
 ln -sfn $DIR/tmux "$CONFIG_HOME/tmux"
 ln -sfn $DIR/fish "$CONFIG_HOME/fish"
 

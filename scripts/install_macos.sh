@@ -15,7 +15,7 @@ brew install mas git make llvm
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 DIR="$DIR/../general"
 
-git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/NvChad
+git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/nvim
 
 # get current dir
 mkdir -p ~/.config
@@ -28,7 +28,7 @@ fi
 
 # link nvim dir if .config/nvim not exist
 if [ ! -d ~/.config/nvim ]; then
-	ln -sf $DIR/NvChad/ ~/.config/nvim
+	ln -sf $DIR/nvim/ ~/.config/nvim
 else
 	echo "nvim config already exist. Please backup or remove it."
 	exit 1

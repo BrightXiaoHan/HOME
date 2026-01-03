@@ -135,10 +135,19 @@ jobs:
 
   pre-release:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: >-
+      always() && (
+        github.event_name == 'workflow_dispatch'
+        || github.event_name == 'schedule'
+      )
     needs:
       - build-x86_64
       - build-arm64
+    outputs:
+      should_run: ${{ steps.decide_publish.outputs.should_run }}
+      publish_x86: ${{ steps.decide_publish.outputs.publish_x86 }}
+      publish_arm: ${{ steps.decide_publish.outputs.publish_arm }}
+      upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
 
     steps:
       - name: Checkout repository
@@ -177,8 +186,51 @@ jobs:
             echo "::set-output name=should_run::true"
           fi
 
+      - name: Decide publish targets
+        id: decide_publish
+        shell: bash
+        run: |
+          nightly_run="${{ steps.check_nightly.outputs.should_run }}"
+          need_x86=false
+          need_arm=false
+          publish_x86=false
+          publish_arm=false
+
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] || [ "${{ inputs.build_arch }}" = "both" ] || [ "${{ inputs.build_arch }}" = "x86_64" ]; then
+            need_x86=true
+          fi
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] || [ "${{ inputs.build_arch }}" = "both" ] || [ "${{ inputs.build_arch }}" = "arm64" ]; then
+            need_arm=true
+          fi
+
+          if [ "$nightly_run" = "true" ]; then
+            if [ "$need_x86" = "true" ] && [ "${{ needs.build-x86_64.result }}" = "success" ]; then
+              publish_x86=true
+            fi
+            if [ "$need_arm" = "true" ] && [ "${{ needs.build-arm64.result }}" = "success" ]; then
+              publish_arm=true
+            fi
+          fi
+
+          final_run=false
+          if [ "$nightly_run" = "true" ]; then
+            if [ "$need_x86" = "true" ] && [ "$need_arm" = "true" ]; then
+              if [ "$publish_x86" = "true" ] && [ "$publish_arm" = "true" ]; then
+                final_run=true
+              fi
+            else
+              if [ "$publish_x86" = "true" ] || [ "$publish_arm" = "true" ]; then
+                final_run=true
+              fi
+            fi
+          fi
+
+          echo "should_run=$final_run" >> "$GITHUB_OUTPUT"
+          echo "publish_x86=$publish_x86" >> "$GITHUB_OUTPUT"
+          echo "publish_arm=$publish_arm" >> "$GITHUB_OUTPUT"
+
       - name: Delete Legacy Pre-Release
-        if: steps.check_nightly.outputs.should_run == 'true'
+        if: steps.decide_publish.outputs.should_run == 'true'
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -198,7 +250,7 @@ jobs:
             }
 
       - name: Delete old nightly tag
-        if: steps.check_nightly.outputs.should_run == 'true'
+        if: steps.decide_publish.outputs.should_run == 'true'
         run: |
           if git rev-parse nightly >/dev/null 2>&1; then
             git tag -d nightly
@@ -208,13 +260,13 @@ jobs:
           fi
 
       - name: Create new nightly tag
-        if: steps.check_nightly.outputs.should_run == 'true'
+        if: steps.decide_publish.outputs.should_run == 'true'
         run: |
           git tag nightly
           git push origin nightly
 
       - name: Create Pre-Release
-        if: steps.check_nightly.outputs.should_run == 'true'
+        if: steps.decide_publish.outputs.should_run == 'true'
         id: create_pre_release
         uses: actions/create-release@v1
         with:
@@ -225,34 +277,46 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  pre-release-x86_64:
+    runs-on: ubuntu-latest
+    needs:
+      - pre-release
+      - build-x86_64
+    if: needs.pre-release.outputs.should_run == 'true' && needs.pre-release.outputs.publish_x86 == 'true'
+
+    steps:
       - uses: actions/download-artifact@v4
-        if: steps.check_nightly.outputs.should_run == 'true'
         with:
           name: home-cli-pack-x86_64
 
-      - uses: actions/download-artifact@v4
-        if: steps.check_nightly.outputs.should_run == 'true'
-        with:
-          name: home-cli-pack-arm64
-
       - name: Upload Pre-Release Assets x86_64
-        if: steps.check_nightly.outputs.should_run == 'true'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
+          upload_url: ${{ needs.pre-release.outputs.upload_url }}
           asset_path: ./home-cli-x86_64.run
           asset_name: home-cli-x86_64.run
           asset_content_type: application/octet-stream
 
+  pre-release-arm64:
+    runs-on: ubuntu-latest
+    needs:
+      - pre-release
+      - build-arm64
+    if: needs.pre-release.outputs.should_run == 'true' && needs.pre-release.outputs.publish_arm == 'true'
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: home-cli-pack-arm64
+
       - name: Upload Pre-Release Assets arm64
-        if: steps.check_nightly.outputs.should_run == 'true'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
+          upload_url: ${{ needs.pre-release.outputs.upload_url }}
           asset_path: ./home-cli-arm64.run
           asset_name: home-cli-arm64.run
           asset_content_type: application/octet-stream

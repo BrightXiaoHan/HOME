@@ -34,6 +34,10 @@ jobs:
         shell: bash
         run: scripts/install.sh -m local-install
 
+      - name: Test Installation
+        shell: bash
+        run: scripts/test.sh
+
       - name: Pack
         shell: bash
         run: scripts/pack.sh -o home-cli-x86_64.run
@@ -45,6 +49,10 @@ jobs:
       - name: Unpack
         shell: bash
         run: bash ./home-cli-x86_64.run -- -m install --install-dir ${{ github.workspace }}/home-cli-x86_64
+
+      - name: Test Unpacked Installation
+        shell: bash
+        run: scripts/test.sh --install-dir ${{ github.workspace }}/home-cli-x86_64
 
       - uses: actions/upload-artifact@v4
         with:
@@ -86,9 +94,11 @@ jobs:
             uname -a
             cd /workspace
             scripts/install.sh -m local-install
+            scripts/test.sh
             scripts/pack.sh -o home-cli-arm64.run
             scripts/uninstall.sh
             bash home-cli-arm64.run -- -m install --install-dir /workspace/home-cli-arm64
+            scripts/test.sh --install-dir /workspace/home-cli-arm64
 
       - uses: actions/upload-artifact@v4
         with:

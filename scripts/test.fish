@@ -62,7 +62,7 @@ function usage
 end
 
 function parse_args
-    set -e COMPONENTS
+    set -g COMPONENTS
 
     while set -q argv[1]
         switch $argv[1]
@@ -77,40 +77,40 @@ function parse_args
                 set -g CACHE_HOME $INSTALL_DIR/cache
                 set -e argv[1..2]
             case --all
-                set -a COMPONENTS all
+                set -ga COMPONENTS all
                 set -e argv[1]
             case --structure
-                set -a COMPONENTS structure
+                set -ga COMPONENTS structure
                 set -e argv[1]
             case --configs
-                set -a COMPONENTS configs
+                set -ga COMPONENTS configs
                 set -e argv[1]
             case --conda
-                set -a COMPONENTS conda
+                set -ga COMPONENTS conda
                 set -e argv[1]
             case --python
-                set -a COMPONENTS python
+                set -ga COMPONENTS python
                 set -e argv[1]
             case --binaries
-                set -a COMPONENTS binaries
+                set -ga COMPONENTS binaries
                 set -e argv[1]
             case --environment
-                set -a COMPONENTS environment
+                set -ga COMPONENTS environment
                 set -e argv[1]
             case --nvim
-                set -a COMPONENTS nvim
+                set -ga COMPONENTS nvim
                 set -e argv[1]
             case --tmux
-                set -a COMPONENTS tmux
+                set -ga COMPONENTS tmux
                 set -e argv[1]
             case --git
-                set -a COMPONENTS git
+                set -ga COMPONENTS git
                 set -e argv[1]
             case --ssh
-                set -a COMPONENTS ssh
+                set -ga COMPONENTS ssh
                 set -e argv[1]
             case --conda-env
-                set -a COMPONENTS conda-env
+                set -ga COMPONENTS conda-env
                 set -e argv[1]
             case '*'
                 echo "Unknown option: $argv[1]"
@@ -121,7 +121,7 @@ function parse_args
 
     # If no components specified, run all tests
     if test (count $COMPONENTS) -eq 0
-        set -a COMPONENTS all
+        set -ga COMPONENTS all
     end
 end
 

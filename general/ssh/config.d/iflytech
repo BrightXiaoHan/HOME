@@ -35,3 +35,12 @@ Host code.iflytek.com
     User git
     Port 30004
     IdentityFile ~/.ssh/id_rsa
+
+Host oas.iflysec.com
+  HostName oas.iflysec.com
+  Port 2222
+  User binghan3
+  HostKeyAlgorithms +ssh-rsa
+  PubkeyAcceptedAlgorithms +ssh-rsa
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes

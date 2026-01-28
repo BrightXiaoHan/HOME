@@ -190,6 +190,7 @@ def install_conda():
 
     for package in [
         "conda-pack",
+        "kimi-cli",
     ]:
         subprocess.run(
             [

@@ -53,8 +53,6 @@ scoop install main/starship
 scoop install main/zoxide
 scoop install main/clangd
 scoop install main/wget
-scoop install main/mosh-client
-scoop install main/poetry
 scoop install main/zig
 scoop bucket add nerd-fonts
 scoop install nerd-fonts/JetBrainsMono-NF
@@ -74,8 +72,5 @@ winget install -e --id Microsoft.WindowsTerminal --accept-source-agreements --ac
 winget install -e --id Kingsoft.WPSOffice.CN --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Microsoft.PowerToys --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Sogou.SogouInput --accept-source-agreements --accept-package-agreements --silent
-winget install -e --id Alibaba.DingTalk --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Valve.Steam --accept-source-agreements --accept-package-agreements --silent
-winget install -e --id Alibaba.aDrive --accept-source-agreements --accept-package-agreements --silent
-winget install -e --id tickstep.aliyunpan --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Youqu.ToDesk --accept-source-agreements --accept-package-agreements --silent

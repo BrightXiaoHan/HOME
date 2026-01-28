@@ -23,3 +23,5 @@ lg = lg1
 
 [url "git@code.iflytek.com:"]
 	insteadOf = https://code.iflytek.com/
+[core]
+	quotepath = false

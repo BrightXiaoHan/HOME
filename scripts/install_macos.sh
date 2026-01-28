@@ -69,10 +69,10 @@ ln -sf $DIR/gitconfig ~/.gitconfig
 ln -sf $DIR/mambarc ~/.mambarc
 
 brew install --quiet \
-	git-lfs tmux fish neovim ripgrep fzf node aliyunpan trzsz-ssh \
-	cmake poetry starship zoxide openssh \
+	git-lfs tmux fish neovim ripgrep fzf node trzsz-ssh \
+	cmake starship zoxide openssh \
 	openssl readline sqlite3 xz zlib gh gnu-sed uv \
-	stylelua
+	kimi-cli opencode
 
 # install font
 brew tap homebrew/cask-fonts
@@ -80,8 +80,7 @@ brew install --quiet --cask font-jetbrains-mono
 
 brew install --quiet --cask \
 	iterm2 wechat wpsoffice-cn \
-	dingtalk todesk microsoft-edge \
-	appcleaner downie typora visual-studio-code \
-	parallels tencent-meeting telegram microsoft-remote-desktop \
-	obs qqmusic keycastr
-# missing sogouinput, clashx
+	todesk google-chrome \
+	appcleaner downie visual-studio-code \
+	tencent-meeting telegram clash-verge-rev \
+	wetype claude-code codex

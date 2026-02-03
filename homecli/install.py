@@ -133,6 +133,7 @@ def install_conda():
         "-c",
         "conda-forge",
         "-y",
+        "python=3.13.*",
         "fish",
         "ncurses",
         "fzf",
@@ -192,18 +193,7 @@ def install_conda():
     env["UV_TOOL_DIR"] = os.path.join(CACHE_DIR, "uv", "tool")
     env["UV_TOOL_BIN_DIR"] = os.path.join(CACHE_DIR, "bin")
     env["UV_PYTHON_INSTALL_DIR"] = os.path.join(CACHE_DIR, "uv", "python")
-
-    # install python
-    subprocess.run(
-        [
-            os.path.join(CACHE_DIR, "miniconda", "bin", "uv"),
-            "python",
-            "install",
-            "3.12",
-        ],
-        check=True,
-        env=env,
-    )
+    env["UV_PYTHON_PREFERENCE"] = "only-system"
 
     for package in [
         "kimi-cli",

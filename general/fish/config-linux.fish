@@ -47,7 +47,7 @@ set -gx CXX $INSTALL_DIR/miniconda/bin/g++
 set -gx UV_TOOL_DIR $INSTALL_DIR/uv/tool
 set -gx UV_TOOL_BIN_DIR $INSTALL_DIR/uv/tool/bin
 set -gx UV_PYTHON_INSTALL_DIR $INSTALL_DIR/uv/python
-set -gx UV_PYTHON_PREFERENCE only-managed
+set -gx UV_PYTHON_PREFERENCE only-system
 fish_add_path --path $UV_TOOL_BIN_DIR
 set -gx GIT_CONFIG_GLOBAL $CONFIG_HOME/git/config
 set -gx CONDARC $INSTALL_DIR/etc/mambarc

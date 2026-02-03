@@ -329,28 +329,26 @@ function test_python_uv
     echo "Testing Python/UV installation..."
 
     # UV directories
-    test_directory "$INSTALL_DIR/uv/python" "UV python directory"
+    if test -d "$INSTALL_DIR/uv/python"
+        report_pass "UV python directory"
+    else
+        report_skip "UV python directory (not required when using system Python)"
+    end
     test_directory "$INSTALL_DIR/uv/tool" "UV tool directory"
 
     # UV binary
     test_binary uv --version "uv package manager"
 
-    # Python 3.12
-    set -l python_bin (find "$INSTALL_DIR/uv/python" -path "*/bin/python3.12" -type f 2>/dev/null | head -n1)
-    if test -z "$python_bin"
-        set python_bin (find "$INSTALL_DIR/uv/python" -path "*/bin/python3" -type f 2>/dev/null | head -n1)
-    end
-    if test -z "$python_bin"
-        set python_bin (find "$INSTALL_DIR/uv/python" -path "*/bin/python" -type f 2>/dev/null | head -n1)
-    end
-    if test -n "$python_bin" -a -x "$python_bin"
-        if $python_bin --version 2>&1 | grep -q "Python 3.12"
-            report_pass "Python 3.12"
+    # Python 3.13 (from micromamba/base)
+    set -l python_bin "$INSTALL_DIR/miniconda/bin/python"
+    if test -x "$python_bin"
+        if $python_bin --version 2>&1 | grep -q "Python 3.13"
+            report_pass "Python 3.13"
         else
-            report_fail "Python 3.12 (found different version: "($python_bin --version 2>&1)")"
+            report_fail "Python 3.13 (found different version: "($python_bin --version 2>&1)")"
         end
     else
-        report_fail "Python 3.12 (binary not found in UV directory)"
+        report_fail "Python 3.13 (binary not found in miniconda)"
     end
 
     # conda-pack

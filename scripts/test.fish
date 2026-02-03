@@ -336,7 +336,13 @@ function test_python_uv
     test_binary uv --version "uv package manager"
 
     # Python 3.12
-    set -l python_bin (find "$INSTALL_DIR/uv/python" -name python -type f 2>/dev/null | head -n1)
+    set -l python_bin (find "$INSTALL_DIR/uv/python" -path "*/bin/python3.12" -type f 2>/dev/null | head -n1)
+    if test -z "$python_bin"
+        set python_bin (find "$INSTALL_DIR/uv/python" -path "*/bin/python3" -type f 2>/dev/null | head -n1)
+    end
+    if test -z "$python_bin"
+        set python_bin (find "$INSTALL_DIR/uv/python" -path "*/bin/python" -type f 2>/dev/null | head -n1)
+    end
     if test -n "$python_bin" -a -x "$python_bin"
         if $python_bin --version 2>&1 | grep -q "Python 3.12"
             report_pass "Python 3.12"

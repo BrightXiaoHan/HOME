@@ -77,7 +77,16 @@ if [ -n "$1" ]; then
 fi
 
 rm -f $INSTALL_DIR/miniconda.tar.gz
-$INSTALL_DIR/uv/tool/conda-pack/bin/conda-pack -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
+
+CONDA_PACK_BIN="$INSTALL_DIR/miniconda/bin/conda-pack"
+if [ -x "$CONDA_PACK_BIN" ]; then
+	"$CONDA_PACK_BIN" -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
+elif [ -x "$INSTALL_DIR/uv/tool/conda-pack/bin/conda-pack" ]; then
+	"$INSTALL_DIR/uv/tool/conda-pack/bin/conda-pack" -p $INSTALL_DIR/miniconda -o $INSTALL_DIR/miniconda.tar.gz
+else
+	echo "Error: conda-pack not found in miniconda or uv tool." >&2
+	exit 1
+fi
 
 CURDIR=$(pwd)
 echo $CURDIR

@@ -159,6 +159,7 @@ def install_conda():
         "pyright",
         "ruff",
         "typescript-language-server",
+        "conda-pack",
     ]
     if ARCHITECTURE in ("x86_64", "amd64"):
         command.extend(
@@ -205,7 +206,6 @@ def install_conda():
     )
 
     for package in [
-        "conda-pack",
         "kimi-cli",
     ]:
         subprocess.run(

@@ -236,5 +236,5 @@ chmod +x "$INSTALL_DIR/bin/homecli-fish"
 
 # add fish wrapper alias to .bashrc if missing
 if ! grep -q 'alias fish=.*homecli-fish' ~/.bashrc 2>/dev/null; then
-	echo "alias fish='$INSTALL_DIR/bin/homecli-fish'" >>~/.bashrc
+	echo "alias fish='env -i $INSTALL_DIR/bin/homecli-fish'" >>~/.bashrc
 fi

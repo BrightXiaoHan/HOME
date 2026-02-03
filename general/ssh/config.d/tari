@@ -3,11 +3,6 @@ Host image-gen-202509
     User root
     ServerAliveInterval 10
 
-Host image-gen-202509-2
-    HostName 47.76.162.64
-    User root
-    ServerAliveInterval 10
-
 Host image-gen-202509-3
     HostName 8.148.178.111
     User root
@@ -42,8 +37,9 @@ Host aws-videolingo-linux
   User zhanglab01
   Port 1935
   ServerAliveInterval 10
-
-Host tencent-tokyo
-  HostName 43.165.187.118
-  User ubuntu
+  
+Host daode-aliyun
+  HostName 121.41.189.137
+  User root
+  Port 1935
   ServerAliveInterval 10

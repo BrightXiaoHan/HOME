@@ -41,5 +41,5 @@ Host aws-videolingo-linux
 Host daode-aliyun
   HostName 121.41.189.137
   User root
-  Port 1935
+  Port 22
   ServerAliveInterval 10

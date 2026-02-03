@@ -54,16 +54,7 @@ set -gx CONDARC $INSTALL_DIR/etc/mambarc
 set -gx HOMECLI_SSH_DIR $INSTALL_DIR/etc/ssh
 set -l __homecli_ssh_config $HOMECLI_SSH_DIR/config
 if test -f $__homecli_ssh_config
-    set -gx GIT_SSH_COMMAND "ssh -F $__homecli_ssh_config"
-    function ssh --description 'HOMECLI ssh' --wraps ssh
-        command ssh -F $__homecli_ssh_config $argv
-    end
-    function scp --description 'HOMECLI scp' --wraps scp
-        command scp -F $__homecli_ssh_config $argv
-    end
-    function sftp --description 'HOMECLI sftp' --wraps sftp
-        command sftp -F $__homecli_ssh_config $argv
-    end
+    set -gx GIT_SSH_COMMAND "ssh -F $__homecli_ssh_config -i $HOMECLI_SSH_DIR/id_rsa_git" 
 end
 
 # pnpm

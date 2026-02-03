@@ -81,10 +81,16 @@ def install_neovim(overwrite=True):
         shell=True,
     )
 
+    # Ensure expected Mason directory exists for post-install validation.
+    data_home = os.environ.get("XDG_DATA_HOME", os.path.join(CACHE_DIR, "data"))
+    mason_bin_dir = os.path.join(data_home, "nvim", "mason", "bin")
+    os.makedirs(mason_bin_dir, exist_ok=True)
+
 
 def install_mamba(overwrite=True):
     logging.info("Installing mamba...")
     bin_file = os.path.join(BIN_DIR, "mamba")
+    micromamba_file = os.path.join(BIN_DIR, "micromamba")
     if ARCHITECTURE in ("x86_64", "amd64"):
         url = "https://micro.mamba.pm/api/micromamba/linux-64/latest"
     else:
@@ -105,6 +111,16 @@ def install_mamba(overwrite=True):
                     bin_file,
                 )
                 os.chmod(bin_file, 0o755)
+
+    # Ensure micromamba is available as a command for shell hooks/tests.
+    if overwrite or not os.path.exists(micromamba_file):
+        try:
+            if os.path.exists(micromamba_file):
+                os.remove(micromamba_file)
+            os.symlink("mamba", micromamba_file)
+        except OSError:
+            shutil.copy(bin_file, micromamba_file)
+            os.chmod(micromamba_file, 0o755)
     logging.info("Installing micromamba done.")
 
 

@@ -596,9 +596,9 @@ function print_summary
     echo "Total Tests:  $TESTS_TOTAL"
 
     if test $TESTS_TOTAL -gt 0
-        set -l pass_pct (math "$TESTS_PASSED * 100 / $TESTS_TOTAL")
-        set -l fail_pct (math "$TESTS_FAILED * 100 / $TESTS_TOTAL")
-        set -l skip_pct (math "$TESTS_SKIPPED * 100 / $TESTS_TOTAL")
+        set -l pass_pct (math -s0 "$TESTS_PASSED * 100 / $TESTS_TOTAL")
+        set -l fail_pct (math -s0 "$TESTS_FAILED * 100 / $TESTS_TOTAL")
+        set -l skip_pct (math -s0 "$TESTS_SKIPPED * 100 / $TESTS_TOTAL")
 
         printf "Passed:       %-4d (%d%%)\n" $TESTS_PASSED $pass_pct
         printf "Failed:       %-4d (%d%%)\n" $TESTS_FAILED $fail_pct

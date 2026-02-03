@@ -153,7 +153,12 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 	fi
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p "$DATA_HOME"
-	ln -sfn "$INSTALL_DIR/nvim" "$DATA_HOME/nvim"
+	# Move packaged nvim data into XDG data dir and link back
+	if [ -d "$INSTALL_DIR/nvim" ] && [ ! -L "$INSTALL_DIR/nvim" ]; then
+		rm -rf "$DATA_HOME/nvim"
+		mv "$INSTALL_DIR/nvim" "$DATA_HOME/nvim"
+	fi
+	ln -sfn "$DATA_HOME/nvim" "$INSTALL_DIR/nvim"
 	. $INSTALL_DIR/miniconda/bin/activate
   # find python in uv
   PYTHON_BIN_FOLDER=$(dirname $(find $INSTALL_DIR/uv/python -name python ! -type d | awk 'NR==1'))
@@ -185,6 +190,13 @@ elif [ "$MODE" = "unpack" ]; then
 	for file in $(find "$NVIM_DATA_DIR" -name "pyvenv.cfg"); do
 		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $file
 		sed -i "s|venv .*/nvim|venv $NVIM_DATA_DIR|g" $file
+	done
+
+	# Fix absolute paths embedded in UV tool scripts (e.g., conda-pack shebangs)
+	for file in $(find "$INSTALL_DIR/bin" "$INSTALL_DIR/uv/tool" -type f 2>/dev/null); do
+		if grep -q "$OLD_INSTALL_DIR" "$file" 2>/dev/null; then
+			sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" "$file"
+		fi
 	done
 
 	for file in $(find "$NVIM_DATA_DIR/mason/bin" -type l 2>/dev/null); do

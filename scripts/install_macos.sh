@@ -83,4 +83,4 @@ brew install --quiet --cask \
 	todesk google-chrome \
 	appcleaner downie visual-studio-code \
 	tencent-meeting telegram clash-verge-rev \
-	wetype claude-code codex
+	wetype claude-code codex 1password-cli

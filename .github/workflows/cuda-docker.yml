@@ -1,0 +1,68 @@
+name: Build and Push CUDA Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      cuda_version:
+        description: "CUDA base image tag (nvidia/cuda:<tag>)"
+        required: true
+        default: "13.1.1-cudnn-runtime-ubuntu24.04"
+        type: string
+      project_tag:
+        description: "Optional project tag for image tag (defaults to git tag or 'latest')"
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Aliyun Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: crpi-lxfoqbwevmx9mc1q.cn-chengdu.personal.cr.aliyuncs.com
+          username: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
+          password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+
+      - name: Determine Docker tag
+        id: docker_tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          CUDA_VERSION="${{ inputs.cuda_version }}"
+
+          if [ -n "${{ inputs.project_tag }}" ]; then
+            PROJECT_TAG="${{ inputs.project_tag }}"
+          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            PROJECT_TAG="${GITHUB_REF#refs/tags/}"
+          elif git describe --tags --abbrev=0 >/dev/null 2>&1; then
+            PROJECT_TAG="$(git describe --tags --abbrev=0)"
+          else
+            PROJECT_TAG="latest"
+          fi
+
+          IMAGE_TAG="${PROJECT_TAG}-cuda-${CUDA_VERSION}"
+          echo "project_tag=$PROJECT_TAG" >> "$GITHUB_OUTPUT"
+          echo "cuda_version=$CUDA_VERSION" >> "$GITHUB_OUTPUT"
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push CUDA Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          build-args: |
+            BASE_IMAGE=nvidia/cuda
+            VERSION=${{ steps.docker_tag.outputs.cuda_version }}
+          tags: |
+            crpi-lxfoqbwevmx9mc1q.cn-chengdu.personal.cr.aliyuncs.com/hanbing_personal/home:${{ steps.docker_tag.outputs.image_tag }}

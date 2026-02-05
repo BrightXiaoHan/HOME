@@ -65,6 +65,21 @@ NVIM_DATA_DIR=$DATA_HOME/nvim
 mkdir -p "$CONFIG_HOME" "$DATA_HOME" "$STATE_HOME" "$CACHE_HOME"
 mkdir -p "$INSTALL_DIR/bin"
 
+ensure_nvim_link() {
+	# If a legacy nvim directory exists at the install root, migrate it to XDG data.
+	if [ -d "$INSTALL_DIR/nvim" ] && [ ! -L "$INSTALL_DIR/nvim" ]; then
+		if [ ! -d "$NVIM_DATA_DIR" ] || [ -z "$(ls -A "$NVIM_DATA_DIR" 2>/dev/null)" ]; then
+			rm -rf "$NVIM_DATA_DIR"
+			mv "$INSTALL_DIR/nvim" "$NVIM_DATA_DIR"
+		else
+			rm -rf "$INSTALL_DIR/nvim"
+		fi
+	fi
+
+	mkdir -p "$NVIM_DATA_DIR/mason/bin"
+	ln -sfn "$NVIM_DATA_DIR" "$INSTALL_DIR/nvim"
+}
+
 if [ "$MODE" = "local-install" ]; then
 	CWD="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 	DIR="$INSTALL_DIR/HOME/general"
@@ -148,9 +163,7 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 		XDG_STATE_HOME=$STATE_HOME \
 		XDG_CACHE_HOME=$CACHE_HOME \
 		python3 homecli/install.py
-	if [ -d "$NVIM_DATA_DIR" ]; then
-		ln -sfn "$NVIM_DATA_DIR" "$INSTALL_DIR/nvim"
-	fi
+	ensure_nvim_link
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p "$DATA_HOME"
 	# Move packaged nvim data into XDG data dir and link back
@@ -158,7 +171,7 @@ elif [ "$MODE" = "unpack" ]; then
 		rm -rf "$DATA_HOME/nvim"
 		mv "$INSTALL_DIR/nvim" "$DATA_HOME/nvim"
 	fi
-	ln -sfn "$DATA_HOME/nvim" "$INSTALL_DIR/nvim"
+	ensure_nvim_link
 	. $INSTALL_DIR/miniconda/bin/activate
   # find python in uv
   PYTHON_BIN_FOLDER=$(dirname $(find $INSTALL_DIR/uv/python -name python ! -type d | awk 'NR==1'))
@@ -209,7 +222,7 @@ elif [ "$MODE" = "unpack" ]; then
 		sed -i "s|$OLD_INSTALL_DIR|$INSTALL_DIR|g" $origin_file
 	done
 elif [ "$MODE" = "relink" ]; then
-	ln -sfn "$INSTALL_DIR/nvim" "$NVIM_DATA_DIR"
+	ensure_nvim_link
 fi
 
 # create wrapper to enter isolated fish session with XDG dirs

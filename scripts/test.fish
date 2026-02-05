@@ -42,7 +42,7 @@ function usage
     echo "    --configs               Test configuration symlinks"
     echo "    --conda                 Test conda-installed binaries"
     echo "    --python                Test Python/UV installation"
-    echo "    --binaries              Test additional binaries (trzsz, frp)"
+    echo "    --binaries              Test additional binaries (trzsz, frp, mihomo, mihoro)"
     echo "    --environment           Test Fish shell environment"
     echo "    --nvim                  Test Neovim setup"
     echo "    --tmux                  Test Tmux configuration"
@@ -384,6 +384,28 @@ function test_additional_binaries
         end
     else
         report_fail "frps (not found)"
+    end
+
+    # mihomo
+    if command -v mihomo >/dev/null 2>&1
+        if mihomo -v >/dev/null 2>&1
+            report_pass "mihomo"
+        else
+            report_fail "mihomo (exists but -v failed)"
+        end
+    else
+        report_fail "mihomo (not found)"
+    end
+
+    # mihoro
+    if command -v mihoro >/dev/null 2>&1
+        if mihoro --version >/dev/null 2>&1
+            report_pass "mihoro"
+        else
+            report_fail "mihoro (exists but --version failed)"
+        end
+    else
+        report_fail "mihoro (not found)"
     end
 
     echo ""

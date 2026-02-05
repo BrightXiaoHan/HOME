@@ -1,4 +1,5 @@
 import argparse
+import gzip
 import json
 import logging
 import os
@@ -8,16 +9,20 @@ import sys
 import tarfile
 import tempfile
 import urllib.request
+import zipfile
 
 from homecli import ARCHITECTURE, BIN_DIR, CACHE_DIR
 from homecli.utils import progress
 
 
-def get_latest_release(owner, repo):
+def get_latest_release_info(owner, repo):
     url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
     with urllib.request.urlopen(url) as response:
-        data = json.loads(response.read())
-        return data["tag_name"]
+        return json.loads(response.read())
+
+
+def get_latest_release(owner, repo):
+    return get_latest_release_info(owner, repo)["tag_name"]
 
 
 try:
@@ -56,6 +61,196 @@ except ImportError:
                     f.write(chunk)
                     progress(f.tell(), total_size, name)
         sys.stderr.write("Donwload {} done.\n".format(name))
+
+
+def _asset_tokens(name):
+    for suffix in (".tar.gz", ".gz"):
+        if name.endswith(suffix):
+            name = name[: -len(suffix)]
+            break
+    return name.split("-")
+
+
+def _select_mihomo_asset(assets):
+    candidates = []
+    for asset in assets:
+        name = asset.get("name", "")
+        if not name.startswith("mihomo-"):
+            continue
+        if not (name.endswith(".gz") or name.endswith(".tar.gz")):
+            continue
+        tokens = _asset_tokens(name)
+        if "linux" not in tokens:
+            continue
+        candidates.append((asset, tokens))
+
+    if not candidates:
+        return None
+
+    def score_candidate(tokens):
+        penalty = 0
+        if "go120" in tokens:
+            penalty -= 1
+        if "compatible" in tokens:
+            penalty -= 1
+
+        if ARCHITECTURE in ("x86_64", "amd64"):
+            if "amd64" not in tokens:
+                return None
+            if "v1" in tokens:
+                return 30 + penalty
+            if "v2" in tokens:
+                return 20 + penalty
+            if "v3" in tokens:
+                return 10 + penalty
+            return 0 + penalty
+
+        if ARCHITECTURE in ("aarch64", "arm64"):
+            if "arm64" not in tokens and "aarch64" not in tokens:
+                return None
+            score = 0
+            if "arm64" in tokens:
+                score += 2
+            if "v8" in tokens:
+                score += 1
+            return score + penalty
+
+        return None
+
+    best_asset = None
+    best_score = None
+    for asset, tokens in candidates:
+        score = score_candidate(tokens)
+        if score is None:
+            continue
+        if best_score is None or score > best_score:
+            best_score = score
+            best_asset = asset
+
+    return best_asset
+
+
+def _extract_mihomo_archive(archive_path, archive_name, dest_path):
+    if archive_name.endswith(".tar.gz"):
+        with tarfile.open(archive_path, "r:gz") as tar:
+            member = None
+            for entry in tar.getmembers():
+                if entry.isfile() and os.path.basename(entry.name) == "mihomo":
+                    member = entry
+                    break
+            if member is None:
+                for entry in tar.getmembers():
+                    if entry.isfile():
+                        member = entry
+                        break
+            if member is None:
+                raise RuntimeError("mihomo archive has no files")
+            with tempfile.TemporaryDirectory() as tmpdir:
+                tar.extract(member, tmpdir)
+                src_path = os.path.join(tmpdir, member.name)
+                shutil.copy(src_path, dest_path)
+        return
+
+    if archive_name.endswith(".gz"):
+        with gzip.open(archive_path, "rb") as src, open(dest_path, "wb") as dst:
+            shutil.copyfileobj(src, dst)
+        return
+
+    shutil.copy(archive_path, dest_path)
+
+
+def _is_musl():
+    try:
+        result = subprocess.run(
+            ["ldd", "--version"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        return False
+
+    output = (result.stdout or "") + (result.stderr or "")
+    return "musl" in output.lower()
+
+
+def _mihoro_target_triple():
+    arch = ARCHITECTURE
+    if arch == "amd64":
+        arch = "x86_64"
+    elif arch == "arm64":
+        arch = "aarch64"
+
+    libc = "musl" if _is_musl() else "gnu"
+    return f"{arch}-unknown-linux-{libc}"
+
+
+def _select_mihoro_asset(assets, target):
+    for asset in assets:
+        name = asset.get("name", "")
+        if not name.startswith("mihoro-"):
+            continue
+        if not name.endswith(".tar.gz"):
+            continue
+        if target in name:
+            return asset
+
+    for asset in assets:
+        name = asset.get("name", "")
+        if not name.startswith("mihoro-"):
+            continue
+        if not name.endswith(".zip"):
+            continue
+        if target in name:
+            return asset
+
+    return None
+
+
+def _extract_mihoro_archive(archive_path, archive_name, dest_path):
+    if archive_name.endswith(".tar.gz"):
+        with tarfile.open(archive_path, "r:gz") as tar:
+            member = None
+            for entry in tar.getmembers():
+                if entry.isfile() and os.path.basename(entry.name) == "mihoro":
+                    member = entry
+                    break
+            if member is None:
+                for entry in tar.getmembers():
+                    if entry.isfile():
+                        member = entry
+                        break
+            if member is None:
+                raise RuntimeError("mihoro archive has no files")
+            with tempfile.TemporaryDirectory() as tmpdir:
+                tar.extract(member, tmpdir)
+                src_path = os.path.join(tmpdir, member.name)
+                shutil.copy(src_path, dest_path)
+        return
+
+    if archive_name.endswith(".zip"):
+        with zipfile.ZipFile(archive_path) as archive:
+            member = None
+            for entry in archive.infolist():
+                if entry.is_dir():
+                    continue
+                if os.path.basename(entry.filename) == "mihoro":
+                    member = entry
+                    break
+            if member is None:
+                for entry in archive.infolist():
+                    if not entry.is_dir():
+                        member = entry
+                        break
+            if member is None:
+                raise RuntimeError("mihoro archive has no files")
+            with tempfile.TemporaryDirectory() as tmpdir:
+                archive.extract(member, tmpdir)
+                src_path = os.path.join(tmpdir, member.filename)
+                shutil.copy(src_path, dest_path)
+        return
+
+    shutil.copy(archive_path, dest_path)
 
 
 def install_neovim(overwrite=True):
@@ -261,6 +456,53 @@ def install_frp(overwrite=True):
             shutil.move(os.path.join(frp_dir, f), os.path.join(CACHE_DIR, "bin"))
 
 
+def install_mihomo(overwrite=True):
+    logging.info("Installing mihomo...")
+    bin_file = os.path.join(BIN_DIR, "mihomo")
+    if os.path.exists(bin_file) and not overwrite:
+        return
+
+    release_info = get_latest_release_info("MetaCubeX", "mihomo")
+    asset = _select_mihomo_asset(release_info.get("assets", []))
+    if not asset:
+        raise RuntimeError("Unable to find a suitable mihomo release asset")
+
+    url = asset["browser_download_url"]
+    archive_name = asset["name"]
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_with_progress(url, tmp.name, "mihomo")
+        tmp.flush()
+        _extract_mihomo_archive(tmp.name, archive_name, bin_file)
+
+    os.chmod(bin_file, 0o755)
+    logging.info("Installing mihomo done.")
+
+
+def install_mihoro(overwrite=True):
+    logging.info("Installing mihoro...")
+    bin_file = os.path.join(BIN_DIR, "mihoro")
+    if os.path.exists(bin_file) and not overwrite:
+        return
+
+    release_info = get_latest_release_info("spencerwooo", "mihoro")
+    target = _mihoro_target_triple()
+    asset = _select_mihoro_asset(release_info.get("assets", []), target)
+    if not asset:
+        raise RuntimeError(f"Unable to find a suitable mihoro release asset for {target}")
+
+    url = asset["browser_download_url"]
+    archive_name = asset["name"]
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_with_progress(url, tmp.name, "mihoro")
+        tmp.flush()
+        _extract_mihoro_archive(tmp.name, archive_name, bin_file)
+
+    os.chmod(bin_file, 0o755)
+    logging.info("Installing mihoro done.")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -272,6 +514,8 @@ def main():
             "update",
             "trzsz",
             "frp",
+            "mihomo",
+            "mihoro",
         ],
         default=["all"],
         help="component to install. all by default",
@@ -281,6 +525,8 @@ def main():
         components = [
             "frp",
             "trzsz",
+            "mihomo",
+            "mihoro",
             "mamba",
             "conda",
             "neovim",
@@ -289,6 +535,8 @@ def main():
         components = [
             "frp",
             "trzsz",
+            "mihomo",
+            "mihoro",
         ]
     else:
         components = args.component

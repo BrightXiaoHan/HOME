@@ -1,0 +1,27 @@
+remote_config_url = "https://tt.vg/freeclash"
+mihomo_channel = "stable"
+mihomo_binary_path = "mihomo"
+mihomo_config_root = "~/.config/mihomo"
+user_systemd_root = "~/.config/systemd/user"
+mihoro_user_agent = "mihoro"
+auto_update_interval = 12
+
+[mihomo_config]
+port = 7891
+socks_port = 7892
+mixed_port = 7890
+allow_lan = false
+bind_address = "*"
+mode = "rule"
+log_level = "info"
+ipv6 = true
+external_controller = "0.0.0.0:9090"
+external_ui = "ui"
+geodata_mode = false
+geo_auto_update = true
+geo_update_interval = 24
+
+[mihomo_config.geox_url]
+geoip = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+geosite = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+mmdb = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"

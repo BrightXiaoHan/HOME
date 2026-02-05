@@ -18,7 +18,7 @@ OPTIONS:
     --configs               Test configuration symlinks
     --conda                 Test conda-installed binaries
     --python                Test Python/UV installation
-    --binaries              Test additional binaries (trzsz, frp)
+    --binaries              Test additional binaries (trzsz, frp, mihomo, mihoro)
     --environment           Test Fish shell environment
     --nvim                  Test Neovim setup
     --tmux                  Test Tmux configuration

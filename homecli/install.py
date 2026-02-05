@@ -197,6 +197,8 @@ def install_conda():
 
     for package in [
         "kimi-cli",
+        "huggingface-cli",
+        "modelscope",
     ]:
         subprocess.run(
             [

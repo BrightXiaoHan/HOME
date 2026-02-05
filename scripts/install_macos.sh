@@ -84,3 +84,6 @@ brew install --quiet --cask \
 	appcleaner downie visual-studio-code \
 	tencent-meeting telegram clash-verge-rev \
 	wetype claude-code codex 1password-cli
+
+# install python tools
+uv tool install modelscope huggingface_hub

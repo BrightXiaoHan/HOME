@@ -75,3 +75,6 @@ winget install -e --id Sogou.SogouInput --accept-source-agreements --accept-pack
 winget install -e --id Valve.Steam --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id Youqu.ToDesk --accept-source-agreements --accept-package-agreements --silent
 winget install -e --id AgileBits.1Password.CLI --accept-source-agreements --accept-package-agreements --silent
+
+# install python tools
+uv tool install modelscope huggingface_hub

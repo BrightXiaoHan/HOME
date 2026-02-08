@@ -338,7 +338,7 @@ def install_conda():
         "cmake",
         "git",
         "git-lfs",
-        "tmux",
+        "tmux=3.5a",
         "libcurl",
         "libgit2",
         "uv",

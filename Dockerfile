@@ -24,6 +24,7 @@ RUN ln -s /root/.homecli/miniconda/bin/fish /usr/bin/fish
 ENV https_proxy=""
 
 WORKDIR /workspace
-VOLUME ["/workplace"]
 
 ENTRYPOINT ["fish"]
+
+CMD ["-c", "kimi login && kimi --web"]

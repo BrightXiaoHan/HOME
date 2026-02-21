@@ -113,3 +113,99 @@ function vscode-server-upload
 
     rm -rf "$tmpdir"
 end
+
+function restore-ssh-key
+    # Restore SSH private key from GPG key file
+    # Usage: restore-ssh-key <path-to-gpg-private-key>
+    # 
+    # This function imports the GPG private key, then decrypts ssh/id_rsa from pass
+    # and restores it to ~/.ssh/id_rsa
+    
+    if test (count $argv) -lt 1
+        echo "Usage: restore-ssh-key <path-to-gpg-private-key>"
+        echo "Example: restore-ssh-key ~/Downloads/gpg-private-key.asc"
+        return 1
+    end
+    
+    set -l gpg_key_path $argv[1]
+    
+    if not test -f $gpg_key_path
+        echo "Error: GPG key file not found: $gpg_key_path"
+        return 1
+    end
+    
+    echo "Importing GPG private key from $gpg_key_path..."
+    gpg --import $gpg_key_path
+    if test $status -ne 0
+        echo "Error: Failed to import GPG key"
+        return 1
+    end
+    
+    # Get the key ID (assumes the first secret key)
+    set -l key_id (gpg --list-secret-keys --with-colons | grep fpr | head -1 | cut -d: -f10)
+    if test -z "$key_id"
+        echo "Error: Could not determine GPG key ID"
+        return 1
+    end
+    
+    echo "Setting ultimate trust for key $key_id..."
+    echo -e "5\ny\n" | gpg --command-fd 0 --edit-key $key_id trust >/dev/null 2>&1
+    
+    # Clone password store if not exists
+    if not test -d "$HOME/.password-store"
+        echo "Cloning password store..."
+        git clone https://github.com/BrightXiaoHan/password-store.git "$HOME/.password-store"
+    end
+    
+    # Initialize pass
+    pass init $key_id >/dev/null 2>&1
+    
+    # Decrypt and restore ssh keys
+    echo "Restoring SSH keys from password store..."
+    
+    # Create .ssh directory if not exists
+    if not test -d "$HOME/.ssh"
+        mkdir -p "$HOME/.ssh"
+    end
+    
+    # Restore id_rsa
+    if pass show ssh/id_rsa >/dev/null 2>&1
+        pass show ssh/id_rsa > "$HOME/.ssh/id_rsa"
+        chmod 600 "$HOME/.ssh/id_rsa"
+        echo "✅ Restored ~/.ssh/id_rsa"
+    else
+        echo "⚠️  ssh/id_rsa not found in password store"
+    end
+    
+    # Restore id_rsa.pub
+    if pass show ssh/id_rsa.pub >/dev/null 2>&1
+        pass show ssh/id_rsa.pub > "$HOME/.ssh/id_rsa.pub"
+        chmod 644 "$HOME/.ssh/id_rsa.pub"
+        echo "✅ Restored ~/.ssh/id_rsa.pub"
+    else
+        echo "⚠️  ssh/id_rsa.pub not found in password store"
+    end
+    
+    # Restore id_rsa_git
+    if pass show ssh/id_rsa_git >/dev/null 2>&1
+        pass show ssh/id_rsa_git > "$HOME/.ssh/id_rsa_git"
+        chmod 600 "$HOME/.ssh/id_rsa_git"
+        echo "✅ Restored ~/.ssh/id_rsa_git"
+    else
+        echo "⚠️  ssh/id_rsa_git not found in password store"
+    end
+    
+    # Restore id_rsa_git.pub
+    if pass show ssh/id_rsa_git.pub >/dev/null 2>&1
+        pass show ssh/id_rsa_git.pub > "$HOME/.ssh/id_rsa_git.pub"
+        chmod 644 "$HOME/.ssh/id_rsa_git.pub"
+        echo "✅ Restored ~/.ssh/id_rsa_git.pub"
+    else
+        echo "⚠️  ssh/id_rsa_git.pub not found in password store"
+    end
+    
+    echo ""
+    echo "SSH key restoration complete!"
+    echo "You may need to add the new SSH key to your GitHub account:"
+    echo "  cat ~/.ssh/id_rsa_git.pub"
+end

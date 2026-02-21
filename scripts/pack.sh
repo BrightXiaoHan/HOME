@@ -95,7 +95,7 @@ cd $INSTALL_DIR
 rm -rf $INSTALL_DIR/packed
 mkdir $INSTALL_DIR/packed
 tar --exclude="__pycache__" --dereference -cvf $INSTALL_DIR/packed/homecli.tar.gz \
-	HOME bin miniconda.tar.gz uv nvim
+	HOME bin miniconda.tar.gz uv nvim password-store
 rm miniconda.tar.gz
 cp $INSTALL_DIR/HOME/scripts/install.sh \
 	$INSTALL_DIR/HOME/scripts/uninstall.sh \

@@ -122,6 +122,17 @@ if [ ! -d $DIR/nvim ]; then
   git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/nvim
 fi
 
+# Setup password store
+gpg --list-keys 81066AFD8D55B3D7FB5E558ED205F1C5AB2DC9D1 > /dev/null 2>&1
+GPG_KEY_EXISTS=$?
+
+if [ "$GPG_KEY_EXISTS" -eq 0 ] && [ ! -d "$INSTALL_DIR/password-store" ]; then
+  echo "Setting up password store..."
+  git clone https://github.com/BrightXiaoHan/password-store.git "$INSTALL_DIR/password-store"
+  pass init 81066AFD8D55B3D7FB5E558ED205F1C5AB2DC9D1 > /dev/null 2>&1
+  echo "Password store initialized."
+fi
+
 # get current dir
 mkdir -p ~/.config
 

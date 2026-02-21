@@ -94,8 +94,14 @@ echo $CURDIR
 cd $INSTALL_DIR
 rm -rf $INSTALL_DIR/packed
 mkdir $INSTALL_DIR/packed
-tar --exclude="__pycache__" --dereference -cvf $INSTALL_DIR/packed/homecli.tar.gz \
-	HOME bin miniconda.tar.gz uv nvim password-store
+
+# Build tar command based on what exists
+TAR_ITEMS="HOME bin miniconda.tar.gz uv nvim"
+if [ -d "$INSTALL_DIR/password-store" ]; then
+    TAR_ITEMS="$TAR_ITEMS password-store"
+fi
+
+tar --exclude="__pycache__" --dereference -cvf $INSTALL_DIR/packed/homecli.tar.gz $TAR_ITEMS
 rm miniconda.tar.gz
 cp $INSTALL_DIR/HOME/scripts/install.sh \
 	$INSTALL_DIR/HOME/scripts/uninstall.sh \

@@ -12,6 +12,7 @@ Host gpu-debug
     HostName 123.57.66.113
     Port 6267
     User wangjiaying
+    ServerAliveInterval 10
 
 Host multimodal-cls-aliyun
   HostName 47.95.12.234

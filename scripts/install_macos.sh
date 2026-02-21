@@ -16,7 +16,7 @@ setup_password_store() {
 	echo "========================================"
 
 	# Check if GPG key exists, if not prompt user to import
-	GPG_KEY_ID="5F8F12601E991C982850BFC53965492C32AB9685"
+	GPG_KEY_ID="81066AFD8D55B3D7FB5E558ED205F1C5AB2DC9D1"
 	if ! gpg --list-keys "$GPG_KEY_ID" >/dev/null 2>&1; then
 		echo "GPG key not found. Checking iCloud backup..."
 

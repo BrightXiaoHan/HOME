@@ -8,20 +8,17 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 
-# [core]
-#     # Use SSH instead of HTTPS for URLs starting with 'git:'
-#     sshCommand = ssh -i ~/.ssh/id_rsa_git -F ~/.ssh/config
+[url "git@github.com:"]
+  # Automatically convert HTTPS GitHub URLs to SSH
+  insteadOf = https://github.com/
 
-# [url "git@github.com:"]
-#     # Automatically convert HTTPS GitHub URLs to SSH
-#     insteadOf = https://github.com/
+[url "git@code.iflytek.com:"]
+	insteadOf = https://code.iflytek.com/
 
 [alias]
 lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all
 lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
 lg = lg1
 
-[url "git@code.iflytek.com:"]
-	insteadOf = https://code.iflytek.com/
 [core]
 	quotepath = false

@@ -209,3 +209,44 @@ function restore-ssh-key
     echo "You may need to add the new SSH key to your GitHub account:"
     echo "  cat ~/.ssh/id_rsa_git.pub"
 end
+
+
+function switch-claude-code-to-kimi
+    set -gx ANTHROPIC_BASE_URL https://api.kimi.com/coding/
+    set -gx ANTHROPIC_AUTH_TOKEN (pass show llm/kimi/kimi-code)
+end
+
+function switch-claude-code-to-deepseek
+    set -gx ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic
+    set -gx ANTHROPIC_AUTH_TOKEN (pass show llm/deepseek)
+    set -gx ANTHROPIC_MODEL deepseek-reasoner
+    set -gx ANTHROPIC_SMALL_FAST_MODEL deepseek-chat
+end
+
+function switch-claude-code-to-glm
+    set -gx ANTHROPIC_BASE_URL https://open.bigmodel.cn/api/anthropic
+    set -gx ANTHROPIC_AUTH_TOKEN (pass show llm/glm/glm-code)
+    set -gx ANTHROPIC_MODEL glm-5
+    set -gx ANTHROPIC_SMALL_FAST_MODEL glm-5
+end
+
+function switch-claude-code-to-openrouter
+    set -gx OPENROUTER_API_KEY (pass show lighthunter/openrouter/hanbing)
+    set -gx ANTHROPIC_BASE_URL "https://openrouter.ai/api"
+    set -gx ANTHROPIC_AUTH_TOKEN (pass show lighthunter/openrouter/hanbing)
+    set -gx ANTHROPIC_API_KEY "" # Important: Must be explicitly empty
+    set -gx ANTHROPIC_DEFAULT_OPUS_MODEL "anthropic/claude-opus-4.6"
+    set -gx ANTHROPIC_DEFAULT_SONNET_MODEL "anthropic/claude-sonnet-4.6"
+    set -gx ANTHROPIC_DEFAULT_HAIKU_MODEL "anthropic/claude-haiku-4.5"
+    set -gx CLAUDE_CODE_SUBAGENT_MODEL "anthropic/claude-opus-4.6"
+end
+
+function claude-code-reset
+    set -e DEEPSEEK_API_KEY
+    set -e ANTHROPIC_BASE_URL
+    set -e ANTHROPIC_AUTH_TOKEN
+    set -e ANTHROPIC_MODEL
+    set -e ANTHROPIC_SMALL_FAST_MODEL
+end
+
+set -gx GEMINI_API_KEY (pass show llm/google/ai-studio)

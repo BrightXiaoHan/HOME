@@ -34,6 +34,8 @@ set -gx PATH node_modules/.bin $PATH
 
 set -l __config_dir (path dirname (status --current-filename))
 
+source $__config_dir/cmd.fish
+
 set -l __local_config $__config_dir/config-local.fish
 if test -f $__local_config
     source $__local_config
@@ -45,8 +47,6 @@ switch (uname)
     case Linux
         source $__config_dir/config-linux.fish
 end
-
-source $__config_dir/cmd.fish
 
 if status is-interactive
     if command -q starship

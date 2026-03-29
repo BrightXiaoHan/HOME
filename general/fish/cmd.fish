@@ -226,8 +226,8 @@ end
 function switch-claude-code-to-glm
     set -gx ANTHROPIC_BASE_URL https://open.bigmodel.cn/api/anthropic
     set -gx ANTHROPIC_AUTH_TOKEN (pass show llm/glm/glm-code)
-    set -gx ANTHROPIC_MODEL glm-5
-    set -gx ANTHROPIC_SMALL_FAST_MODEL glm-5
+    set -gx ANTHROPIC_MODEL glm-5.1
+    set -gx ANTHROPIC_SMALL_FAST_MODEL glm-5.1
 end
 
 function switch-claude-code-to-openrouter

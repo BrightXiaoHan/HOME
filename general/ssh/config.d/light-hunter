@@ -1,0 +1,12 @@
+Host lc-oc
+    HostName 163.7.11.80
+    User root
+    Port 22
+    ServerAliveInterval 10
+
+
+Host lc-oc-2
+    HostName 163.7.12.39
+    User root
+    Port 22
+    ServerAliveInterval 10

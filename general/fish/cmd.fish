@@ -241,6 +241,11 @@ function switch-claude-code-to-openrouter
     set -gx CLAUDE_CODE_SUBAGENT_MODEL "anthropic/claude-opus-4.6"
 end
 
+function switch-claude-code-to-aiberm
+    set -gx ANTHROPIC_BASE_URL https://aiberm.com
+    set -gx ANTHROPIC_AUTH_TOKEN (pass show lighthunter/aiberm/hanbing)
+end
+
 function claude-code-reset
     set -e DEEPSEEK_API_KEY
     set -e ANTHROPIC_BASE_URL

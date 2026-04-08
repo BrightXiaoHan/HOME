@@ -52,6 +52,7 @@ fish_add_path --path $UV_TOOL_BIN_DIR
 set -gx GIT_CONFIG_GLOBAL $CONFIG_HOME/git/config
 set -gx CONDARC $INSTALL_DIR/etc/mambarc
 set -gx HOMECLI_SSH_DIR $INSTALL_DIR/etc/ssh
+set -gx PASSWORD_STORE_DIR $INSTALL_DIR/password-store
 set -l __homecli_ssh_config $HOMECLI_SSH_DIR/config
 if test -f $__homecli_ssh_config
     set -gx GIT_SSH_COMMAND "ssh -F $__homecli_ssh_config -i $HOMECLI_SSH_DIR/id_rsa_git" 

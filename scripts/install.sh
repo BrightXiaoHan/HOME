@@ -253,6 +253,7 @@ export UV_PYTHON_PREFERENCE="only-system"
 export GIT_CONFIG_GLOBAL="$CONFIG_HOME/git/config"
 export CONDARC="$INSTALL_DIR/etc/mambarc"
 export HOMECLI_SSH_DIR="$INSTALL_DIR/etc/ssh"
+export PASSWORD_STORE_DIR="$INSTALL_DIR/password-store"
 export PATH="$INSTALL_DIR/bin:$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/uv/tool/bin:\$PATH"
 exec "$INSTALL_DIR/miniconda/bin/fish" "\$@"
 EOF

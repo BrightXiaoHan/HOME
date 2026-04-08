@@ -152,9 +152,10 @@ function restore-ssh-key
     echo -e "5\ny\n" | gpg --command-fd 0 --edit-key $key_id trust >/dev/null 2>&1
     
     # Clone password store if not exists
-    if not test -d "$HOME/.password-store"
+    set -l pass_dir (set -q PASSWORD_STORE_DIR; and echo $PASSWORD_STORE_DIR; or echo "$HOME/.password-store")
+    if not test -d "$pass_dir"
         echo "Cloning password store..."
-        git clone https://github.com/BrightXiaoHan/password-store.git "$HOME/.password-store"
+        git clone https://github.com/BrightXiaoHan/password-store.git "$pass_dir"
     end
     
     # Initialize pass

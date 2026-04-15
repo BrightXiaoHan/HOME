@@ -254,5 +254,3 @@ function claude-code-reset
     set -e ANTHROPIC_MODEL
     set -e ANTHROPIC_SMALL_FAST_MODEL
 end
-
-set -gx GEMINI_API_KEY (pass show llm/google/ai-studio)

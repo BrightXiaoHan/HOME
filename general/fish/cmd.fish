@@ -220,8 +220,8 @@ end
 function switch-claude-code-to-deepseek
     set -gx ANTHROPIC_BASE_URL https://api.deepseek.com/anthropic
     set -gx ANTHROPIC_AUTH_TOKEN (pass show llm/deepseek)
-    set -gx ANTHROPIC_MODEL deepseek-reasoner
-    set -gx ANTHROPIC_SMALL_FAST_MODEL deepseek-chat
+    set -gx ANTHROPIC_MODEL deepseek-v4-pro
+    set -gx ANTHROPIC_SMALL_FAST_MODEL deepseek-v4-flash
 end
 
 function switch-claude-code-to-glm

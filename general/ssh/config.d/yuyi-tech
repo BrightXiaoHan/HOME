@@ -84,3 +84,9 @@ Host yuyi-virtual
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p aliyun
 
+Host yuyi-ascend-310
+    HostName 192.168.16.120
+    User root
+    Port 22
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p yuyi-virtual

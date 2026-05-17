@@ -20,6 +20,13 @@ Host 56Server
     User hanbing
     ServerAliveInterval 10
 
+Host yuyi-asr-test
+    HostName 192.168.16.105
+    Port 22
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p 56Server
+
 Host YuyiGPU
     HostName 39.105.167.2
     Port 5100
@@ -90,3 +97,10 @@ Host yuyi-ascend-310
     Port 22
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p yuyi-virtual
+
+
+Host yuyi-haiguang
+    HostName 39.105.167.2
+    Port 10233
+    User root
+    ServerAliveInterval 10

@@ -144,11 +144,9 @@ homecli_latest_release_tag() {
 	homecli_temp_file json_file
 	tag=""
 
-	if homecli_fetch_latest_release_json "$owner" "$repo" "$json_file" 2>/dev/null; then
-		if command -v jq >/dev/null 2>&1; then
+	if command -v jq >/dev/null 2>&1; then
+		if homecli_fetch_latest_release_json "$owner" "$repo" "$json_file" 2>/dev/null; then
 			tag=$(jq -r '.tag_name // empty' "$json_file")
-		else
-			tag=$(awk -F'"' '/"tag_name"[[:space:]]*:/ { print $4; exit }' "$json_file")
 		fi
 	fi
 
@@ -196,7 +194,7 @@ homecli_release_assets_to_file() {
 	local output=$3
 	local json_file
 	homecli_temp_file json_file
-	if homecli_fetch_latest_release_json "$owner" "$repo" "$json_file" 2>/dev/null; then
+	if command -v jq >/dev/null 2>&1 && homecli_fetch_latest_release_json "$owner" "$repo" "$json_file" 2>/dev/null; then
 		if homecli_release_assets_from_file "$json_file" >"$output" && [ -s "$output" ]; then
 			return 0
 		fi

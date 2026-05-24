@@ -530,7 +530,7 @@ homecli_install_conda() {
 	homecli_log "Installing conda packages..."
 	env PYTHONPATH= MAMBA_ROOT_PREFIX="$HOMECLI_CACHE_DIR/miniconda" "$mamba_path" "${command[@]}"
 
-	for package in kimi-cli huggingface-cli modelscope; do
+	for package in kimi-cli huggingface_hub modelscope; do
 		env \
 			UV_TOOL_DIR="$HOMECLI_CACHE_DIR/uv/tool" \
 			UV_TOOL_BIN_DIR="$HOMECLI_CACHE_DIR/bin" \

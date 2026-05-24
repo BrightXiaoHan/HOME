@@ -131,7 +131,6 @@ podman run -v $HOME:/workspace --name home -itd home
   - `tmux/` - Tmux configuration
   - `nvim/` - NeoVim configuration
   - `gitconfig` - Global Git configuration
-- `homecli/` - Python package for installation and management
 - `scripts/` - Installation and utility scripts for different platforms
 
 ## Contributing

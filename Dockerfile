@@ -10,7 +10,7 @@ ENV TZ=Asia/Shanghai \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
-    && apt install -y tzdata python3 python3-pip curl fuse git \
+    && apt install -y tzdata python3 python3-pip curl fuse git bzip2 unzip ca-certificates \
     && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata \

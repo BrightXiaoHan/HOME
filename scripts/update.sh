@@ -18,5 +18,5 @@ export MAMBA_ROOT_PREFIX="$DIR/miniconda"
 cd "$DIR/HOME"
 
 git pull
-PYTHONPATH="./:${PYTHONPATH:-}" python3 homecli/install.py -c update
+bash scripts/install_components.sh update
 "$DIR/bin/mamba" update --all

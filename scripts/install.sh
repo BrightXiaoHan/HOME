@@ -136,12 +136,6 @@ fi
 # get current dir
 mkdir -p ~/.config
 
-# test if python3 is installed
-if ! [ -x "$(command -v python3)" ]; then
-	echo 'Error: python3 is not installed.' >&2
-	exit 1
-fi
-
 rm -f $DIR/nvim/lua/custom || true
 
 ln -sfn $DIR/nvim "$CONFIG_HOME/nvim"
@@ -166,14 +160,13 @@ if ! grep -q "$(cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub)" ~/.ssh/authorized
 fi
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
-	PYTHONPATH="./:$PYTHONPATH" \
-		PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
+	PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
 		HOMECLI_INSTALL_DIR=$INSTALL_DIR \
 		XDG_CONFIG_HOME=$CONFIG_HOME \
 		XDG_DATA_HOME=$DATA_HOME \
 		XDG_STATE_HOME=$STATE_HOME \
 		XDG_CACHE_HOME=$CACHE_HOME \
-		python3 homecli/install.py
+		bash scripts/install_components.sh all || exit 1
 	ensure_nvim_link
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p "$DATA_HOME"

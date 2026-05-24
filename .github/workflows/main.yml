@@ -115,7 +115,7 @@ jobs:
 
           install: |
             apt update -y
-            apt install -y python3 python3-pip curl libfuse-dev git
+            apt install -y python3 python3-pip curl libfuse-dev git bzip2 unzip ca-certificates
 
           # Set an output parameter `uname` for use in subsequent steps
           run: |

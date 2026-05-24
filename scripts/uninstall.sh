@@ -33,16 +33,42 @@ done
 
 INSTALL_DIR=${INSTALL_DIR:-${HOMECLI_INSTALL_DIR:-$HOME/.homecli}}
 REMOVE_CACHE=${REMOVE_CACHE:-true}
-ABS_INSTALL_DIR=$(python3 - <<'PY' "$INSTALL_DIR"
-import os, sys
-print(os.path.abspath(sys.argv[1]))
-PY
-)
-DEFAULT_INSTALL_DIR=$(python3 - <<'PY' "${HOMECLI_INSTALL_DIR:-$HOME/.homecli}"
-import os, sys
-print(os.path.abspath(sys.argv[1]))
-PY
-)
+
+abs_path() {
+	local path=$1
+	local part
+	local -a parts stack
+
+	if [ "${path#/}" = "$path" ]; then
+		path="$PWD/$path"
+	fi
+
+	IFS=/ read -r -a parts <<<"$path"
+	for part in "${parts[@]}"; do
+		case "$part" in
+		"" | ".")
+			;;
+		"..")
+			if [ "${#stack[@]}" -gt 0 ]; then
+				unset 'stack[${#stack[@]}-1]'
+			fi
+			;;
+		*)
+			stack+=("$part")
+			;;
+		esac
+	done
+
+	if [ "${#stack[@]}" -eq 0 ]; then
+		printf '/\n'
+	else
+		printf '/%s' "${stack[@]}"
+		printf '\n'
+	fi
+}
+
+ABS_INSTALL_DIR=$(abs_path "$INSTALL_DIR")
+DEFAULT_INSTALL_DIR=$(abs_path "${HOMECLI_INSTALL_DIR:-$HOME/.homecli}")
 
 # remove cache
 if [ "$REMOVE_CACHE" = "true" ]; then
@@ -69,13 +95,7 @@ remove_legacy_symlink() {
 	fi
 
 	if [ "${target#/}" = "$target" ]; then
-		target=$(python3 - <<'PY' "$path" "$target"
-import os, sys
-link, target = sys.argv[1:]
-link_dir = os.path.dirname(os.path.abspath(link))
-print(os.path.abspath(os.path.join(link_dir, target)))
-PY
-)
+		target=$(abs_path "$(dirname "$path")/$target")
 	fi
 
 	case "$target" in

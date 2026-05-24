@@ -30,12 +30,6 @@ Host xunfei-112
     PubkeyAcceptedAlgorithms +ssh-rsa
 
 
-Host code.iflytek.com
-    HostName code.iflytek.com
-    User git
-    Port 30004
-    IdentityFile ~/.ssh/id_rsa
-
 Host oas.iflysec.com
   HostName oas.iflysec.com
   Port 2222

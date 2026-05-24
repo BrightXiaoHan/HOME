@@ -4,9 +4,8 @@ Host personal-aliyun
     User root
     ServerAliveInterval 10
 
-Host personal-tencent
-    HostName 106.52.220.44
-    User root
+Host personal-mac-mini Hans-Mac-mini.local
+    HostName Hans-Mac-mini.local
+    User bing
     ServerAliveInterval 10
-
 

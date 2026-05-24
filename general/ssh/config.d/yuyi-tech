@@ -20,6 +20,13 @@ Host 56Server
     User hanbing
     ServerAliveInterval 10
 
+Host 57Server
+    HostName 192.168.16.24
+    Port 2333
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p 56Server
+
 Host yuyi-asr-test
     HostName 192.168.16.105
     Port 22

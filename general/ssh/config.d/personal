@@ -2,10 +2,18 @@ Host personal-aliyun
     HostName 39.99.244.8
     Port 22
     User root
+    IdentitiesOnly yes
     ServerAliveInterval 10
+
+Host mac-mini
+    HostName 39.99.244.8
+    Port 60022
+    User hanbing
+    IdentitiesOnly yes
+    ServerAliveInterval 10
+    IdentityFile ~/.ssh/id_rsa_harmonyos
 
 Host personal-mac-mini Hans-Mac-mini.local
     HostName Hans-Mac-mini.local
     User bing
     ServerAliveInterval 10
-

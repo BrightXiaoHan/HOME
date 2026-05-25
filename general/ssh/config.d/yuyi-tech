@@ -106,6 +106,13 @@ Host yuyi-ascend-310
     ProxyCommand ssh -W %h:%p yuyi-virtual
 
 
+Host yuyi-82
+    HostName 192.168.16.82
+    Port 22
+    User root
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p 56Server
+
 Host yuyi-haiguang
     HostName 39.105.167.2
     Port 10233

@@ -1,12 +1,14 @@
 Host gitcode.com
-    IdentityFile ~/.ssh/id_rsa_git
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
     User git
 
 Host github.com
-    IdentityFile ~/.ssh/id_rsa_git
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
     User git
 
 Host gitee.com
-    IdentityFile ~/.ssh/id_rsa_git
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
     User git
-

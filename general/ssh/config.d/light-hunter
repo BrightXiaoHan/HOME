@@ -30,3 +30,9 @@ Host lc-oc-test-zaiyang
     ServerAliveInterval 10
     IdentityFile ~/.ssh/private-light-hunter-oc
     ProxyCommand ssh -W %h:%p lc-oc-test
+
+Host lc-oc-test-lite
+    HostName 101.47.17.169
+    User root
+    Port 22
+    ServerAliveInterval 10

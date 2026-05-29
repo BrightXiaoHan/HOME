@@ -459,23 +459,27 @@ homecli_install_neovim() {
 	local config_home="${XDG_CONFIG_HOME:-$HOMECLI_CACHE_DIR/config}"
 	local state_home="${XDG_STATE_HOME:-$HOMECLI_CACHE_DIR/state}"
 	local cache_home="${XDG_CACHE_HOME:-$HOMECLI_CACHE_DIR/cache}"
+	local git_config
 	local _
 
 	[ -x "$nvim_bin" ] || homecli_die "nvim is required but not installed at $nvim_bin"
 
 	homecli_log "Installing neovim plugins with vim.pack..."
 	mkdir -p "$data_home/nvim/site/pack/core/opt" "$data_home/nvim/mason/bin"
+	homecli_temp_file git_config
+	cat >"$git_config" <<'EOF'
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+	insteadOf = ssh://git@github.com/
+EOF
+
 	for _ in 1 2 3; do
 		if env \
 			XDG_CONFIG_HOME="$config_home" \
 			XDG_DATA_HOME="$data_home" \
 			XDG_STATE_HOME="$state_home" \
 			XDG_CACHE_HOME="$cache_home" \
-			GIT_CONFIG_COUNT=2 \
-			GIT_CONFIG_KEY_0="url.https://github.com/.insteadOf" \
-			GIT_CONFIG_VALUE_0="git@github.com:" \
-			GIT_CONFIG_KEY_1="url.https://github.com/.insteadOf" \
-			GIT_CONFIG_VALUE_1="ssh://git@github.com/" \
+			GIT_CONFIG_GLOBAL="$git_config" \
 			"$nvim_bin" --headless \
 			"+lua assert(vim.fn.has('nvim-0.12') == 1 and vim.pack, 'Neovim 0.12+ with vim.pack is required')" \
 			"+lua vim.pack.update(nil, { target = 'lockfile', offline = true, force = true })" \

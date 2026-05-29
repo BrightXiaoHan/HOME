@@ -89,10 +89,9 @@ jobs:
         || inputs.build_arch == 'both'
         || inputs.build_arch == 'arm64'
       )
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+    runs-on: ubuntu-24.04-arm
+    env:
+      HOMECLI_PRINT_PROGRESS: false
 
     steps:
       - uses: actions/checkout@v3
@@ -100,33 +99,39 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - uses: uraimo/run-on-arch-action@v3
-        name: Run commands
-        with:
-          arch: aarch64
-          distro: ubuntu24.04
+      - name: Show architecture
+        shell: bash
+        run: uname -a
 
-          # Mount the artifacts directory as /artifacts in the container
-          dockerRunArgs: |
-            --volume "${PWD}:/workspace"
+      - name: Install host dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bzip2 ca-certificates curl git gzip tar
 
-          env: |
-            HOMECLI_PRINT_PROGRESS: false
+      - name: Install
+        shell: bash
+        run: scripts/install.sh -m local-install
 
-          install: |
-            apt update -y
-            apt install -y python3 python3-pip curl libfuse-dev git bzip2 unzip ca-certificates
+      - name: Test Installation
+        shell: bash
+        run: scripts/test.sh
 
-          # Set an output parameter `uname` for use in subsequent steps
-          run: |
-            uname -a
-            cd /workspace
-            scripts/install.sh -m local-install
-            scripts/test.sh
-            scripts/pack.sh -o home-cli-arm64.run
-            scripts/uninstall.sh
-            bash home-cli-arm64.run -- -m install --install-dir /workspace/home-cli-arm64
-            scripts/test.sh --install-dir /workspace/home-cli-arm64
+      - name: Pack
+        shell: bash
+        run: scripts/pack.sh -o home-cli-arm64.run
+
+      - name: Uninstall
+        shell: bash
+        run: scripts/uninstall.sh
+
+      - name: Unpack
+        shell: bash
+        run: bash ./home-cli-arm64.run -- -m install --install-dir ${{ github.workspace }}/home-cli-arm64
+
+      - name: Test Unpacked Installation
+        shell: bash
+        run: scripts/test.sh --install-dir ${{ github.workspace }}/home-cli-arm64
 
       - uses: actions/upload-artifact@v4
         with:

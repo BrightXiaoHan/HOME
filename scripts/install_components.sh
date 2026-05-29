@@ -350,16 +350,24 @@ homecli_is_musl() {
 
 homecli_mihoro_target_triple() {
 	local arch=$HOMECLI_ARCH
-	local libc=gnu
+	local libc=${HOMECLI_MIHORO_LIBC:-musl}
 
 	case "$arch" in
 	amd64) arch=x86_64 ;;
 	arm64) arch=aarch64 ;;
 	esac
 
-	if homecli_is_musl; then
-		libc=musl
-	fi
+	case "$libc" in
+	auto)
+		if homecli_is_musl; then
+			libc=musl
+		else
+			libc=gnu
+		fi
+		;;
+	gnu | musl) ;;
+	*) homecli_die "Unsupported mihoro libc target: $libc" ;;
+	esac
 
 	printf '%s-unknown-linux-%s\n' "$arch" "$libc"
 }

@@ -445,47 +445,34 @@ function test_neovim
         report_fail "Neovim headless execution failed"
     end
 
+    # vim.pack requires Neovim 0.12+
+    if nvim --headless "+lua assert(vim.fn.has('nvim-0.12') == 1 and vim.pack, 'Neovim 0.12+ with vim.pack is required')" +qa >/dev/null 2>&1
+        report_pass "Neovim 0.12+ vim.pack API"
+    else
+        report_fail "Neovim 0.12+ vim.pack API"
+    end
+
     # Neovim data directory
     test_directory "$DATA_HOME/nvim" "Neovim data directory"
 
-    # Plugin manager (Lazy)
-    test_directory "$DATA_HOME/nvim/lazy" "Lazy plugin manager"
+    # vim.pack installs managed plugins under stdpath("data")/site/pack/core/opt.
+    set -l pack_dir "$DATA_HOME/nvim/site/pack/core/opt"
+    test_directory "$pack_dir" "vim.pack plugin directory"
 
-    # Mason bin directory
-    test_directory "$DATA_HOME/nvim/mason/bin" "Mason bin directory"
-
-    # Treesitter parsers directory - check multiple possible locations
-    set -l treesitter_paths \
-        "$DATA_HOME/nvim/lazy/nvim-treesitter/parser" \
-        "$HOME/.local/share/nvim/lazy/nvim-treesitter/parser" \
-        "$INSTALL_DIR/data/nvim/lazy/nvim-treesitter/parser"
-    
-    set -l treesitter_found 0
-    set -l treesitter_path ""
-    
-    for path in $treesitter_paths
-        if test -d "$path"
-            set treesitter_found 1
-            set treesitter_path "$path"
-            break
-        end
-    end
-    
-    if test $treesitter_found -eq 1
-        report_pass "Treesitter parser directory ($treesitter_path)"
-
-        # Check for some common parsers
-        for parser in c lua python fish
-            if test -f "$treesitter_path/$parser.so"
-                report_pass "Treesitter $parser parser"
-            else
-                report_skip "Treesitter $parser parser (not installed)"
-            end
-        end
+    set -l pack_count (find "$pack_dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | string trim)
+    if test "$pack_count" -gt 0
+        report_pass "vim.pack installed plugins"
     else
-        # In CI environment, parsers may not be downloaded yet
-        # This is not a critical failure
-        report_skip "Treesitter parser directory (not found - may need to run nvim first)"
+        report_fail "vim.pack installed plugins (none found)"
+    end
+
+    test_file_exists "$CONFIG_HOME/nvim/nvim-pack-lock.json" "vim.pack lockfile"
+
+    # Mason is optional with the vim.pack config; keep this as an informational check.
+    if test -d "$DATA_HOME/nvim/mason/bin"
+        report_pass "Mason bin directory"
+    else
+        report_skip "Mason bin directory (not configured)"
     end
 
     echo ""

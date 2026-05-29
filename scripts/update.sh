@@ -20,3 +20,4 @@ cd "$DIR/HOME"
 git pull
 bash scripts/install_components.sh update
 "$DIR/bin/mamba" update --all
+bash scripts/install_components.sh neovim

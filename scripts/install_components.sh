@@ -56,7 +56,7 @@ Components:
   mihoro    Install mihoro binary
   mamba     Install micromamba wrapper
   conda     Create and populate the base micromamba environment
-  neovim    Install Neovim plugins and treesitter parsers
+  neovim    Install Neovim plugins with vim.pack
 EOF
 }
 
@@ -456,14 +456,31 @@ homecli_extract_mihoro_archive() {
 homecli_install_neovim() {
 	local nvim_bin="$HOMECLI_CACHE_DIR/miniconda/bin/nvim"
 	local data_home="${XDG_DATA_HOME:-$HOMECLI_CACHE_DIR/data}"
+	local config_home="${XDG_CONFIG_HOME:-$HOMECLI_CACHE_DIR/config}"
+	local state_home="${XDG_STATE_HOME:-$HOMECLI_CACHE_DIR/state}"
+	local cache_home="${XDG_CACHE_HOME:-$HOMECLI_CACHE_DIR/cache}"
 	local _
 
-	homecli_log "Installing neovim..."
+	[ -x "$nvim_bin" ] || homecli_die "nvim is required but not installed at $nvim_bin"
+
+	homecli_log "Installing neovim plugins with vim.pack..."
+	mkdir -p "$data_home/nvim/site/pack/core/opt" "$data_home/nvim/mason/bin"
 	for _ in 1 2 3; do
-		"$nvim_bin" --headless "+Lazy! sync" +qa || true
+		if env \
+			XDG_CONFIG_HOME="$config_home" \
+			XDG_DATA_HOME="$data_home" \
+			XDG_STATE_HOME="$state_home" \
+			XDG_CACHE_HOME="$cache_home" \
+			"$nvim_bin" --headless \
+			"+lua assert(vim.fn.has('nvim-0.12') == 1 and vim.pack, 'Neovim 0.12+ with vim.pack is required')" \
+			"+lua vim.pack.update(nil, { target = 'lockfile', offline = true, force = true })" \
+			+qa; then
+			homecli_log "Installing neovim plugins done."
+			return
+		fi
 	done
-	"$nvim_bin" --headless "+TSInstallSync! c cpp fish python bash markdown cmake dockerfile yaml lua" +qa || true
-	mkdir -p "$data_home/nvim/mason/bin"
+
+	homecli_die "failed to install neovim plugins with vim.pack"
 }
 
 homecli_install_mamba() {
@@ -528,7 +545,7 @@ homecli_install_conda() {
 		jq
 		zoxide
 		starship
-		nvim
+		"nvim>=0.12"
 		lua-language-server
 		stylua
 		prettier

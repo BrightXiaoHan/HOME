@@ -76,7 +76,7 @@ ensure_nvim_link() {
 		fi
 	fi
 
-	mkdir -p "$NVIM_DATA_DIR/mason/bin"
+	mkdir -p "$NVIM_DATA_DIR/site/pack/core/opt" "$NVIM_DATA_DIR/mason/bin"
 	ln -sfn "$NVIM_DATA_DIR" "$INSTALL_DIR/nvim"
 }
 

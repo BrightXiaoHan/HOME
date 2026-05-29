@@ -471,10 +471,16 @@ homecli_install_neovim() {
 			XDG_DATA_HOME="$data_home" \
 			XDG_STATE_HOME="$state_home" \
 			XDG_CACHE_HOME="$cache_home" \
+			GIT_CONFIG_COUNT=2 \
+			GIT_CONFIG_KEY_0="url.https://github.com/.insteadOf" \
+			GIT_CONFIG_VALUE_0="git@github.com:" \
+			GIT_CONFIG_KEY_1="url.https://github.com/.insteadOf" \
+			GIT_CONFIG_VALUE_1="ssh://git@github.com/" \
 			"$nvim_bin" --headless \
 			"+lua assert(vim.fn.has('nvim-0.12') == 1 and vim.pack, 'Neovim 0.12+ with vim.pack is required')" \
 			"+lua vim.pack.update(nil, { target = 'lockfile', offline = true, force = true })" \
-			+qa; then
+			+qa &&
+			find "$data_home/nvim/site/pack/core/opt" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | grep -q .; then
 			homecli_log "Installing neovim plugins done."
 			return
 		fi

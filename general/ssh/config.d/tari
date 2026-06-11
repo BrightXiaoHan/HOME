@@ -38,9 +38,15 @@ Host aws-videolingo-linux
   User zhanglab01
   Port 1935
   ServerAliveInterval 10
-  
+
 Host daode-aliyun
   HostName 121.41.189.137
   User root
+  Port 22
+  ServerAliveInterval 10
+
+Host dove
+  HostName julia2.hpc.uni-wuerzburg.de
+  User sig95vg
   Port 22
   ServerAliveInterval 10

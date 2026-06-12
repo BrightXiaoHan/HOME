@@ -123,3 +123,9 @@ Host yuyi-haiguang
     Port 10233
     User root
     ServerAliveInterval 10
+
+Host telecom-ascend-39
+    HostName 39.105.167.2
+    Port 22066
+    User root
+    ServerAliveInterval 10

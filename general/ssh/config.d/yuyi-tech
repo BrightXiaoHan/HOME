@@ -127,5 +127,5 @@ Host yuyi-haiguang
 Host telecom-ascend-39
     HostName 39.105.167.2
     Port 22066
-    User root
+    User hanbing
     ServerAliveInterval 10

@@ -13,26 +13,26 @@ Host lc-oc-prod
     ServerAliveInterval 10
     IdentityFile ~/.ssh/private-light-hunter-oc
 
-
-Host lc-oc-zhangchen
-    HostName 10.0.0.60
-    User root
-    Port 22
-    ServerAliveInterval 10
-    IdentityFile ~/.ssh/private-light-hunter-oc
-    ProxyCommand ssh -W %h:%p lc-oc-prod
-
-
-Host lc-oc-test-zaiyang
-    HostName 172.31.30.225
-    User root
-    Port 22
-    ServerAliveInterval 10
-    IdentityFile ~/.ssh/private-light-hunter-oc
-    ProxyCommand ssh -W %h:%p lc-oc-test
-
 Host lc-oc-test-lite
     HostName 101.47.17.169
     User root
     Port 22
     ServerAliveInterval 10
+
+
+Host lc-oc-prod-lite-a
+    HostName 10.0.1.218
+    User root
+    Port 22
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p lc-oc-prod
+    IdentityFile ~/.ssh/private-light-hunter-prod
+
+
+Host lc-oc-prod-lite-b
+    HostName 10.0.1.219
+    User root
+    Port 22
+    ServerAliveInterval 10
+    ProxyCommand ssh -W %h:%p lc-oc-prod
+    IdentityFile ~/.ssh/private-light-hunter-prod

@@ -58,18 +58,16 @@ Host YuyiGPURoot
     ServerAliveInterval 10
 
 Host telecom-ascend-root
-    HostName 127.0.0.1
-    Port 10000
+    HostName 39.105.167.2
+    Port 22066
     User root
     ServerAliveInterval 10
-    ProxyCommand ssh -W %h:%p personal-aliyun
 
 Host telecom-ascend
-    HostName 127.0.0.1
-    Port 10000
+    HostName 39.105.167.2
+    Port 22066
     User hanbing
     ServerAliveInterval 10
-    ProxyCommand ssh -W %h:%p personal-aliyun
 
 Host telecom-cpu-root
     HostName 127.0.0.1
@@ -124,8 +122,4 @@ Host yuyi-haiguang
     User root
     ServerAliveInterval 10
 
-Host telecom-ascend-39
-    HostName 39.105.167.2
-    Port 22066
-    User hanbing
-    ServerAliveInterval 10
+

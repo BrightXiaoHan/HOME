@@ -235,19 +235,11 @@ function switch-claude-code-to-glm
     set -gx ANTHROPIC_SMALL_FAST_MODEL glm-5.1
 end
 
-function switch-claude-code-to-openrouter
-    set -gx OPENROUTER_API_KEY (pass show lighthunter/openrouter/hanbing)
-    set -gx ANTHROPIC_BASE_URL "https://openrouter.ai/api"
-    set -gx ANTHROPIC_AUTH_TOKEN (pass show lighthunter/openrouter/hanbing)
-    set -gx ANTHROPIC_API_KEY "" # Important: Must be explicitly empty
-    set -gx ANTHROPIC_DEFAULT_OPUS_MODEL "anthropic/claude-opus-4.6"
-    set -gx ANTHROPIC_DEFAULT_SONNET_MODEL "anthropic/claude-sonnet-4.6"
-    set -gx ANTHROPIC_DEFAULT_HAIKU_MODEL "anthropic/claude-haiku-4.5"
-    set -gx CLAUDE_CODE_SUBAGENT_MODEL "anthropic/claude-opus-4.6"
-end
-
 function switch-claude-code-to-aiberm
     set -gx ANTHROPIC_BASE_URL https://aiberm.com
+    if not command -q pass
+        return 0
+    end
     set -gx ANTHROPIC_AUTH_TOKEN (pass show lighthunter/aiberm/hanbing)
 end
 

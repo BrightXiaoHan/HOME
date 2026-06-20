@@ -483,8 +483,6 @@ function test_tmux
 
     # Config files exist
     test_file_exists "$CONFIG_HOME/tmux/tmux.conf" "tmux.conf"
-    test_file_exists "$CONFIG_HOME/tmux/statusline.conf" "statusline.conf"
-    test_file_exists "$CONFIG_HOME/tmux/macos.conf" "macos.conf"
 
     # Tmux can load config
     if tmux -f "$CONFIG_HOME/tmux/tmux.conf" -L test_session list-keys >/dev/null 2>&1

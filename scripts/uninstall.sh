@@ -109,6 +109,8 @@ LEGACY_PATHS=(
 	"$HOME/.config/nvim"
 	"$HOME/.config/tmux"
 	"$HOME/.config/fish"
+	"$HOME/.config/zsh"
+	"$HOME/.zshenv"
 	"$HOME/.gitconfig"
 	"$HOME/.mambarc"
 	"$HOME/.local/share/nvim"
@@ -120,3 +122,4 @@ done
 
 # remove alias created by installer
 sed -i '/homecli-fish/d' ~/.bashrc 2>/dev/null || true
+sed -i '/homecli-zsh/d' ~/.bashrc 2>/dev/null || true

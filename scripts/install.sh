@@ -141,6 +141,14 @@ rm -f $DIR/nvim/lua/custom || true
 ln -sfn $DIR/nvim "$CONFIG_HOME/nvim"
 ln -sfn $DIR/tmux "$CONFIG_HOME/tmux"
 ln -sfn $DIR/fish "$CONFIG_HOME/fish"
+if [ -d "$DIR/zsh" ]; then
+	ln -sfn "$DIR/zsh" "$CONFIG_HOME/zsh"
+	if [ ! -e "$HOME/.zshenv" ] || [ -L "$HOME/.zshenv" ]; then
+		ln -sfn "$DIR/zsh/.zshenv" "$HOME/.zshenv"
+	else
+		echo "zshenv already exists. Skip it."
+	fi
+fi
 
 mkdir -p "$CONFIG_HOME/git"
 ln -sfn $DIR/gitconfig "$CONFIG_HOME/git/config"
@@ -232,6 +240,7 @@ fi
 # create wrapper to enter isolated fish session with XDG dirs
 cat >"$INSTALL_DIR/bin/homecli-fish" <<EOF
 #!/usr/bin/env bash
+export HOME="$HOME"
 export HOMECLI_INSTALL_DIR="$INSTALL_DIR"
 export XDG_CONFIG_HOME="$CONFIG_HOME"
 export XDG_DATA_HOME="$DATA_HOME"
@@ -252,7 +261,46 @@ exec "$INSTALL_DIR/miniconda/bin/fish" "\$@"
 EOF
 chmod +x "$INSTALL_DIR/bin/homecli-fish"
 
+# create wrapper to enter isolated zsh session with XDG dirs
+cat >"$INSTALL_DIR/bin/homecli-zsh" <<EOF
+#!/usr/bin/env bash
+export HOME="$HOME"
+export HOMECLI_INSTALL_DIR="$INSTALL_DIR"
+export XDG_CONFIG_HOME="$CONFIG_HOME"
+export XDG_DATA_HOME="$DATA_HOME"
+export XDG_STATE_HOME="$STATE_HOME"
+export XDG_CACHE_HOME="$CACHE_HOME"
+export MAMBA_ROOT_PREFIX="$INSTALL_DIR/miniconda"
+export MAMBA_EXE="$INSTALL_DIR/bin/mamba"
+export UV_TOOL_DIR="$INSTALL_DIR/uv/tool"
+export UV_TOOL_BIN_DIR="$INSTALL_DIR/uv/tool/bin"
+export UV_PYTHON_INSTALL_DIR="$INSTALL_DIR/uv/python"
+export UV_PYTHON_PREFERENCE="only-system"
+export GIT_CONFIG_GLOBAL="$CONFIG_HOME/git/config"
+export CONDARC="$INSTALL_DIR/etc/mambarc"
+export HOMECLI_SSH_DIR="$INSTALL_DIR/etc/ssh"
+export PASSWORD_STORE_DIR="$INSTALL_DIR/password-store"
+export PATH="$INSTALL_DIR/bin:$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/uv/tool/bin:\$PATH"
+
+if [ -x "$INSTALL_DIR/miniconda/bin/zsh" ]; then
+	exec "$INSTALL_DIR/miniconda/bin/zsh" "\$@"
+fi
+
+if command -v zsh >/dev/null 2>&1; then
+	exec zsh "\$@"
+fi
+
+echo "homecli-zsh: zsh not found" >&2
+exit 127
+EOF
+chmod +x "$INSTALL_DIR/bin/homecli-zsh"
+
 # add fish wrapper alias to .bashrc if missing
 if ! grep -q 'alias fish=.*homecli-fish' ~/.bashrc 2>/dev/null; then
 	echo "alias fish='env -i $INSTALL_DIR/bin/homecli-fish'" >>~/.bashrc
+fi
+
+# add zsh wrapper alias to .bashrc if missing
+if ! grep -q 'alias zsh=.*homecli-zsh' ~/.bashrc 2>/dev/null; then
+	echo "alias zsh='env -i $INSTALL_DIR/bin/homecli-zsh'" >>~/.bashrc
 fi

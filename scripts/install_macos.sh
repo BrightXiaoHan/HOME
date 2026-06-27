@@ -112,6 +112,21 @@ else
 	echo "fish config already exist. Skip it."
 fi
 
+# link zsh dir if .config/zsh does not exist
+if [ -d "$DIR/zsh" ]; then
+	if [ ! -e ~/.config/zsh ]; then
+		ln -sf $DIR/zsh/ ~/.config/
+	else
+		echo "zsh config already exist. Skip it."
+	fi
+
+	if [ ! -e ~/.zshenv ] || [ -L ~/.zshenv ]; then
+		ln -sf "$DIR/zsh/.zshenv" ~/.zshenv
+	else
+		echo "zshenv already exists. Skip it."
+	fi
+fi
+
 if [ ! -d ~/.ssh ]; then
 	mkdir ~/.ssh
 fi

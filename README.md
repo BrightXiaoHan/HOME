@@ -10,6 +10,7 @@ My Personal Home Directory Configuration Manager - A cross-platform dotfiles and
 - 🚀 Single-command installation across Linux, macOS, and Windows
 - 🔄 Easy environment synchronization between machines
 - 🐟 Fish shell configuration with helpful aliases and utilities
+- 🐚 Parallel Zsh configuration that mirrors the Fish environment for bash-friendly workflows
 - 🧰 Pre-configured development tools (NeoVim, tmux, Git, etc.)
 - 🐍 Python environment management with micromamba and uv
 - 🔒 SSH configuration management
@@ -114,7 +115,7 @@ podman run -v $HOME:/workspace --name home -itd home
 
 ## Included Tools & Configurations
 
-- **Shell**: Fish shell with custom prompt and useful aliases
+- **Shell**: Fish shell plus parallel Zsh configuration with custom prompt and useful aliases
 - **Editor**: NeoVim with NvChad configuration
 - **Terminal Multiplexer**: tmux with custom keybindings
 - **Package Management**: micromamba (conda), uv (Python)
@@ -127,6 +128,7 @@ podman run -v $HOME:/workspace --name home -itd home
 
 - `general/` - Configuration files for various tools
   - `fish/` - Fish shell configuration
+  - `zsh/` - Zsh shell configuration
   - `ssh/` - SSH configuration and keys
   - `tmux/` - Tmux configuration
   - `nvim/` - NeoVim configuration

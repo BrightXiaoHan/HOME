@@ -281,6 +281,7 @@ function test_configs
     test_symlink "$CONFIG_HOME/nvim" "$INSTALL_DIR/HOME/general/nvim" "nvim config symlink"
     test_symlink "$CONFIG_HOME/tmux" "$INSTALL_DIR/HOME/general/tmux" "tmux config symlink"
     test_symlink "$CONFIG_HOME/fish" "$INSTALL_DIR/HOME/general/fish" "fish config symlink"
+    test_symlink "$CONFIG_HOME/zsh" "$INSTALL_DIR/HOME/general/zsh" "zsh config symlink"
     test_symlink "$CONFIG_HOME/git/config" "$INSTALL_DIR/HOME/general/gitconfig" "git config symlink"
     test_symlink "$INSTALL_DIR/etc/ssh" "$INSTALL_DIR/HOME/general/ssh" "ssh config symlink"
     test_symlink "$INSTALL_DIR/etc/mambarc" "$INSTALL_DIR/HOME/general/mambarc" "mambarc symlink"
@@ -293,6 +294,7 @@ function test_conda_binaries
 
     # Core tools
     test_binary fish --version "fish shell"
+    test_binary zsh --version "zsh shell"
     test_binary fzf --version "fzf"
     test_binary rg --version "ripgrep"
     test_binary make --version "make"

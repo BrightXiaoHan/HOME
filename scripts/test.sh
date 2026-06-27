@@ -65,6 +65,13 @@ if [ ! -x "$INSTALL_DIR/bin/homecli-fish" ]; then
     exit 2
 fi
 
+# Check if homecli-zsh wrapper exists
+if [ ! -x "$INSTALL_DIR/bin/homecli-zsh" ]; then
+    echo "ERROR: homecli-zsh wrapper not found: $INSTALL_DIR/bin/homecli-zsh"
+    echo "Please ensure the installation is complete"
+    exit 2
+fi
+
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 

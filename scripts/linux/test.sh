@@ -1,5 +1,5 @@
 #!/bin/bash
-# scripts/test.sh - Wrapper for Fish-based test script
+# scripts/linux/test.sh - Wrapper for Fish-based test script
 # This wrapper ensures the test runs in the homecli-fish environment
 
 # Check if just showing help

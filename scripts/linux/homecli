@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+usage() {
+	cat <<'EOF'
+Usage: homecli <command> [args...]
+
+Commands:
+  install       Install HOME environment
+  update        Update HOME environment and installed components
+  uninstall     Uninstall HOME environment
+  relink        Recreate configuration links for an existing install
+  pack          Pack current installation into a self-extracting installer
+  test          Validate an installation
+  components    Install or update Linux components
+
+Examples:
+  homecli install --install-dir "$HOME/.homecli"
+  homecli relink --install-dir "$HOME/.homecli"
+  homecli components update
+  homecli test --configs --nvim
+EOF
+}
+
+command=${1:-}
+if [ -z "$command" ]; then
+	usage
+	exit 1
+fi
+shift || true
+
+case "$command" in
+install)
+	exec "$SCRIPT_DIR/linux/install.sh" "$@"
+	;;
+update)
+	exec "$SCRIPT_DIR/linux/update.sh" "$@"
+	;;
+uninstall)
+	exec "$SCRIPT_DIR/linux/uninstall.sh" "$@"
+	;;
+relink)
+	exec "$SCRIPT_DIR/linux/install.sh" --mode relink "$@"
+	;;
+pack)
+	exec "$SCRIPT_DIR/linux/pack.sh" "$@"
+	;;
+test)
+	exec "$SCRIPT_DIR/linux/test.sh" "$@"
+	;;
+components | component)
+	exec "$SCRIPT_DIR/linux/components.sh" "$@"
+	;;
+-h | --help | help)
+	usage
+	;;
+*)
+	echo "Unknown command: $command" >&2
+	usage >&2
+	exit 1
+	;;
+esac

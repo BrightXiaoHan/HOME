@@ -29,5 +29,5 @@ jobs:
 
       - name: Run PowerShell script
         run: |
-          .\scripts\install.ps1
+          .\scripts\windows\install.ps1
         shell: pwsh

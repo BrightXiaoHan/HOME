@@ -3,8 +3,28 @@ echo "Install Softwares for macOS"
 export NONINTERACTIVE=1
 export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-DIR="$DIR/../general"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+REPO_ROOT="${HOMECLI_REPO_DIR:-$(cd "$SCRIPT_DIR/../.." >/dev/null 2>&1 && pwd)}"
+DIR="$REPO_ROOT/configs"
+
+case "${1:-}" in
+-h | --help)
+	echo "Usage: $0 [--help]"
+	exit 0
+	;;
+esac
+
+ensure_home_repo() {
+	if [ -d "$DIR" ]; then
+		return 0
+	fi
+
+	REPO_ROOT="${HOMECLI_REPO_DIR:-$HOME/HOME}"
+	DIR="$REPO_ROOT/configs"
+	if [ ! -d "$REPO_ROOT/.git" ]; then
+		git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git "$REPO_ROOT"
+	fi
+}
 
 # ============================================
 # Setup pass password store
@@ -73,13 +93,16 @@ setup_password_store() {
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install mas git make llvm gnupg pass
+ensure_home_repo
 
 # Install xcode command line tools
 # git make clang will be installed by xcode-select --install
 # mas install 497799835
 # xcode-select --install
 
-git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/nvim
+if [ ! -d "$DIR/nvim" ]; then
+	git clone https://github.com/BrightXiaoHan/nvchad-starter.git "$DIR/nvim"
+fi
 setup_password_store
 
 # get current dir

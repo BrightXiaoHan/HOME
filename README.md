@@ -26,19 +26,19 @@ Choose the installation method for your platform:
 **Install**
 
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.sh)"
+HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/linux/install.sh)"
 ```
 
 **Update**
 
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/update.sh)"
+HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/linux/update.sh)"
 ```
 
 **Uninstall**
 
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/uninstall.sh)"
+HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/linux/uninstall.sh)"
 ```
 
 **Install from pre-built package**
@@ -51,19 +51,27 @@ HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.github
 
 **Additional Operations**
 
-Uninstall without deleting installation cache (for future relink):
+After installation, the unified command wrapper is available at `$HOMECLI_INSTALL_DIR/bin/homecli`:
+
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/uninstall.sh --remove-cache false
+$HOME/.homecli/bin/homecli update
+$HOME/.homecli/bin/homecli relink
+$HOME/.homecli/bin/homecli test --configs --nvim
 ```
 
-Relink existing installation:
+Uninstall without deleting installation cache (for future relink):
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/install.sh relink
+HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/linux/uninstall.sh --remove-cache false
+```
+
+Relink existing Linux installation:
+```bash
+HOMECLI_INSTALL_DIR=$HOME/.homecli bash scripts/linux/install.sh --mode relink
 ```
 
 Pack your current setup for distribution:
 ```bash
-HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/pack.sh)"
+HOMECLI_INSTALL_DIR=$HOME/.homecli /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/linux/pack.sh)"
 ```
 
 ### macOS
@@ -77,7 +85,12 @@ Install Homebrew:
 
 **Install Packages**
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install_macos.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/macos/install.sh)"
+```
+
+**Relink local dotfiles after migrating an existing checkout**
+```bash
+bash scripts/macos/relink.sh --repo-dir /Users/hanbing/HOME
 ```
 
 ### Windows
@@ -91,7 +104,12 @@ iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
 
 **Install Packages**
 ```powershell
-iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/install.ps1").Content
+iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/BrightXiaoHan/HOME/main/scripts/windows/install.ps1").Content
+```
+
+**Relink local dotfiles after migrating an existing checkout**
+```powershell
+.\scripts\windows\relink.ps1 -RepoDir C:\path\to\HOME
 ```
 
 ## Docker Development Environment
@@ -126,14 +144,20 @@ podman run -v $HOME:/workspace --name home -itd home
 
 ## Directory Structure
 
-- `general/` - Configuration files for various tools
+- `configs/` - Configuration files for various tools
   - `fish/` - Fish shell configuration
   - `zsh/` - Zsh shell configuration
   - `ssh/` - SSH configuration and keys
   - `tmux/` - Tmux configuration
   - `nvim/` - NeoVim configuration
   - `gitconfig` - Global Git configuration
-- `scripts/` - Installation and utility scripts for different platforms
+- `scripts/` - Installation and utility scripts
+  - `linux/` - Linux installer, updater, packer, tests, and component dispatcher
+  - `linux/components/` - Linux component installers (mamba, conda, neovim, frp, trzsz, mihomo, mihoro)
+  - `macos/` - macOS installer and host dotfile relink script
+  - `windows/` - Windows installer and host dotfile relink script
+  - `common/` - Shared shell helper functions
+- `AGENTS.md` - Project architecture and agent guidance
 
 ## Contributing
 

@@ -51,19 +51,19 @@ jobs:
 
       - name: Install
         shell: bash
-        run: scripts/install.sh -m local-install
+        run: scripts/linux/install.sh -m local-install
 
       - name: Test Installation
         shell: bash
-        run: scripts/test.sh
+        run: scripts/linux/test.sh
 
       - name: Pack
         shell: bash
-        run: scripts/pack.sh -o home-cli-x86_64.run
+        run: scripts/linux/pack.sh -o home-cli-x86_64.run
 
       - name: Uninstall
         shell: bash
-        run: scripts/uninstall.sh
+        run: scripts/linux/uninstall.sh
 
       - name: Unpack
         shell: bash
@@ -71,7 +71,7 @@ jobs:
 
       - name: Test Unpacked Installation
         shell: bash
-        run: scripts/test.sh --install-dir ${{ github.workspace }}/home-cli-x86_64
+        run: scripts/linux/test.sh --install-dir ${{ github.workspace }}/home-cli-x86_64
 
       - uses: actions/upload-artifact@v4
         with:
@@ -111,19 +111,19 @@ jobs:
 
       - name: Install
         shell: bash
-        run: scripts/install.sh -m local-install
+        run: scripts/linux/install.sh -m local-install
 
       - name: Test Installation
         shell: bash
-        run: scripts/test.sh
+        run: scripts/linux/test.sh
 
       - name: Pack
         shell: bash
-        run: scripts/pack.sh -o home-cli-arm64.run
+        run: scripts/linux/pack.sh -o home-cli-arm64.run
 
       - name: Uninstall
         shell: bash
-        run: scripts/uninstall.sh
+        run: scripts/linux/uninstall.sh
 
       - name: Unpack
         shell: bash
@@ -131,7 +131,7 @@ jobs:
 
       - name: Test Unpacked Installation
         shell: bash
-        run: scripts/test.sh --install-dir ${{ github.workspace }}/home-cli-arm64
+        run: scripts/linux/test.sh --install-dir ${{ github.workspace }}/home-cli-arm64
 
       - uses: actions/upload-artifact@v4
         with:

@@ -1,4 +1,10 @@
 #!/bin/bash
+
+Usage() {
+  echo "Usage: $0 [--user <username>] [--folder <home-folder>] [--help]"
+  exit 1
+}
+
 while true; do
   case "$1" in
   --user | -u)

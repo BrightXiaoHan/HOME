@@ -1,4 +1,48 @@
 #!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+LINKS_HELPER=""
+for candidate in "$SCRIPT_DIR/../common/links.sh" "$SCRIPT_DIR/common/links.sh" "$SCRIPT_DIR/lib/links.sh"; do
+	if [ -r "$candidate" ]; then
+		LINKS_HELPER="$candidate"
+		break
+	fi
+done
+
+if [ -n "$LINKS_HELPER" ]; then
+	. "$LINKS_HELPER"
+else
+	# Fallback for curl | bash installs where only install.sh is available.
+	homecli_link_configs() {
+		local source_dir=$1 install_dir=$2 config_home=$3 home_dir=${4:-$HOME}
+		mkdir -p "$config_home" "$config_home/git" "$install_dir/etc"
+		ln -sfn "$source_dir/nvim" "$config_home/nvim"
+		ln -sfn "$source_dir/tmux" "$config_home/tmux"
+		ln -sfn "$source_dir/fish" "$config_home/fish"
+		if [ -d "$source_dir/zsh" ]; then
+			ln -sfn "$source_dir/zsh" "$config_home/zsh"
+			if [ ! -e "$home_dir/.zshenv" ] || [ -L "$home_dir/.zshenv" ]; then
+				ln -sfn "$source_dir/zsh/.zshenv" "$home_dir/.zshenv"
+			else
+				echo "zshenv already exists. Skip it."
+			fi
+		fi
+		ln -sfn "$source_dir/gitconfig" "$config_home/git/config"
+		ln -sfn "$source_dir/ssh" "$install_dir/etc/ssh"
+		ln -sfn "$source_dir/mambarc" "$install_dir/etc/mambarc"
+	}
+
+	homecli_add_authorized_key() {
+		local pubkey_file=$1 ssh_dir=${2:-$HOME/.ssh} authorized_keys
+		authorized_keys="$ssh_dir/authorized_keys"
+		[ -f "$pubkey_file" ] || return 0
+		mkdir -p "$ssh_dir"
+		[ -f "$authorized_keys" ] || touch "$authorized_keys"
+		if ! grep -qxF "$(cat "$pubkey_file")" "$authorized_keys"; then
+			cat "$pubkey_file" >>"$authorized_keys"
+		fi
+	}
+fi
+
 Usage() {
 	echo "Usage: $0 --mode <mode> --install-dir <install-dir> [--tarfile <tarfile>] [--old-install-dir <old-install-dir>] [--help]"
 	echo "args can be one or more of the following :"
@@ -81,11 +125,11 @@ ensure_nvim_link() {
 }
 
 if [ "$MODE" = "local-install" ]; then
-	CWD="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-	DIR="$INSTALL_DIR/HOME/general"
-	mkdir -p $INSTALL_DIR/HOME
-	cp -r $CWD/.. $INSTALL_DIR/HOME
-	cd $INSTALL_DIR/HOME
+	REPO_ROOT="$(cd "$SCRIPT_DIR/../.." >/dev/null 2>&1 && pwd)"
+	DIR="$INSTALL_DIR/HOME/configs"
+	mkdir -p "$INSTALL_DIR/HOME"
+	cp -r "$REPO_ROOT/." "$INSTALL_DIR/HOME"
+	cd "$INSTALL_DIR/HOME"
 
 elif [ "$MODE" = "unpack" ]; then
 	if [ -z "$TARFILE" ]; then
@@ -104,20 +148,20 @@ elif [ "$MODE" = "unpack" ]; then
 	tar -xvf "$TARFILE" -C "$INSTALL_DIR"
 	mkdir -p $INSTALL_DIR/miniconda
 	tar -xvf $INSTALL_DIR/miniconda.tar.gz -C $INSTALL_DIR/miniconda
-	DIR="$INSTALL_DIR/HOME/general"
+	DIR="$INSTALL_DIR/HOME/configs"
 elif [ "$MODE" = "online-install" ]; then
-	DIR="$INSTALL_DIR/HOME/general"
+	DIR="$INSTALL_DIR/HOME/configs"
 	mkdir -p $INSTALL_DIR
 	git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME $INSTALL_DIR/HOME
 	cd $INSTALL_DIR/HOME
 elif [ "$MODE" = "relink" ]; then
-	DIR="$INSTALL_DIR/HOME/general"
+	DIR="$INSTALL_DIR/HOME/configs"
 else
   echo "Error: Unknown mode: $MODE"
   Usage
 fi
 
-# if general/nvim not exist, clone it
+# if configs/nvim not exist, clone it
 if [ ! -d $DIR/nvim ]; then
   git clone https://github.com/BrightXiaoHan/nvchad-starter.git $DIR/nvim
 fi
@@ -133,39 +177,10 @@ if [ "$GPG_KEY_EXISTS" -eq 0 ] && [ ! -d "$INSTALL_DIR/password-store" ]; then
   echo "Password store initialized."
 fi
 
-# get current dir
-mkdir -p ~/.config
+rm -f "$DIR/nvim/lua/custom" || true
 
-rm -f $DIR/nvim/lua/custom || true
-
-ln -sfn $DIR/nvim "$CONFIG_HOME/nvim"
-ln -sfn $DIR/tmux "$CONFIG_HOME/tmux"
-ln -sfn $DIR/fish "$CONFIG_HOME/fish"
-if [ -d "$DIR/zsh" ]; then
-	ln -sfn "$DIR/zsh" "$CONFIG_HOME/zsh"
-	if [ ! -e "$HOME/.zshenv" ] || [ -L "$HOME/.zshenv" ]; then
-		ln -sfn "$DIR/zsh/.zshenv" "$HOME/.zshenv"
-	else
-		echo "zshenv already exists. Skip it."
-	fi
-fi
-
-mkdir -p "$CONFIG_HOME/git"
-ln -sfn $DIR/gitconfig "$CONFIG_HOME/git/config"
-
-mkdir -p "$INSTALL_DIR/etc"
-ln -sfn $DIR/ssh "$INSTALL_DIR/etc/ssh"
-ln -sfn $DIR/mambarc "$INSTALL_DIR/etc/mambarc"
-
-mkdir -p ~/.ssh
-# add authorized_keys into .ssh/authorized_keys
-if [ ! -f ~/.ssh/authorized_keys ]; then
-	touch ~/.ssh/authorized_keys
-fi
-# if id_rsa.pub not in authorized_keys, add it
-if ! grep -q "$(cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
-	cat $INSTALL_DIR/HOME/general/ssh/id_rsa.pub >>~/.ssh/authorized_keys
-fi
+homecli_link_configs "$DIR" "$INSTALL_DIR" "$CONFIG_HOME" "$HOME"
+homecli_add_authorized_key "$DIR/ssh/id_rsa.pub" "$HOME/.ssh"
 
 if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 	PATH="$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/nodejs/bin:$PATH" \
@@ -174,7 +189,7 @@ if [ "$MODE" = "local-install" ] || [ "$MODE" = "online-install" ]; then
 		XDG_DATA_HOME=$DATA_HOME \
 		XDG_STATE_HOME=$STATE_HOME \
 		XDG_CACHE_HOME=$CACHE_HOME \
-		bash scripts/install_components.sh all || exit 1
+		bash scripts/linux/components.sh all || exit 1
 	ensure_nvim_link
 elif [ "$MODE" = "unpack" ]; then
 	mkdir -p "$DATA_HOME"
@@ -294,6 +309,10 @@ echo "homecli-zsh: zsh not found" >&2
 exit 127
 EOF
 chmod +x "$INSTALL_DIR/bin/homecli-zsh"
+
+if [ -x "$INSTALL_DIR/HOME/scripts/linux/homecli" ]; then
+	ln -sfn "$INSTALL_DIR/HOME/scripts/linux/homecli" "$INSTALL_DIR/bin/homecli"
+fi
 
 # add fish wrapper alias to .bashrc if missing
 if ! grep -q 'alias fish=.*homecli-fish' ~/.bashrc 2>/dev/null; then

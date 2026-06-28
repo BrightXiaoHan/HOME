@@ -18,6 +18,6 @@ export MAMBA_ROOT_PREFIX="$DIR/miniconda"
 cd "$DIR/HOME"
 
 git pull
-bash scripts/install_components.sh update
+bash scripts/linux/components.sh update
 "$DIR/bin/mamba" update --all
-bash scripts/install_components.sh neovim
+bash scripts/linux/components.sh neovim

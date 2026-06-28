@@ -18,7 +18,7 @@ RUN apt update \
 
 WORKDIR /root/HOME
 ADD . .
-RUN bash ./scripts/install.sh -m local-install
+RUN bash ./scripts/linux/install.sh -m local-install
 RUN ln -s /root/.homecli/miniconda/bin/fish /usr/bin/fish
 
 ENV https_proxy=""

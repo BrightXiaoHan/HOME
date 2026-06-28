@@ -19,27 +19,30 @@ scoop install git
 
 # Clone the repository
 git clone --recurse-submodules https://github.com/BrightXiaoHan/HOME.git
-git clone https://github.com/BrightXiaoHan/nvchad-starter.git HOME/general/nvim
+git clone https://github.com/BrightXiaoHan/nvchad-starter.git HOME/configs/nvim
 
 # Create symbolic links to the user profile and the OMP configuration file
 $rootDir = (Get-Item -Path ".\HOME").FullName
 $profileDir = Split-Path -Parent $PROFILE
-New-Item -ItemType SymbolicLink -Path $PROFILE -Value $rootDir\general\powershell\user_profile.ps1 -Force
-$omp_config = Join-Path $rootDir "powershell\takuya.omp.json"
+New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
+New-Item -ItemType SymbolicLink -Path $PROFILE -Value $rootDir\configs\powershell\user_profile.ps1 -Force
+$omp_config = Join-Path $rootDir "configs\powershell\takuya.omp.json"
 New-Item -ItemType SymbolicLink -Path $profileDir\takuya.omp.json -Value $omp_config -Force
 
 # Create symbolic links to the ssh config file
 $sshDir = Join-Path $env:USERPROFILE ".ssh"
-New-Item -ItemType SymbolicLink -Path $sshDir\config -Value $rootDir\general\ssh\config -Force
-New-Item -ItemType SymbolicLink -Path $sshDir\id_rsa.pub -Value $rootDir\general\ssh\id_rsa.pub -Force
+New-Item -ItemType Directory -Path $sshDir -Force | Out-Null
+New-Item -ItemType SymbolicLink -Path $sshDir\config -Value $rootDir\configs\ssh\config -Force
+New-Item -ItemType SymbolicLink -Path $sshDir\config.d -Value $rootDir\configs\ssh\config.d -Force
+New-Item -ItemType SymbolicLink -Path $sshDir\id_rsa.pub -Value $rootDir\configs\ssh\id_rsa.pub -Force
 
 # Create symbolic links to the git config file
 $gitConfig = Join-Path $env:USERPROFILE ".gitconfig"
-New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\general\gitconfig -Force
+New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\configs\gitconfig -Force
 
 # Create symbolic links to the neovim config file
 $nvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
-New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\general\nvim -Force
+New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\configs\nvim -Force
 
 scoop bucket add main
 scoop install main/winget

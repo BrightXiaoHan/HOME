@@ -103,10 +103,10 @@ fi
 
 tar --exclude="__pycache__" --dereference -cvf $INSTALL_DIR/packed/homecli.tar.gz $TAR_ITEMS
 rm miniconda.tar.gz
-cp $INSTALL_DIR/HOME/scripts/install.sh \
-	$INSTALL_DIR/HOME/scripts/uninstall.sh \
-	$INSTALL_DIR/HOME/scripts/_unpack.sh \
-	$INSTALL_DIR/packed
+cp "$INSTALL_DIR/HOME/scripts/linux/install.sh" "$INSTALL_DIR/packed/install.sh"
+cp "$INSTALL_DIR/HOME/scripts/linux/uninstall.sh" "$INSTALL_DIR/packed/uninstall.sh"
+cp "$INSTALL_DIR/HOME/scripts/linux/_unpack.sh" "$INSTALL_DIR/packed/_unpack.sh"
+cp -r "$INSTALL_DIR/HOME/scripts/common" "$INSTALL_DIR/packed/common"
 
 # if OUTFILE is a relative path, make it absolute
 if [[ ! "$OUTFILE" = /* ]]; then

@@ -1,5 +1,5 @@
 #!/usr/bin/env fish
-# scripts/test.fish - Comprehensive validation for homecli installation
+# scripts/linux/test.fish - Comprehensive validation for homecli installation
 # Tests that all functionalities work correctly after installation
 
 #===============================================================================
@@ -278,13 +278,13 @@ end
 function test_configs
     echo "Testing configuration symlinks..."
 
-    test_symlink "$CONFIG_HOME/nvim" "$INSTALL_DIR/HOME/general/nvim" "nvim config symlink"
-    test_symlink "$CONFIG_HOME/tmux" "$INSTALL_DIR/HOME/general/tmux" "tmux config symlink"
-    test_symlink "$CONFIG_HOME/fish" "$INSTALL_DIR/HOME/general/fish" "fish config symlink"
-    test_symlink "$CONFIG_HOME/zsh" "$INSTALL_DIR/HOME/general/zsh" "zsh config symlink"
-    test_symlink "$CONFIG_HOME/git/config" "$INSTALL_DIR/HOME/general/gitconfig" "git config symlink"
-    test_symlink "$INSTALL_DIR/etc/ssh" "$INSTALL_DIR/HOME/general/ssh" "ssh config symlink"
-    test_symlink "$INSTALL_DIR/etc/mambarc" "$INSTALL_DIR/HOME/general/mambarc" "mambarc symlink"
+    test_symlink "$CONFIG_HOME/nvim" "$INSTALL_DIR/HOME/configs/nvim" "nvim config symlink"
+    test_symlink "$CONFIG_HOME/tmux" "$INSTALL_DIR/HOME/configs/tmux" "tmux config symlink"
+    test_symlink "$CONFIG_HOME/fish" "$INSTALL_DIR/HOME/configs/fish" "fish config symlink"
+    test_symlink "$CONFIG_HOME/zsh" "$INSTALL_DIR/HOME/configs/zsh" "zsh config symlink"
+    test_symlink "$CONFIG_HOME/git/config" "$INSTALL_DIR/HOME/configs/gitconfig" "git config symlink"
+    test_symlink "$INSTALL_DIR/etc/ssh" "$INSTALL_DIR/HOME/configs/ssh" "ssh config symlink"
+    test_symlink "$INSTALL_DIR/etc/mambarc" "$INSTALL_DIR/HOME/configs/mambarc" "mambarc symlink"
 
     echo ""
 end

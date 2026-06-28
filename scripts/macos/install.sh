@@ -167,6 +167,13 @@ fi
 
 ln -sf $DIR/gitconfig ~/.gitconfig
 ln -sf $DIR/mambarc ~/.mambarc
+if [ -d "$DIR/agents" ]; then
+	if [ ! -e ~/.agents ] || [ -L ~/.agents ]; then
+		ln -sfn "$DIR/agents" ~/.agents
+	else
+		echo ".agents already exists. Skip it."
+	fi
+fi
 
 brew install --quiet \
 	git-lfs tmux fish neovim ripgrep fzf node trzsz-ssh \

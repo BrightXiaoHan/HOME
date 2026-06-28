@@ -4,6 +4,10 @@
 homecli_install_conda() {
 	local mamba_path="$HOMECLI_BIN_DIR/mamba"
 	local package
+	local npm_global_packages=(
+		@earendil-works/pi-coding-agent
+		@tencent-qqmail/agently-cli
+	)
 	local command=(
 		install
 		-n
@@ -64,5 +68,18 @@ homecli_install_conda() {
 			only-managed \
 			"$package"
 	done
+
+	homecli_log "Installing npm global packages..."
+	env \
+		npm_config_audit=false \
+		npm_config_fund=false \
+		npm_config_update_notifier=false \
+		npm_config_cache="$HOMECLI_CACHE_DIR/cache/npm" \
+		"$HOMECLI_CACHE_DIR/miniconda/bin/npm" install \
+		--global \
+		--prefix "$HOMECLI_CACHE_DIR/miniconda" \
+		--ignore-scripts \
+		"${npm_global_packages[@]}"
+
 	homecli_log "Installing other packages done."
 }

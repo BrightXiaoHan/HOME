@@ -54,4 +54,5 @@ Link-Path (Join-Path $configDir 'ssh\config') (Join-Path $sshDir 'config')
 Link-Path (Join-Path $configDir 'ssh\config.d') (Join-Path $sshDir 'config.d')
 Link-Path (Join-Path $configDir 'ssh\id_rsa.pub') (Join-Path $sshDir 'id_rsa.pub')
 Link-Path (Join-Path $configDir 'gitconfig') (Join-Path $env:USERPROFILE '.gitconfig')
+Link-Path (Join-Path $configDir 'agents') (Join-Path $env:USERPROFILE '.agents')
 Link-Path (Join-Path $configDir 'nvim') $nvimDir

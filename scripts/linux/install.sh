@@ -29,6 +29,13 @@ else
 		ln -sfn "$source_dir/gitconfig" "$config_home/git/config"
 		ln -sfn "$source_dir/ssh" "$install_dir/etc/ssh"
 		ln -sfn "$source_dir/mambarc" "$install_dir/etc/mambarc"
+		if [ -d "$source_dir/agents" ]; then
+			if [ ! -e "$home_dir/.agents" ] || [ -L "$home_dir/.agents" ]; then
+				ln -sfn "$source_dir/agents" "$home_dir/.agents"
+			else
+				echo ".agents already exists. Skip it."
+			fi
+		fi
 	}
 
 	homecli_add_authorized_key() {

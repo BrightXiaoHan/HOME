@@ -40,6 +40,10 @@ New-Item -ItemType SymbolicLink -Path $sshDir\id_rsa.pub -Value $rootDir\configs
 $gitConfig = Join-Path $env:USERPROFILE ".gitconfig"
 New-Item -ItemType SymbolicLink -Path $gitConfig -Value $rootDir\configs\gitconfig -Force
 
+# Create symbolic links to the agents config directory
+$agentsDir = Join-Path $env:USERPROFILE ".agents"
+New-Item -ItemType SymbolicLink -Path $agentsDir -Value $rootDir\configs\agents -Force
+
 # Create symbolic links to the neovim config file
 $nvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
 New-Item -ItemType SymbolicLink -Path $nvimDir -Value $rootDir\configs\nvim -Force

@@ -113,6 +113,7 @@ LEGACY_PATHS=(
 	"$HOME/.zshenv"
 	"$HOME/.gitconfig"
 	"$HOME/.mambarc"
+	"$HOME/.agents"
 	"$HOME/.local/share/nvim"
 )
 

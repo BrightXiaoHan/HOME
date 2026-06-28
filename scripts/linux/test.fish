@@ -285,6 +285,7 @@ function test_configs
     test_symlink "$CONFIG_HOME/git/config" "$INSTALL_DIR/HOME/configs/gitconfig" "git config symlink"
     test_symlink "$INSTALL_DIR/etc/ssh" "$INSTALL_DIR/HOME/configs/ssh" "ssh config symlink"
     test_symlink "$INSTALL_DIR/etc/mambarc" "$INSTALL_DIR/HOME/configs/mambarc" "mambarc symlink"
+    test_symlink "$HOME/.agents" "$INSTALL_DIR/HOME/configs/agents" "agents config symlink"
 
     echo ""
 end
@@ -308,6 +309,8 @@ function test_conda_binaries
     test_binary starship --version "starship"
     test_binary node --version "node"
     test_binary npm --version "npm"
+    test_binary pi --version "pi coding agent"
+    test_binary agently-cli --version "agently-cli"
 
     # LSP servers and formatters
     test_binary lua-language-server --version "lua-language-server"

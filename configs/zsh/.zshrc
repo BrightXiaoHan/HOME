@@ -6,14 +6,6 @@ unsetopt nomatch
 setopt hist_ignore_dups
 setopt share_history
 bindkey -e
-# Be explicit for SSH/minimal terminals where erase/backspace differs.
-if [[ -t 0 ]]; then
-  stty erase '^?' 2>/dev/null || true
-fi
-bindkey '^?' backward-delete-char
-bindkey '^H' backward-delete-char
-bindkey '^[[3~' delete-char
-[[ -n ${terminfo[kdch1]:-} ]] && bindkey "${terminfo[kdch1]}" delete-char
 
 HISTFILE="${HISTFILE:-$HOME/.zsh_history}"
 HISTSIZE="${HISTSIZE:-10000}"

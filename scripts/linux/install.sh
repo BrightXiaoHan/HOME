@@ -314,6 +314,10 @@ cat >"$INSTALL_DIR/bin/homecli-bash" <<EOF
 exec bash --noprofile --norc "\$@"
 EOF
 chmod +x "$INSTALL_DIR/bin/homecli-bash"
+chown "$(id -u):$(id -g)" \
+	"$INSTALL_DIR/bin/homecli-env" \
+	"$INSTALL_DIR/bin/homecli-fish" \
+	"$INSTALL_DIR/bin/homecli-bash" 2>/dev/null || true
 rm -f "$INSTALL_DIR/bin/homecli-zsh"
 
 if [ -x "$INSTALL_DIR/HOME/scripts/linux/homecli" ]; then

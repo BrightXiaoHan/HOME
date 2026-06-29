@@ -281,7 +281,16 @@ function test_configs
     test_symlink "$CONFIG_HOME/nvim" "$INSTALL_DIR/HOME/configs/nvim" "nvim config symlink"
     test_symlink "$CONFIG_HOME/tmux" "$INSTALL_DIR/HOME/configs/tmux" "tmux config symlink"
     test_symlink "$CONFIG_HOME/fish" "$INSTALL_DIR/HOME/configs/fish" "fish config symlink"
-    test_symlink "$CONFIG_HOME/zsh" "$INSTALL_DIR/HOME/configs/zsh" "zsh config symlink"
+    if test -e "$CONFIG_HOME/zsh" -o -L "$CONFIG_HOME/zsh"
+        report_fail "zsh config removed (stale path exists: $CONFIG_HOME/zsh)"
+    else
+        report_pass "zsh config removed"
+    end
+    if test -e "$HOME/.zshenv" -o -L "$HOME/.zshenv"
+        report_fail "zshenv removed (stale path exists: $HOME/.zshenv)"
+    else
+        report_pass "zshenv removed"
+    end
     test_symlink "$CONFIG_HOME/git/config" "$INSTALL_DIR/HOME/configs/gitconfig" "git config symlink"
     test_symlink "$INSTALL_DIR/etc/ssh" "$INSTALL_DIR/HOME/configs/ssh" "ssh config symlink"
     test_symlink "$INSTALL_DIR/etc/mambarc" "$INSTALL_DIR/HOME/configs/mambarc" "mambarc symlink"
@@ -296,7 +305,6 @@ function test_conda_binaries
 
     # Core tools
     test_binary fish --version "fish shell"
-    test_binary zsh --version "zsh shell"
     test_binary fzf --version "fzf"
     test_binary rg --version "ripgrep"
     test_binary make --version "make"
@@ -418,7 +426,7 @@ function test_additional_binaries
 end
 
 function test_environment
-    echo "Testing Fish shell environment..."
+    echo "Testing Fish and Bash shell environments..."
 
     # Environment variables
     test_env_variable HOMECLI_INSTALL_DIR "$INSTALL_DIR" "HOMECLI_INSTALL_DIR"
@@ -437,6 +445,23 @@ function test_environment
     # Check if binaries are in PATH
     test_binary starship --version "starship in PATH"
     test_binary zoxide --version "zoxide in PATH"
+
+    if test -x "$INSTALL_DIR/bin/homecli-bash"
+        report_pass "homecli-bash wrapper"
+        set -l bash_probe ("$INSTALL_DIR/bin/homecli-bash" -lc 'printf "%s\n" "$HOMECLI_INSTALL_DIR" "$XDG_CONFIG_HOME" "$GIT_CONFIG_GLOBAL" "$TERM" "$STARSHIP_CONFIG" "$(command -v pi)"' 2>/dev/null)
+        if test "$bash_probe[1]" = "$INSTALL_DIR" \
+                -a "$bash_probe[2]" = "$CONFIG_HOME" \
+                -a "$bash_probe[3]" = "$CONFIG_HOME/git/config" \
+                -a "$bash_probe[4]" = "xterm-256color" \
+                -a "$bash_probe[5]" = "$CONFIG_HOME/starship.toml" \
+                -a -n "$bash_probe[6]"
+            report_pass "homecli-bash isolated environment"
+        else
+            report_fail "homecli-bash isolated environment (unexpected probe output: $bash_probe)"
+        end
+    else
+        report_fail "homecli-bash wrapper (not executable)"
+    end
 
     echo ""
 end

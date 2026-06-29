@@ -26,7 +26,7 @@ Linux installations are self-contained under `HOMECLI_INSTALL_DIR`, defaulting t
 - `miniconda/`: micromamba base environment
 - `HOME/`: checked-out HOME repository
 
-The shell wrappers `homecli-fish` and `homecli-zsh` enter this isolated environment by exporting the XDG roots and tool paths.
+The shell wrappers `homecli-fish` and `homecli-bash` enter this isolated environment by exporting the XDG roots and tool paths. Fish is the interactive shell; bash is the predictable agent/script environment.
 
 ## Refactoring direction
 

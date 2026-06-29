@@ -65,9 +65,9 @@ if [ ! -x "$INSTALL_DIR/bin/homecli-fish" ]; then
     exit 2
 fi
 
-# Check if homecli-zsh wrapper exists
-if [ ! -x "$INSTALL_DIR/bin/homecli-zsh" ]; then
-    echo "ERROR: homecli-zsh wrapper not found: $INSTALL_DIR/bin/homecli-zsh"
+# Check if homecli-bash wrapper exists
+if [ ! -x "$INSTALL_DIR/bin/homecli-bash" ]; then
+    echo "ERROR: homecli-bash wrapper not found: $INSTALL_DIR/bin/homecli-bash"
     echo "Please ensure the installation is complete"
     exit 2
 fi

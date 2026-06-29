@@ -123,4 +123,5 @@ done
 
 # remove alias created by installer
 sed -i '/homecli-fish/d' ~/.bashrc 2>/dev/null || true
+sed -i '/homecli-bash/d' ~/.bashrc 2>/dev/null || true
 sed -i '/homecli-zsh/d' ~/.bashrc 2>/dev/null || true

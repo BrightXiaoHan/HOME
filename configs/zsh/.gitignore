@@ -1,5 +1,0 @@
-config-local.zsh
-.zsh_history*
-.zcompdump*
-.zsh_sessions/
-*.zwc

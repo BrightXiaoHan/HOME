@@ -61,11 +61,19 @@ link_path() {
 	echo "$target -> $source"
 }
 
+remove_stale_symlink() {
+	local target=$1
+	if [ -L "$target" ]; then
+		rm -f "$target"
+		echo "removed stale symlink: $target"
+	fi
+}
+
 link_path "$CONFIG_DIR/fish" "$HOME/.config/fish"
 link_path "$CONFIG_DIR/nvim" "$HOME/.config/nvim"
 link_path "$CONFIG_DIR/tmux" "$HOME/.config/tmux"
-link_path "$CONFIG_DIR/zsh" "$HOME/.config/zsh"
-link_path "$CONFIG_DIR/zsh/.zshenv" "$HOME/.zshenv"
+remove_stale_symlink "$HOME/.config/zsh"
+remove_stale_symlink "$HOME/.zshenv"
 link_path "$CONFIG_DIR/gitconfig" "$HOME/.gitconfig"
 link_path "$CONFIG_DIR/mambarc" "$HOME/.mambarc"
 link_path "$CONFIG_DIR/agents" "$HOME/.agents"

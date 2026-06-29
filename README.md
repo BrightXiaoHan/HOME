@@ -10,7 +10,7 @@ My Personal Home Directory Configuration Manager - A cross-platform dotfiles and
 - 🚀 Single-command installation across Linux, macOS, and Windows
 - 🔄 Easy environment synchronization between machines
 - 🐟 Fish shell configuration with helpful aliases and utilities
-- 🐚 Parallel Zsh configuration that mirrors the Fish environment for bash-friendly workflows
+- 🤖 Isolated Bash environment wrapper for coding agents and scripts
 - 🧰 Pre-configured development tools (NeoVim, tmux, Git, etc.)
 - 🐍 Python environment management with micromamba and uv
 - 🔒 SSH configuration management
@@ -57,6 +57,8 @@ After installation, the unified command wrapper is available at `$HOMECLI_INSTAL
 $HOME/.homecli/bin/homecli update
 $HOME/.homecli/bin/homecli relink
 $HOME/.homecli/bin/homecli test --configs --nvim
+$HOME/.homecli/bin/homecli-bash -lc 'command -v pi'  # isolated bash env for agents/scripts
+$HOME/.homecli/bin/homecli-fish                    # interactive fish env
 ```
 
 Uninstall without deleting installation cache (for future relink):
@@ -133,7 +135,7 @@ podman run -v $HOME:/workspace --name home -itd home
 
 ## Included Tools & Configurations
 
-- **Shell**: Fish shell plus parallel Zsh configuration with custom prompt and useful aliases
+- **Shell**: Fish shell for interaction plus `homecli-bash` for isolated agent/script execution
 - **Editor**: NeoVim with NvChad configuration
 - **Terminal Multiplexer**: tmux with custom keybindings
 - **Package Management**: micromamba (conda), uv (Python)
@@ -146,7 +148,6 @@ podman run -v $HOME:/workspace --name home -itd home
 
 - `configs/` - Configuration files for various tools
   - `fish/` - Fish shell configuration
-  - `zsh/` - Zsh shell configuration
   - `ssh/` - SSH configuration and keys
   - `tmux/` - Tmux configuration
   - `nvim/` - NeoVim configuration

@@ -16,14 +16,9 @@ homecli_link_configs() {
 		ln -sfn "$source_dir/starship.toml" "$config_home/starship.toml"
 	fi
 
-	if [ -d "$source_dir/zsh" ]; then
-		ln -sfn "$source_dir/zsh" "$config_home/zsh"
-		if [ ! -e "$home_dir/.zshenv" ] || [ -L "$home_dir/.zshenv" ]; then
-			ln -sfn "$source_dir/zsh/.zshenv" "$home_dir/.zshenv"
-		else
-			echo "zshenv already exists. Skip it."
-		fi
-	fi
+	# Remove stale zsh links from older HOME releases. zsh config is no longer managed.
+	[ -L "$config_home/zsh" ] && rm -f "$config_home/zsh"
+	[ -L "$home_dir/.zshenv" ] && rm -f "$home_dir/.zshenv"
 
 	ln -sfn "$source_dir/gitconfig" "$config_home/git/config"
 	ln -sfn "$source_dir/ssh" "$install_dir/etc/ssh"

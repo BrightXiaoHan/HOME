@@ -17,7 +17,6 @@ homecli_install_conda() {
 		-y
 		python=3.13.*
 		fish
-		zsh
 		ncurses
 		fzf
 		ripgrep

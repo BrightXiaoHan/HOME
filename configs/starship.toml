@@ -1,9 +1,27 @@
 # Starship config for Linux/SSH-friendly terminals.
-# Avoid emoji/Powerline glyphs so prompts stay readable on minimal remote consoles.
+# Keep the prompt ASCII-only so it stays readable on minimal remote consoles.
 add_newline = true
+format = "$username$hostname$directory$git_branch$git_status$line_break$character"
 
 [hostname]
 ssh_symbol = ""
+
+[git_branch]
+symbol = "git:"
+format = " on [$symbol$branch]($style)"
+
+[git_status]
+format = "([ $all_status$ahead_behind]($style))"
+conflicted = "="
+ahead = ">"
+behind = "<"
+diverged = "<>"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "r"
+deleted = "x"
 
 [character]
 success_symbol = "[>](bold green)"

@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Sourceable environment for HOMECLI shell wrappers.
+# shellcheck shell=bash
+
+__homecli_system_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+PATH="${PATH:-$__homecli_system_path}"
+
+__homecli_env_source="${BASH_SOURCE[0]}"
+while [ -L "$__homecli_env_source" ]; do
+	__homecli_env_dir="$(cd -P "$(dirname "$__homecli_env_source")" >/dev/null 2>&1 && pwd)"
+	__homecli_env_source="$(readlink "$__homecli_env_source")"
+	[[ "$__homecli_env_source" != /* ]] && __homecli_env_source="$__homecli_env_dir/$__homecli_env_source"
+done
+__homecli_bin_dir="$(cd -P "$(dirname "$__homecli_env_source")" >/dev/null 2>&1 && pwd)"
+__homecli_install_dir="${HOMECLI_INSTALL_DIR:-$(cd "$__homecli_bin_dir/.." >/dev/null 2>&1 && pwd)}"
+
+if [ -z "${HOME:-}" ]; then
+	__homecli_uid="$(id -u 2>/dev/null || true)"
+	if [ -n "$__homecli_uid" ] && command -v getent >/dev/null 2>&1; then
+		HOME="$(getent passwd "$__homecli_uid" | cut -d: -f6)"
+	fi
+	if [ -z "${HOME:-}" ]; then
+		HOME="$(printf '%s' ~)"
+	fi
+	[ "$HOME" = "~" ] && HOME=/tmp
+fi
+export HOME
+
+export HOMECLI_INSTALL_DIR="$__homecli_install_dir"
+export XDG_CONFIG_HOME="${HOMECLI_XDG_CONFIG_HOME:-$HOMECLI_INSTALL_DIR/config}"
+export XDG_DATA_HOME="${HOMECLI_XDG_DATA_HOME:-$HOMECLI_INSTALL_DIR/data}"
+export XDG_STATE_HOME="${HOMECLI_XDG_STATE_HOME:-$HOMECLI_INSTALL_DIR/state}"
+export XDG_CACHE_HOME="${HOMECLI_XDG_CACHE_HOME:-$HOMECLI_INSTALL_DIR/cache}"
+export TERM="${HOMECLI_TERM:-xterm-256color}"
+export LANG="${LANG:-en_US.UTF-8}"
+export TERMINFO_DIRS="$HOMECLI_INSTALL_DIR/miniconda/share/terminfo:$HOMECLI_INSTALL_DIR/miniconda/lib/terminfo:/usr/share/terminfo"
+export MAMBA_ROOT_PREFIX="$HOMECLI_INSTALL_DIR/miniconda"
+export MAMBA_EXE="$HOMECLI_INSTALL_DIR/bin/mamba"
+export UV_TOOL_DIR="$HOMECLI_INSTALL_DIR/uv/tool"
+export UV_TOOL_BIN_DIR="$HOMECLI_INSTALL_DIR/uv/tool/bin"
+export UV_PYTHON_INSTALL_DIR="$HOMECLI_INSTALL_DIR/uv/python"
+export UV_PYTHON_PREFERENCE="only-system"
+export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+export CONDARC="$HOMECLI_INSTALL_DIR/etc/mambarc"
+export HOMECLI_SSH_DIR="$HOMECLI_INSTALL_DIR/etc/ssh"
+export PASSWORD_STORE_DIR="$HOMECLI_INSTALL_DIR/password-store"
+export PNPM_HOME="$HOMECLI_INSTALL_DIR/pnpm"
+if [ -f "$XDG_CONFIG_HOME/starship.toml" ]; then
+	export STARSHIP_CONFIG="${STARSHIP_CONFIG:-$XDG_CONFIG_HOME/starship.toml}"
+fi
+if [ -f "$HOMECLI_INSTALL_DIR/etc/ssh/config" ]; then
+	export GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh -F $HOMECLI_INSTALL_DIR/etc/ssh/config -i $HOMECLI_INSTALL_DIR/etc/ssh/id_rsa_git}"
+fi
+export CC="$HOMECLI_INSTALL_DIR/miniconda/bin/gcc"
+export CXX="$HOMECLI_INSTALL_DIR/miniconda/bin/g++"
+export CPPFLAGS="-I$HOMECLI_INSTALL_DIR/miniconda/include ${CPPFLAGS:-}"
+export LDFLAGS="-L$HOMECLI_INSTALL_DIR/miniconda/lib ${LDFLAGS:-}"
+export CONFIGURE_OPTS="-with-openssl=$HOMECLI_INSTALL_DIR/miniconda ${CONFIGURE_OPTS:-}"
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY="${CRYPTOGRAPHY_OPENSSL_NO_LEGACY:-1}"
+export POETRY_VIRTUALENVS_IN_PROJECT="${POETRY_VIRTUALENVS_IN_PROJECT:-true}"
+export PATH="node_modules/.bin:$HOMECLI_INSTALL_DIR/bin:$HOMECLI_INSTALL_DIR/miniconda/bin:$HOMECLI_INSTALL_DIR/uv/tool/bin:$HOMECLI_INSTALL_DIR/pnpm:$HOME/.local/bin:${PATH:-}:$__homecli_system_path"
+
+unset __homecli_system_path __homecli_env_source __homecli_env_dir __homecli_bin_dir __homecli_install_dir __homecli_uid

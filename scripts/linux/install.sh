@@ -257,67 +257,24 @@ elif [ "$MODE" = "relink" ]; then
 	ensure_nvim_link
 fi
 
-# create sourceable environment for isolated HOMECLI shell wrappers
-cat >"$INSTALL_DIR/bin/homecli-env" <<EOF
-#!/usr/bin/env bash
-export HOME="$HOME"
-export HOMECLI_INSTALL_DIR="$INSTALL_DIR"
-export XDG_CONFIG_HOME="$CONFIG_HOME"
-export XDG_DATA_HOME="$DATA_HOME"
-export XDG_STATE_HOME="$STATE_HOME"
-export XDG_CACHE_HOME="$CACHE_HOME"
-export TERM="\${HOMECLI_TERM:-xterm-256color}"
-export LANG="\${LANG:-en_US.UTF-8}"
-export TERMINFO_DIRS="$INSTALL_DIR/miniconda/share/terminfo:$INSTALL_DIR/miniconda/lib/terminfo:/usr/share/terminfo"
-export MAMBA_ROOT_PREFIX="$INSTALL_DIR/miniconda"
-export MAMBA_EXE="$INSTALL_DIR/bin/mamba"
-export UV_TOOL_DIR="$INSTALL_DIR/uv/tool"
-export UV_TOOL_BIN_DIR="$INSTALL_DIR/uv/tool/bin"
-export UV_PYTHON_INSTALL_DIR="$INSTALL_DIR/uv/python"
-export UV_PYTHON_PREFERENCE="only-system"
-export GIT_CONFIG_GLOBAL="$CONFIG_HOME/git/config"
-export CONDARC="$INSTALL_DIR/etc/mambarc"
-export HOMECLI_SSH_DIR="$INSTALL_DIR/etc/ssh"
-export PASSWORD_STORE_DIR="$INSTALL_DIR/password-store"
-export PNPM_HOME="$INSTALL_DIR/pnpm"
-if [ -f "$CONFIG_HOME/starship.toml" ]; then
-	export STARSHIP_CONFIG="\${STARSHIP_CONFIG:-$CONFIG_HOME/starship.toml}"
+# install isolated HOMECLI shell wrappers from templates
+TEMPLATES_DIR=""
+for candidate in \
+	"$SCRIPT_DIR/templates" \
+	"$SCRIPT_DIR/linux/templates" \
+	"$INSTALL_DIR/HOME/scripts/linux/templates"; do
+	if [ -r "$candidate/homecli-env" ]; then
+		TEMPLATES_DIR="$candidate"
+		break
+	fi
+done
+if [ -z "$TEMPLATES_DIR" ]; then
+	echo "Error: homecli shell wrapper templates not found." >&2
+	exit 1
 fi
-if [ -f "$INSTALL_DIR/etc/ssh/config" ]; then
-	export GIT_SSH_COMMAND="\${GIT_SSH_COMMAND:-ssh -F $INSTALL_DIR/etc/ssh/config -i $INSTALL_DIR/etc/ssh/id_rsa_git}"
-fi
-export CC="$INSTALL_DIR/miniconda/bin/gcc"
-export CXX="$INSTALL_DIR/miniconda/bin/g++"
-export CPPFLAGS="-I$INSTALL_DIR/miniconda/include \${CPPFLAGS:-}"
-export LDFLAGS="-L$INSTALL_DIR/miniconda/lib \${LDFLAGS:-}"
-export CONFIGURE_OPTS="-with-openssl=$INSTALL_DIR/miniconda \${CONFIGURE_OPTS:-}"
-export CRYPTOGRAPHY_OPENSSL_NO_LEGACY="\${CRYPTOGRAPHY_OPENSSL_NO_LEGACY:-1}"
-export POETRY_VIRTUALENVS_IN_PROJECT="\${POETRY_VIRTUALENVS_IN_PROJECT:-true}"
-__homecli_system_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-export PATH="node_modules/.bin:$INSTALL_DIR/bin:$INSTALL_DIR/miniconda/bin:$INSTALL_DIR/uv/tool/bin:$INSTALL_DIR/pnpm:\$HOME/.local/bin:\${PATH:-}:\$__homecli_system_path"
-unset __homecli_system_path
-EOF
-chmod +x "$INSTALL_DIR/bin/homecli-env"
-
-# create wrapper to enter isolated fish session with XDG dirs
-cat >"$INSTALL_DIR/bin/homecli-fish" <<EOF
-#!/usr/bin/env bash
-. "$INSTALL_DIR/bin/homecli-env"
-exec "$INSTALL_DIR/miniconda/bin/fish" "\$@"
-EOF
-chmod +x "$INSTALL_DIR/bin/homecli-fish"
-
-# create wrapper to enter isolated bash session for agents/scripts
-cat >"$INSTALL_DIR/bin/homecli-bash" <<EOF
-#!/usr/bin/env bash
-. "$INSTALL_DIR/bin/homecli-env"
-exec bash --noprofile --norc "\$@"
-EOF
-chmod +x "$INSTALL_DIR/bin/homecli-bash"
-chown "$(id -u):$(id -g)" \
-	"$INSTALL_DIR/bin/homecli-env" \
-	"$INSTALL_DIR/bin/homecli-fish" \
-	"$INSTALL_DIR/bin/homecli-bash" 2>/dev/null || true
+install -m 0755 "$TEMPLATES_DIR/homecli-env" "$INSTALL_DIR/bin/homecli-env"
+install -m 0755 "$TEMPLATES_DIR/homecli-fish" "$INSTALL_DIR/bin/homecli-fish"
+install -m 0755 "$TEMPLATES_DIR/homecli-bash" "$INSTALL_DIR/bin/homecli-bash"
 rm -f "$INSTALL_DIR/bin/homecli-zsh"
 
 if [ -x "$INSTALL_DIR/HOME/scripts/linux/homecli" ]; then

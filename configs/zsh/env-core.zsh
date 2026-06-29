@@ -54,6 +54,7 @@ if [[ -n ${HOMECLI_INSTALL_DIR:-} || -d "$__homecli_install_dir/bin" || -d "$__h
 
   export MAMBA_EXE="${MAMBA_EXE:-$HOMECLI_INSTALL_DIR/bin/mamba}"
   export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-$HOMECLI_INSTALL_DIR/miniconda}"
+  export TERMINFO_DIRS="${TERMINFO_DIRS:-$MAMBA_ROOT_PREFIX/share/terminfo:$MAMBA_ROOT_PREFIX/lib/terminfo:/usr/share/terminfo}"
 
   export UV_TOOL_DIR="${UV_TOOL_DIR:-$HOMECLI_INSTALL_DIR/uv/tool}"
   export UV_TOOL_BIN_DIR="${UV_TOOL_BIN_DIR:-$HOMECLI_INSTALL_DIR/uv/tool/bin}"

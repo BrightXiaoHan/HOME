@@ -266,8 +266,9 @@ fi
 cat >"$INSTALL_DIR/bin/homecli-fish" <<EOF
 #!/usr/bin/env bash
 export HOME="$HOME"
-export TERM="\${TERM:-xterm-256color}"
+export TERM="\${HOMECLI_TERM:-xterm-256color}"
 export LANG="\${LANG:-en_US.UTF-8}"
+export TERMINFO_DIRS="$INSTALL_DIR/miniconda/share/terminfo:$INSTALL_DIR/miniconda/lib/terminfo:/usr/share/terminfo"
 export HOMECLI_INSTALL_DIR="$INSTALL_DIR"
 export XDG_CONFIG_HOME="$CONFIG_HOME"
 export XDG_DATA_HOME="$DATA_HOME"
@@ -292,8 +293,9 @@ chmod +x "$INSTALL_DIR/bin/homecli-fish"
 cat >"$INSTALL_DIR/bin/homecli-zsh" <<EOF
 #!/usr/bin/env bash
 export HOME="$HOME"
-export TERM="\${TERM:-xterm-256color}"
+export TERM="\${HOMECLI_TERM:-xterm-256color}"
 export LANG="\${LANG:-en_US.UTF-8}"
+export TERMINFO_DIRS="$INSTALL_DIR/miniconda/share/terminfo:$INSTALL_DIR/miniconda/lib/terminfo:/usr/share/terminfo"
 export HOMECLI_INSTALL_DIR="$INSTALL_DIR"
 export XDG_CONFIG_HOME="$CONFIG_HOME"
 export XDG_DATA_HOME="$DATA_HOME"
@@ -328,8 +330,8 @@ if [ -x "$INSTALL_DIR/HOME/scripts/linux/homecli" ]; then
 	ln -sfn "$INSTALL_DIR/HOME/scripts/linux/homecli" "$INSTALL_DIR/bin/homecli"
 fi
 
-# add shell wrapper aliases to .bashrc, preserving terminal/locale inside env -i
+# add shell wrapper aliases to .bashrc with a stable Linux TERM/locale inside env -i
 sed -i '/alias fish=.*homecli-fish/d' ~/.bashrc 2>/dev/null || true
 sed -i '/alias zsh=.*homecli-zsh/d' ~/.bashrc 2>/dev/null || true
-echo "alias fish='env -i TERM=\"\${TERM:-xterm-256color}\" LANG=\"\${LANG:-en_US.UTF-8}\" $INSTALL_DIR/bin/homecli-fish'" >>~/.bashrc
-echo "alias zsh='env -i TERM=\"\${TERM:-xterm-256color}\" LANG=\"\${LANG:-en_US.UTF-8}\" $INSTALL_DIR/bin/homecli-zsh'" >>~/.bashrc
+echo "alias fish='env -i TERM=\"\${HOMECLI_TERM:-xterm-256color}\" LANG=\"\${LANG:-en_US.UTF-8}\" $INSTALL_DIR/bin/homecli-fish'" >>~/.bashrc
+echo "alias zsh='env -i TERM=\"\${HOMECLI_TERM:-xterm-256color}\" LANG=\"\${LANG:-en_US.UTF-8}\" $INSTALL_DIR/bin/homecli-zsh'" >>~/.bashrc

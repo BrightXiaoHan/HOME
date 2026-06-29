@@ -8,6 +8,9 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$CONFIG_HOME}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$DATA_HOME}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$STATE_HOME}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$CACHE_HOME}"
+# Match fish on Linux: use a widely available TERM unless HOMECLI_TERM overrides it.
+export TERM="${HOMECLI_TERM:-xterm-256color}"
+export TERMINFO_DIRS="${TERMINFO_DIRS:-$INSTALL_DIR/miniconda/share/terminfo:$INSTALL_DIR/miniconda/lib/terminfo:/usr/share/terminfo}"
 
 # >>> mamba initialize >>>
 # Mirrors the fish micromamba initialization using the zsh hook.

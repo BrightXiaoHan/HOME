@@ -24,6 +24,9 @@ end
 # !! Contents within this block are managed by 'mamba init' !!
 set -gx MAMBA_EXE "$INSTALL_DIR/bin/mamba"
 set -gx MAMBA_ROOT_PREFIX "$INSTALL_DIR/miniconda"
+if not set -q TERMINFO_DIRS
+    set -gx TERMINFO_DIRS "$MAMBA_ROOT_PREFIX/share/terminfo:$MAMBA_ROOT_PREFIX/lib/terminfo:/usr/share/terminfo"
+end
 $MAMBA_EXE shell hook --shell fish --root-prefix $MAMBA_ROOT_PREFIX | source
 micromamba activate
 # <<< mamba initialize <<<

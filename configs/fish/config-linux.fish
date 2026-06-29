@@ -16,6 +16,9 @@ end
 if not set -q XDG_CACHE_HOME
     set -gx XDG_CACHE_HOME $CACHE_HOME
 end
+if not set -q STARSHIP_CONFIG; and test -f "$CONFIG_HOME/starship.toml"
+    set -gx STARSHIP_CONFIG "$CONFIG_HOME/starship.toml"
+end
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!

@@ -285,6 +285,7 @@ function test_configs
     test_symlink "$CONFIG_HOME/git/config" "$INSTALL_DIR/HOME/configs/gitconfig" "git config symlink"
     test_symlink "$INSTALL_DIR/etc/ssh" "$INSTALL_DIR/HOME/configs/ssh" "ssh config symlink"
     test_symlink "$INSTALL_DIR/etc/mambarc" "$INSTALL_DIR/HOME/configs/mambarc" "mambarc symlink"
+    test_symlink "$CONFIG_HOME/starship.toml" "$INSTALL_DIR/HOME/configs/starship.toml" "starship config symlink"
     test_symlink "$HOME/.agents" "$INSTALL_DIR/HOME/configs/agents" "agents config symlink"
 
     echo ""

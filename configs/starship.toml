@@ -1,0 +1,11 @@
+# Starship config for Linux/SSH-friendly terminals.
+# Avoid emoji/Powerline glyphs so prompts stay readable on minimal remote consoles.
+add_newline = true
+
+[hostname]
+ssh_symbol = ""
+
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold red)"
+vimcmd_symbol = "[<](bold green)"

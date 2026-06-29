@@ -48,6 +48,9 @@ if [[ -n ${HOMECLI_INSTALL_DIR:-} || -d "$__homecli_install_dir/bin" || -d "$__h
   export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOMECLI_INSTALL_DIR/data}"
   export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOMECLI_INSTALL_DIR/state}"
   export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOMECLI_INSTALL_DIR/cache}"
+  if [[ -z ${STARSHIP_CONFIG:-} && -f "$XDG_CONFIG_HOME/starship.toml" ]]; then
+    export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship.toml"
+  fi
 
   export MAMBA_EXE="${MAMBA_EXE:-$HOMECLI_INSTALL_DIR/bin/mamba}"
   export MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-$HOMECLI_INSTALL_DIR/miniconda}"

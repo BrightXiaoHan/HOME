@@ -12,6 +12,9 @@ homecli_link_configs() {
 	ln -sfn "$source_dir/nvim" "$config_home/nvim"
 	ln -sfn "$source_dir/tmux" "$config_home/tmux"
 	ln -sfn "$source_dir/fish" "$config_home/fish"
+	if [ -f "$source_dir/starship.toml" ]; then
+		ln -sfn "$source_dir/starship.toml" "$config_home/starship.toml"
+	fi
 
 	if [ -d "$source_dir/zsh" ]; then
 		ln -sfn "$source_dir/zsh" "$config_home/zsh"

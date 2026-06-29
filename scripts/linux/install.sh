@@ -18,6 +18,9 @@ else
 		ln -sfn "$source_dir/nvim" "$config_home/nvim"
 		ln -sfn "$source_dir/tmux" "$config_home/tmux"
 		ln -sfn "$source_dir/fish" "$config_home/fish"
+		if [ -f "$source_dir/starship.toml" ]; then
+			ln -sfn "$source_dir/starship.toml" "$config_home/starship.toml"
+		fi
 		if [ -d "$source_dir/zsh" ]; then
 			ln -sfn "$source_dir/zsh" "$config_home/zsh"
 			if [ ! -e "$home_dir/.zshenv" ] || [ -L "$home_dir/.zshenv" ]; then
@@ -152,9 +155,9 @@ elif [ "$MODE" = "unpack" ]; then
 	OLD_INSTALL_DIR=${OLD_INSTALL_DIR:-/home/runner/.homecli}
 	OLD_HOME_DIR=${OLD_HOME_DIR:-/home/runner}
 	mkdir -p $INSTALL_DIR
-	tar -xvf "$TARFILE" -C "$INSTALL_DIR"
+	tar --no-same-owner -xvf "$TARFILE" -C "$INSTALL_DIR"
 	mkdir -p $INSTALL_DIR/miniconda
-	tar -xvf $INSTALL_DIR/miniconda.tar.gz -C $INSTALL_DIR/miniconda
+	tar --no-same-owner -xvf $INSTALL_DIR/miniconda.tar.gz -C $INSTALL_DIR/miniconda
 	DIR="$INSTALL_DIR/HOME/configs"
 elif [ "$MODE" = "online-install" ]; then
 	DIR="$INSTALL_DIR/HOME/configs"

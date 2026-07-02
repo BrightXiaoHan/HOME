@@ -65,7 +65,7 @@ Host telecom-ascend-root
 
 Host telecom-ascend
     HostName 39.105.167.2
-    Port 22066
+    Port 19070
     User hanbing
     ServerAliveInterval 10
 
@@ -119,6 +119,12 @@ Host yuyi-82
 Host yuyi-haiguang
     HostName 39.105.167.2
     Port 10233
+    User root
+    ServerAliveInterval 10
+
+Host yuyi-rk3588
+    HostName 39.105.167.2
+    Port 19090
     User root
     ServerAliveInterval 10
 

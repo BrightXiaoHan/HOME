@@ -128,4 +128,8 @@ Host yuyi-rk3588
     User root
     ServerAliveInterval 10
 
-
+Host yuyi-amd
+    HostName 39.105.167.2
+    Port 10233
+    User root
+    ServerAliveInterval 10

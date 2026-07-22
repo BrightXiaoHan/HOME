@@ -133,3 +133,10 @@ Host yuyi-amd
     Port 10233
     User root
     ServerAliveInterval 10
+
+Host desheng-new
+    HostName 42.157.193.43
+    Port 22
+    User root
+    ServerAliveInterval 10
+    IdentityFile ~/.ssh/nvidia-compute_ed25519

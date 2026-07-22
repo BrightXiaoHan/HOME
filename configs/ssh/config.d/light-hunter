@@ -1,13 +1,5 @@
-Host lc-oc-test
-    HostName 101.47.18.60
-    User root
-    Port 22
-    ServerAliveInterval 10
-    IdentityFile ~/.ssh/private-light-hunter-oc
-
-
 Host lc-oc-prod
-    HostName 45.78.235.240
+    HostName 101.47.157.73
     User root
     Port 22
     ServerAliveInterval 10

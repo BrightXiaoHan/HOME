@@ -61,6 +61,16 @@ link_path() {
 	echo "$target -> $source"
 }
 
+link_path_if_exists() {
+	local source=$1 target=$2
+	if [ ! -e "$source" ]; then
+		echo "skip missing source: $source" >&2
+		return 0
+	fi
+
+	link_path "$source" "$target"
+}
+
 remove_stale_symlink() {
 	local target=$1
 	if [ -L "$target" ]; then
@@ -69,17 +79,18 @@ remove_stale_symlink() {
 	fi
 }
 
-link_path "$CONFIG_DIR/fish" "$HOME/.config/fish"
-link_path "$CONFIG_DIR/nvim" "$HOME/.config/nvim"
-link_path "$CONFIG_DIR/tmux" "$HOME/.config/tmux"
+link_path_if_exists "$CONFIG_DIR/fish" "$HOME/.config/fish"
+link_path_if_exists "$CONFIG_DIR/nvim" "$HOME/.config/nvim"
+link_path_if_exists "$CONFIG_DIR/tmux" "$HOME/.config/tmux"
+link_path_if_exists "$CONFIG_DIR/starship.toml" "$HOME/.config/starship.toml"
 remove_stale_symlink "$HOME/.config/zsh"
 remove_stale_symlink "$HOME/.zshenv"
-link_path "$CONFIG_DIR/gitconfig" "$HOME/.gitconfig"
-link_path "$CONFIG_DIR/mambarc" "$HOME/.mambarc"
-link_path "$CONFIG_DIR/agents" "$HOME/.agents"
-link_path "$CONFIG_DIR/ssh/config" "$HOME/.ssh/config"
-link_path "$CONFIG_DIR/ssh/config.d" "$HOME/.ssh/config.d"
-link_path "$CONFIG_DIR/ssh/id_rsa.pub" "$HOME/.ssh/id_rsa.pub"
+link_path_if_exists "$CONFIG_DIR/gitconfig" "$HOME/.gitconfig"
+link_path_if_exists "$CONFIG_DIR/mambarc" "$HOME/.mambarc"
+link_path_if_exists "$CONFIG_DIR/agents" "$HOME/.agents"
+link_path_if_exists "$CONFIG_DIR/ssh/config" "$HOME/.ssh/config"
+link_path_if_exists "$CONFIG_DIR/ssh/config.d" "$HOME/.ssh/config.d"
+link_path_if_exists "$CONFIG_DIR/ssh/id_rsa.pub" "$HOME/.ssh/id_rsa.pub"
 
 if [ -f "$CONFIG_DIR/ssh/id_rsa.pub" ]; then
 	mkdir -p "$HOME/.ssh"

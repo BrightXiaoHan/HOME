@@ -1,13 +1,14 @@
 {
   "version": 3,
   "skills": {
-    "agently-mail": {
-      "source": "agent.qq.com",
-      "sourceType": "well-known",
-      "sourceUrl": "https://agent.qq.com/.well-known/skills/agently-mail/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-06-28T07:34:53.595Z",
-      "updatedAt": "2026-07-09T14:21:05.105Z"
+    "agentmail": {
+      "source": "agentmail-to/agentmail-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/agentmail-to/agentmail-skills.git",
+      "skillPath": "agentmail/SKILL.md",
+      "skillFolderHash": "89c06d5b61385a38d626a0d92f7d2b3f1768f3bb",
+      "installedAt": "2026-07-21T16:37:30.557Z",
+      "updatedAt": "2026-07-21T16:37:30.557Z"
     }
   },
   "dismissed": {}

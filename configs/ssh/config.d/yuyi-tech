@@ -83,7 +83,7 @@ Host telecom-cpu
     ServerAliveInterval 10
     ProxyCommand ssh -W %h:%p personal-aliyun
 
-Host desheng
+Host desheng-legacy
     HostName 157.148.120.119
     User hanbing
     ServerAliveInterval 10
@@ -140,7 +140,7 @@ Host yuyi-amd
     User root
     ServerAliveInterval 10
 
-Host desheng-new
+Host desheng
     HostName 42.157.193.43
     Port 22
     User root

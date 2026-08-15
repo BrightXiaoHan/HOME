@@ -50,3 +50,11 @@ Host dove
   User sig95vg
   Port 22
   ServerAliveInterval 10
+
+# Customer internal server
+Host whisper-optim
+  HostName 192.168.0.218
+  User hb
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  PreferredAuthentications publickey

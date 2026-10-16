@@ -17,3 +17,19 @@ Host personal-mac-mini Hans-Mac-mini.local
     HostName Hans-Mac-mini.local
     User bing
     ServerAliveInterval 10
+
+# MacBook Pro reverse SSH via personal-aliyun (2026-10-16)
+Host macbook-pro
+    HostName 127.0.0.1
+    Port 60023
+    User hanbing
+    ProxyJump personal-aliyun
+    HostKeyAlias personal-macbook-pro
+    ServerAliveInterval 15
+
+Host macbook-pro-public
+    HostName 39.99.244.8
+    Port 60023
+    User hanbing
+    HostKeyAlias personal-macbook-pro
+    ServerAliveInterval 15
